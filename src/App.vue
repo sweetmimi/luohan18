@@ -1,41 +1,71 @@
 <template>
-  <div id="app">
 
-    <router-view/>
+  <div id="app">
+    <router-view v-wechat-title="$route.meta.title" />
+    <div class="vc-tigger" @click="toggleVc"></div>
   </div>
 </template>
-
 <script>
+import { env } from '@/config'
 export default {
   name: 'App',
-  data (){
-    return{}
-  },
-  methods:{
-    _isMobile() {
-      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-      return flag;
+  data() {
+    return {
+      lastClickTime: 0,
+      count: 0,
+      limit: env == 'production' ? 10 : 0
     }
   },
-  mounted() {
-    if (this._isMobile()) {
-      // alert("手机端");
-      this.$router.replace('/mb');
-    } else {
-      // alert("pc端");
-      this.$router.replace('/mb');
+  created() {
+    console.log(this.$wx)
+  },
+  methods: {
+    hasClass(obj, cls) {
+      return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
+    },
+    addClass(obj, cls) {
+      if (!this.hasClass(obj, cls)) obj.className += ' ' + cls
+    },
+    toggleClass(obj, cls) {
+      if (this.hasClass(obj, cls)) {
+        this.removeClass(obj, cls)
+      } else {
+        this.addClass(obj, cls)
+      }
+    },
+    removeClass(obj, cls) {
+      if (this.hasClass(obj, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
+        obj.className = obj.className.replace(reg, ' ')
+      }
+    },
+    toggleVc() {
+      const nowTime = new Date().getTime()
+      if (nowTime - this.lastClickTime < 3000) {
+        this.count++
+      } else {
+        this.count = 0
+      }
+      this.lastClickTime = nowTime
+      if (this.count >= this.limit) {
+        let vconDom = document.getElementById('__vconsole')
+        this.toggleClass(vconDom, 'show')
+        this.count = 0
+      }
     }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+.vc-tigger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  // background: red;
+}
+.show {
+  display: block !important;
 }
 </style>

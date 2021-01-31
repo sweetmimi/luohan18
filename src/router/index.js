@@ -1,56 +1,30 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { constantRouterMap } from './router.config.js'
 
+// hack router push callback
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(Router)
 
+const createRouter = () =>
+  new Router({
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRouterMap
+  })
 
-const toPage = () => import('@/components/mb/toPage.vue')
-const mbMain = () => import('@/components/mb/index.vue')
-const mbHome = () => import('@/components/mb/home.vue')
-const mbProduct = () => import('@/components/mb/product.vue')
-const mbAbout = () => import('@/components/mb/about.vue')
-const mbEvent = () => import('@/components/mb/event.vue')
-const mbHelp = () => import('@/components/mb/help.vue')
-export default new Router({
-  routes: [
-    {
-      path:'/topage',
-      name:'topage',
-      component: toPage,
-    },
-    {
-      path: '/mb',
-      name: 'mbMain',
-      component: mbMain,
-      children: [{
-          path: 'home',
-          name: 'mbHome',
-          component: mbHome,
-        },
-        {
-          path: 'product',
-          name: 'mbProduct',
-          component: mbProduct,
-        },
-        {
-          path: 'about',
-          name: 'mbAbout',
-          component: mbAbout,
-        },
-        {
-          path: 'event',
-          name: 'mbEvent',
-          component: mbEvent,
-        },
-        {
-          path: 'help',
-          name: 'mbHelp',
-          component: mbHelp,
-        },
+const router = createRouter()
 
-      ]
-    },
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
 
-  ]
-})
+
+
+export default router
