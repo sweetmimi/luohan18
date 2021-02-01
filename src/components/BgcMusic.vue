@@ -6,13 +6,13 @@
           <audio
             id="bg-music"
             ref="music"
-            controls 
+            controls
             autoplay="autoplay"
             hidden="true"
             :src="require('@/assets/music/bgMusic.mp3')"
             loop="loop"
           ></audio>
-         
+
         </keep-alive>
         <keep-alive>
           <img
@@ -45,7 +45,7 @@ export default {
 
    created() {
     // 音乐自动播放监听
-    
+
   },
 
   computed: {},
@@ -64,12 +64,12 @@ export default {
       }
       audioAutoPlay();
     });
-   
-    
+
+
   },
 
   methods: {
-   
+
     //播放音乐
     open() {
       console.log("open");
@@ -94,10 +94,10 @@ export default {
   .myMusic {
     .img {
       position: fixed !important;
-      right: 30px;
-      top: 40px;
-      width: 40px;
-      height: 40px;
+      right: 54px;
+      top: 77px;
+      width: 68px;
+      height: 68px;
       z-index: 1000;
     }
     .start {

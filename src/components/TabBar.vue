@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-tabbar fixed route v-model="active" @change="handleChange" active-color="#B88858" inactive-color="#8E8E93">
-      <van-tabbar-item v-for="(item, index) in data" :to="item.to" :icon="active? item.icon1:item.icon" :key="index">
+      <van-tabbar-item v-for="(item, index) in data"  :icon="active? item.icon1:item.icon" :key="index">
         {{ item.title }}
       </van-tabbar-item>
     </van-tabbar>

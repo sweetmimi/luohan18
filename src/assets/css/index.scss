@@ -8,6 +8,8 @@ body .app {
   background-color: $background-color;
   width: 100%;
   height: 100%;
+  font-family: PingFang-SC-Bold,
+  PingFang-SC;
 }
 p{
   padding: 0;
@@ -28,11 +30,14 @@ p{
 }
 .btn{
   background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
-  margin: 10px auto;
+  margin: 30px auto;
   text-align: center;
   }
 .line{
   width: 100%;
   border-bottom: 1px solid #aaa;
   margin: 0 auto;
+}
+.gold{
+  color:#C58925
 }

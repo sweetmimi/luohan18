@@ -11,13 +11,13 @@
       <div class="title">
         <div class="text">
           <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
-          <span class="name"> LJ . 牛年本尊罗汉</span>
+          <span class="name"> LJ · 牛年本尊罗汉</span>
         </div>
       </div>
       <div class="line" style="width: 90%"></div>
       <div class="lhName">
-        <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
-        <span class="name">. 伏虎罗汉</span>
+        <img src="@/assets/images/fo.png" alt="" width="100%" />
+        <span class="name">· 伏虎罗汉</span>
       </div>
       <p class="blueTitle">【伏虎罗汉】（宝头卢尊者） 伏虎尊者</p>
       <div class="detl">
@@ -40,7 +40,7 @@
             分享给好友
         </span>
       </div>
-      
+
     </div>
     <!-- 音乐 -->
     <BgcMusic></BgcMusic>
@@ -97,10 +97,10 @@ export default {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     .point{
-      right: 20px;
-      top: 20px;
-      width: 150px;
-      height: 150px;
+      right: 62px;
+      top: 21px;
+      width: 414px;
+      height: 368px;
       position:absolute;
       img
        {
@@ -110,19 +110,20 @@ export default {
     }
     .text{
        position:absolute;
-       top: 160px;
-       height: 60px;
+       top: 405px;
+       height: 112px;
        padding: 20px;
       img{
-        width: 50px;
-        height: 50px;
+        width: 112px;
+        height: 112px;
         float: left;
         vertical-align: middle;
-        margin-right: 10px;
+        margin-left: 40px;
+        margin-right: 27px;
       }
       span{
         vertical-align: middle;
-        font-size: 16px;
+        font-size: 32px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: bold;
         color: #FFFFFF;
@@ -131,8 +132,8 @@ export default {
     }
   }
   .top_bg {
-    width: 100%;
-    height: 220px;
+    width: 750px;
+    height: 456px;
    position: fixed;
     img {
       width: 100%;
@@ -140,11 +141,11 @@ export default {
     }
   }
   .lh18{
-    width: 30px;
-    height: 40px;
+    width: 68px;
+    height: 85px;
     position: fixed;
-    left: 50px;
-    top: 30px;
+    left: 100px;
+    top: 45px;
     z-index: 100;
       img {
       width: 100%;
@@ -152,20 +153,22 @@ export default {
     }
   }
   .card {
-    
+
      position: fixed;
     box-sizing: border-box;
     padding: 10px 20px;
-    
-    top: 150px;
-    left: 4%;
+
+    top: 364px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     z-index: 100;
-    width: 92%;
-    height: 68%;
+    width: 690px;
+    height: 970px;
     background: #ffffff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
-      height: 70px;
+      height: 143px;
       width: 80%;
       margin-left: 10%;
 
@@ -176,7 +179,7 @@ export default {
       .text {
         .name {
           vertical-align: middle;
-          font-size: 16px;
+          font-size: 32px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: 600;
           color: #4e5455;
@@ -184,24 +187,24 @@ export default {
         }
       }
       img {
-        width: 40px;
-        height: 40px;
+        width: 80px;
+        height: 80px;
         vertical-align: middle;
-        margin-right: 10px;
+        margin-right: 20px;
       }
     }
     .lhName {
-      margin: 10px auto;
+      margin: 22px auto;
       text-align: center;
       img {
-        width: 20px;
-        height: 20px;
+        width: 32px;
+        height: 47px;
         vertical-align: middle;
-        margin-right: 10px;
+        margin-right: 20px;
       }
       .name {
         vertical-align: middle;
-        font-size: 16px;
+        font-size: 36px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: 600;
         color: #4e5455;
@@ -210,7 +213,7 @@ export default {
     }
     .blueTitle {
       text-align: left;
-      font-size: 14px;
+      font-size: 28px;
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: 600;
       color: #303f7b;
@@ -218,80 +221,81 @@ export default {
     }
     .detl {
       letter-spacing:1px;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
+      padding: 10px;
+      margin-bottom: 40px;
+      font-size: 28px;
       font-family: PingFang-SC-Medium, PingFang-SC;
       font-weight: 500;
       color: #666666;
-      line-height: 1.6;
+      line-height: 40px;
     }
     .yaoqin{
-      margin: 10px 20px;
-      height: 40px;
+      margin: 35px;
+      height: 84px;
        img {
         float: left;
-        width: 15px;
-        height: 30px;
+        width: 28px;
+        height: 49px;
         vertical-align: middle;
-        margin-right: 10px;
+        margin-top: 20px;
+        margin-right: 20px;
       }
       .text {
         vertical-align: middle;
-        font-size: 14px;
+        font-size: 28px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         color: #B88858;
-        line-height: 1.6;
+        line-height: 40px;
       }
     }
     .yl_btn{
-      width:60%;
-        height: 35px;
-        line-height: 40px;
-        border-radius: 40px;
+      width:420px;
+        height: 88px;
+        border-radius: 44px;
        .btn_text {
-      font-size: 14px;
+      font-size: 32px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
+      line-height: 88px;
       color: #ffffff;
     }
     }
     .gren_btn{
-       width:60%;
+       width:420px;
        background: #03C160;
-        height: 35px;
-        line-height: 35px;
-        border-radius: 35px;
+        height: 88px;
+        border-radius: 44px;
        .btn_text {
-      font-size: 14px;
+      font-size: 32px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
+      line-height: 88px;
       color: #ffffff;
     }
     }
   }
 
   .card:before {
-    content: '';
+     content: '';
     display: block;
     position: absolute;
-    left: -14px;
-    top: 70px;
+    left: -25px;
+    top: 118px;
     background: #f8f8f8;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
+    width: 50px;
+    height: 50px;
   }
   .card:after {
     content: '';
     display: block;
     position: absolute;
-    right: -14px;
-    top: 70px;
+    right: -25px;
+    top: 118px;
     background: #f8f8f8;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

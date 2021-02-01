@@ -18,6 +18,7 @@ import '@/plugins/vant'
 import '@/assets/css/index.scss'
 // 移动端适配
 import 'lib-flexible/flexible.js'
+import '@/utils/rem'
 // 引入移动端调试
 import '@/utils/vconsole.js'
 // filters

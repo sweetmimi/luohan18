@@ -14,14 +14,12 @@
         </ul>
       </div> -->
       <div class="banner">
-        <div class="container" node-type="container" style="position: relative; width: 320px; height: 215px">
-          <div style="position: absolute; top: 0; left: 0">ert</div>
+           <div class="icon">
+          <img src="../assets/images/rate.png" alt="" width="100%" />
         </div>
       </div>
       <div class="bottom">
-        <div class="icon">
-          <img src="../assets/images/rate.png" alt="" width="100%" />
-        </div>
+
         <div class="btn jump_btn" @click="jump">
           <span class="btn_text">阿弥陀佛</span>
         </div>
@@ -104,13 +102,33 @@ export default {
   .rulai {
     position: fixed;
     z-index: 200;
-    width: 70%;
-    left: 15%;
-    top: 130px;
-    height: 400px;
+    width: 398px;
+    left: 174px;
+    top: 255px;
+    height: 397px;
     background-image: url('~@/assets/images/rulai2.png');
     background-size: 100%;
     background-repeat: no-repeat;
+  }
+  .banner{
+     position: relative;
+     z-index: 500;
+     width: 700px;
+     height: 820px;
+     left: 0;
+     right: 0;
+     top: 71px;
+     margin: 0 auto;
+     border: 1px solid #Ccc;
+     .icon {
+       position:absolute;
+       bottom: 10px;
+      margin: 0 auto;
+      width: 90px;
+      left :0;
+      right: 0;
+      text-align: center;
+    }
   }
   .gif {
     position: fixed;
@@ -126,44 +144,45 @@ export default {
     position: fixed;
     margin: 0 auto;
     width: 80%;
-    bottom: 120px;
+    top: 924px;
     left: 0;
     z-index: 200;
     right: 0;
 
-    .icon {
-      margin: 0 auto;
-      width: 50px;
-      text-align: center;
-    }
+
     .jump_btn {
-      width: 60%;
-      height: 50px;
-      border-radius: 50px;
-      .btn_text {
-        font-size: 18px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 600;
-        color: #ffffff;
-        line-height: 50px;
-      }
+       z-index: 300;
+    position: absolute;
+    width: 329px;
+    height: 88px;
+     left: 0;
+     right: 0;
+     margin: 0 auto;
+    border-radius: 50px;
+    .btn_text {
+      font-size: 32px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 88px;
+    }
     }
   }
   .text {
     position: fixed;
     text-align: left;
     margin: 0 auto;
-    width: 80%;
-    height: 100px;
-    bottom: 20px;
+    top: 1062px;
     left: 0;
     z-index: 200;
     right: 0;
+    width: 611px;
+   height: 168px;
     background: rgba(187, 187, 187, 0.25);
     border-radius: 15px;
     p {
       margin: 15px;
-      font-size: 18px;
+      font-size: 32px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #ffffff;
