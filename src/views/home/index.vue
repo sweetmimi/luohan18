@@ -7,7 +7,7 @@
     <div class="lh18">
       <img src="@/assets/images/lh18.png" alt="" />
     </div>
-    <div class="card" v-drag>
+    <div class="card">
       <div class="title">
         <div class="text">
           <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />

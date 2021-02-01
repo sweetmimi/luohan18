@@ -296,7 +296,7 @@ box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
         height: 88px;
         margin: 0 60px;
         li{
-          margin: 0 1.5px ;
+          margin: 0 1px ;
           display: inline;
           float:left;
           width: 62px;
