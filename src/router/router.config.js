@@ -16,6 +16,14 @@ export const constantRouterMap = [
     },
   },
   {
+    path: '/step3',
+    component: () => import('@/views/step3.vue'),
+    meta: {
+      title: '选择罗汉',
+      // keepAlive: false
+    },
+  },
+  {
     path: '/step2',
     component: () => import('@/views/step2.vue'),
     meta: {

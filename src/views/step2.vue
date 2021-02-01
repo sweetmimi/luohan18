@@ -14,12 +14,11 @@
         </ul>
       </div> -->
       <div class="banner">
-           <div class="icon">
+        <div class="icon">
           <img src="../assets/images/rate.png" alt="" width="100%" />
         </div>
       </div>
       <div class="bottom">
-
         <div class="btn jump_btn" @click="jump">
           <span class="btn_text">阿弥陀佛</span>
         </div>
@@ -70,11 +69,11 @@ export default {
       this.gif = require(`@/assets/images/cardGif/${this.imgs[this.i]}.png`)
       this.i++
     },
-    jump(){
-       this.$router.replace({
-              path: "/my",
-              query: { appid: "123456" },
-            });
+    jump() {
+      this.$router.replace({
+        path: '/step3',
+        query: { appid: '123456' }
+      })
     },
     activated() {
       var _this = this
@@ -110,22 +109,22 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
   }
-  .banner{
-     position: relative;
-     z-index: 500;
-     width: 700px;
-     height: 820px;
-     left: 0;
-     right: 0;
-     top: 71px;
-     margin: 0 auto;
-     border: 1px solid #Ccc;
-     .icon {
-       position:absolute;
-       bottom: 10px;
+  .banner {
+    position: relative;
+    z-index: 500;
+    width: 700px;
+    height: 820px;
+    left: 0;
+    right: 0;
+    top: 71px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    .icon {
+      position: absolute;
+      bottom: 10px;
       margin: 0 auto;
       width: 90px;
-      left :0;
+      left: 0;
       right: 0;
       text-align: center;
     }
@@ -149,23 +148,22 @@ export default {
     z-index: 200;
     right: 0;
 
-
     .jump_btn {
-       z-index: 300;
-    position: absolute;
-    width: 329px;
-    height: 88px;
-     left: 0;
-     right: 0;
-     margin: 0 auto;
-    border-radius: 50px;
-    .btn_text {
-      font-size: 32px;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 600;
-      color: #ffffff;
-      line-height: 88px;
-    }
+      z-index: 300;
+      position: absolute;
+      width: 329px;
+      height: 88px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      border-radius: 50px;
+      .btn_text {
+        font-size: 32px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 88px;
+      }
     }
   }
   .text {
@@ -177,7 +175,7 @@ export default {
     z-index: 200;
     right: 0;
     width: 611px;
-   height: 168px;
+    height: 168px;
     background: rgba(187, 187, 187, 0.25);
     border-radius: 15px;
     p {

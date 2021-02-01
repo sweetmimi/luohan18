@@ -30,28 +30,40 @@
         <img src="@/assets/images/handel.png" alt="" width="100%" />
         <span class="text">邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
       </div>
-      <div class="btn yl_btn">
-        <span class="btn_text">
-            拜罗汉
-        </span>
+      <div class="btn yl_btn" @click="requestLh">
+        <span class="btn_text"> 拜罗汉 </span>
       </div>
-       <div class="btn gren_btn" @click="share"  >
-        <span class="btn_text">
-            分享给好友
-        </span>
+      <div class="btn gren_btn" @click="share">
+        <span class="btn_text"> 分享给好友 </span>
       </div>
-
     </div>
     <!-- 音乐 -->
     <BgcMusic></BgcMusic>
-    <div class="mask" v-show="showMask" @click="showMask=false">
-        <div class="point">
-          <img src="@/assets/images/share.png" alt="">
+    <!-- 分享 -->
+    <div class="mask" v-show="showMask" @click="showMask = false">
+      <div class="point">
+        <img src="@/assets/images/share.png" alt="" />
+      </div>
+      <div class="text">
+        <img src="@/assets/images/share_rulai.png" alt="" />
+        <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
+      </div>
+    </div>
+    <!-- 拜罗汉 -->
+    <div class="masklh" v-show="Masklh" @click="Masklh = false">
+      <div class="main">
+        <div class="header">
+          <span> 伏虎罗汉</span>
         </div>
+        <div class="img">
+          <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
+        </div>
+
         <div class="text">
-          <img src="@/assets/images/share_rulai.png" alt="">
-          <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
+          <div class="title">拜本尊罗汉积累福泽</div>
+          <div class="del">伏虎罗汉将庇佑您及家人一年健康好运</div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +76,8 @@ export default {
   },
   data() {
     return {
-      showMask:false,
+      showMask: false,
+      Masklh: false
     }
   },
 
@@ -73,16 +86,19 @@ export default {
   mounted() {},
 
   methods: {
-     share() {
-       this.showMask = true;
-       console.log($wx)
+    requestLh() {
+      this.Masklh = true
+    },
+    share() {
+      this.showMask = true
+      console.log($wx)
       var _this = this
       _this.uuid = _this.$route.query.appid
-      // var shareUrl = global.BASE_SHARE_URL + 'grade?uuid=' + _this.uuid
+      var shareUrl = global.BASE_SHARE_URL + 'grade?uuid=' + _this.uuid
       this.$wxShare.updateWxShareConfig({
         title: '标题',
         desc: '简介',
-        link: "123"
+        link: shareUrl
       })
     }
   }
@@ -90,30 +106,29 @@ export default {
 </script>
 <style lang="scss" scoped>
 .index-container {
-  .mask{
+  .mask {
     position: fixed;
     z-index: 1001;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
-    .point{
+    .point {
       right: 62px;
       top: 21px;
       width: 414px;
       height: 368px;
-      position:absolute;
-      img
-       {
+      position: absolute;
+      img {
         width: 100%;
         height: 100%;
       }
     }
-    .text{
-       position:absolute;
-       top: 405px;
-       height: 112px;
-       padding: 20px;
-      img{
+    .text {
+      position: absolute;
+      top: 405px;
+      height: 112px;
+      padding: 20px;
+      img {
         width: 112px;
         height: 112px;
         float: left;
@@ -121,40 +136,133 @@ export default {
         margin-left: 40px;
         margin-right: 27px;
       }
-      span{
+      span {
         vertical-align: middle;
         font-size: 32px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: bold;
-        color: #FFFFFF;
+        color: #ffffff;
         line-height: 1.6;
       }
+    }
+  }
+  .masklh {
+    position: fixed;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    .main {
+      position: absolute;
+      z-index: 1002;
+      left: 125px;
+      top: 270px;
+      width: 499px;
+      height: 776px;
+
+      background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
+      border-radius: 21px;
+      .header {
+        text-align: center;
+
+        position: absolute;
+        top: -6px;
+        left: 0;
+        right: 0;
+        border-top: 56px solid #c58925;
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        height: 0;
+        margin: 0 auto;
+        width: 220px;
+        span {
+          top: -50px;
+          left: 0px;
+          right: 0;
+          margin: 0 auto;
+          position: absolute;
+          font-size: 36px;
+          font-family: PingFang-SC-Bold, PingFang-SC;
+          font-weight: bold;
+          color: #ffffff;
+        }
+      }
+      .img {
+        width: 403px;
+        height: 526px;
+        margin: 79px auto 0px;
+      }
+      .text {
+        position: absolute;
+        width: 325px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+
+        .title {
+          text-align: center;
+          height: 45px;
+          font-size: 32px;
+          font-family: PingFang-SC-Bold, PingFang-SC;
+          font-weight: bold;
+          color: #b88858;
+          line-height: 45px;
+        }
+        .del {
+          text-align: left;
+          width: 325px;
+          height: 80px;
+          font-size: 28px;
+          font-family: PingFang-SC-Medium, PingFang-SC;
+          font-weight: 500;
+          color: #4e5455;
+          line-height: 40px;
+        }
+      }
+      .close {
+        position: absolute;
+        top: 500px;
+      }
+    }
+    .main:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      bottom: -100px;
+      background-image: url('~@/assets/images/close.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
     }
   }
   .top_bg {
     width: 750px;
     height: 456px;
-   position: fixed;
+    position: fixed;
     img {
       width: 100%;
       height: 100%;
     }
   }
-  .lh18{
+  .lh18 {
     width: 68px;
     height: 85px;
     position: fixed;
     left: 100px;
     top: 45px;
     z-index: 100;
-      img {
+    img {
       width: 100%;
       height: 100%;
     }
   }
   .card {
-
-     position: fixed;
+    position: fixed;
     box-sizing: border-box;
     padding: 10px 20px;
 
@@ -220,7 +328,7 @@ export default {
       line-height: 1.4;
     }
     .detl {
-      letter-spacing:1px;
+      letter-spacing: 1px;
       padding: 10px;
       margin-bottom: 40px;
       font-size: 28px;
@@ -229,10 +337,10 @@ export default {
       color: #666666;
       line-height: 40px;
     }
-    .yaoqin{
+    .yaoqin {
       margin: 35px;
       height: 84px;
-       img {
+      img {
         float: left;
         width: 28px;
         height: 49px;
@@ -244,39 +352,39 @@ export default {
         vertical-align: middle;
         font-size: 28px;
         font-family: PingFang-SC-Bold, PingFang-SC;
-        color: #B88858;
+        color: #b88858;
         line-height: 40px;
       }
     }
-    .yl_btn{
-      width:420px;
-        height: 88px;
-        border-radius: 44px;
-       .btn_text {
-      font-size: 32px;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 600;
-      line-height: 88px;
-      color: #ffffff;
+    .yl_btn {
+      width: 420px;
+      height: 88px;
+      border-radius: 44px;
+      .btn_text {
+        font-size: 32px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 600;
+        line-height: 88px;
+        color: #ffffff;
+      }
     }
-    }
-    .gren_btn{
-       width:420px;
-       background: #03C160;
-        height: 88px;
-        border-radius: 44px;
-       .btn_text {
-      font-size: 32px;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 600;
-      line-height: 88px;
-      color: #ffffff;
-    }
+    .gren_btn {
+      width: 420px;
+      background: #03c160;
+      height: 88px;
+      border-radius: 44px;
+      .btn_text {
+        font-size: 32px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 600;
+        line-height: 88px;
+        color: #ffffff;
+      }
     }
   }
 
   .card:before {
-     content: '';
+    content: '';
     display: block;
     position: absolute;
     left: -25px;

@@ -10,8 +10,8 @@
           <div class="top">LJ</div>
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
-            <span class="lhName">·伏虎罗汉</span>
-            <span class="biaoqian">本尊罗汉</span>
+            <div class="lhName">·伏虎罗汉</div>
+            <div class="biaoqian">本尊罗汉</div>
           </div>
         </div>
       </div>
@@ -35,53 +35,29 @@
         </div>
       </div>
       <div class="sing">
+        <ul>
+          <li>
+            <div>13</div>
 
-         <ul>
-           <li>
-             <div>13</div>
-
-               <img src="@/assets/images/fo.png" alt="" width="100%">
-
-
-           </li>
-            <li>
-
-           </li>
-            <li>
-
-           </li>
-            <li>
-
-           </li>
-            <li>
-
-           </li>
-            <li>
-
-
-           </li>
-            <li>
-
-           </li>
-         </ul>
-
+            <img src="@/assets/images/fo.png" alt="" width="100%" />
+          </li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
       </div>
-       <div class="line" style="width: 70%"></div>
-       <div class="title">好友互动</div>
-       <div class="friends">
-         <van-pull-refresh v-model="refreshing" @refresh="onRefresh" >
-            <van-list
-
-              v-model="loading"
-              :finished="finished"
-              finished-text="没有更多了"
-              @load="onLoad"
-            >
-
-              <van-cell v-for="item in list" :key="item" :title="item" />
-            </van-list>
-          </van-pull-refresh>
-       </div>
+      <div class="line" style="width: 70%"></div>
+      <div class="title">好友互动</div>
+      <div class="friends">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <van-cell v-for="item in list" :key="item" :title="item" />
+          </van-list>
+        </van-pull-refresh>
+      </div>
     </div>
   </div>
 </template>
@@ -96,7 +72,7 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      refreshing: false,
+      refreshing: false
     }
   },
   computed: {
@@ -107,31 +83,31 @@ export default {
   },
   methods: {
     //x下拉刷新
-     onLoad() {
+    onLoad() {
       setTimeout(() => {
         if (this.refreshing) {
-          this.list = [];
-          this.refreshing = false;
+          this.list = []
+          this.refreshing = false
         }
 
         for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1);
+          this.list.push(this.list.length + 1)
         }
-        this.loading = false;
+        this.loading = false
 
         if (this.list.length >= 40) {
-          this.finished = true;
+          this.finished = true
         }
-      }, 1000);
+      }, 1000)
     },
     onRefresh() {
       // 清空列表数据
-      this.finished = false;
+      this.finished = false
 
       // 重新加载数据
       // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true;
-      this.onLoad();
+      this.loading = true
+      this.onLoad()
     },
     // 请求数据案例
     initData() {
@@ -162,7 +138,7 @@ export default {
     bottom: 80px;
     background: #fff;
 
-box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
+    box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .header {
       display: flex;
       display: -webkit-flex;
@@ -172,7 +148,7 @@ box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
       text-align: center;
       height: 183px;
       box-sizing: border-box;
-      padding: 21px 90px 45px;
+      padding: 21px 0px 45px;
       .left {
         float: left;
         width: 120px;
@@ -192,28 +168,29 @@ box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
           margin: 5px 8px;
         }
         .bottom {
-
           img {
-            margin: 0 5px;
             width: 32px;
             height: 50px;
-            vertical-align:middle
+            vertical-align: middle;
           }
           .lhName {
+            display: inline-block;
             font-size: 36px;
+            height: 50px;
             font-weight: bold;
-            margin-right: 10px;
-             margin-left: 10px;
-             vertical-align:middle
+            margin-right: 5px;
+            margin-left: 10px;
+            vertical-align: middle;
           }
           .biaoqian {
+            display: inline-block;
             font-size: 24px;
             color: #fff;
-            padding: 5px 20px;
+            padding: 2px 10px;
             width: 130px;
             background: #4e5455;
             border-radius: 19px;
-            vertical-align:middle
+            vertical-align: middle;
           }
         }
       }
@@ -253,7 +230,7 @@ box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
       width: 510px;
       height: 50px;
-       margin: 35px auto 25px;
+      margin: 35px auto 25px;
       font-size: 28px;
       font-weight: bold;
       color: #303f7b;
@@ -285,83 +262,80 @@ box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
         z-index: 3;
       }
     }
-    .sing{
+    .sing {
       position: relative;
-      margin:52px 41px 70px ;
+      margin: 52px 41px 70px;
       width: 590px;
       height: 88px;
       list-style: none;
-      ul{
+      ul {
         overflow: hidden;
         height: 88px;
         margin: 0 60px;
-        li{
-          margin: 0 1px ;
+        li {
+          margin: 0 1px;
           display: inline;
-          float:left;
+          float: left;
           width: 62px;
           height: 87px;
-          background: #FFF8E8;
+          background: #fff8e8;
           border-radius: 13px;
-          border: 1px solid #B88858;
-          img{
+          border: 1px solid #b88858;
+          img {
             width: 25px;
             height: 37px;
             margin-left: 18px;
           }
-          div{
-
-font-size: 19px;
-margin: 5px;
-font-weight: 500;
-color: #B88858;
-line-height: 27px;
-             text-align: center;
+          div {
+            font-size: 19px;
+            margin: 5px;
+            font-weight: 500;
+            color: #b88858;
+            line-height: 27px;
+            text-align: center;
           }
         }
       }
-
     }
     .sing:before {
-     content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 22px;
-    background-image: url('~@/assets/images/left.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-  }
-   .sing:after {
-     content: '';
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 22px;
-    background-image: url('~@/assets/images/right.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-  }
-  .friends{
-      height: 400px;
-      overflow-y:scroll;
-       overflow-x:hidden;
-        width: 510px;
-margin: 0 auto;
-  }
- .friends::-webkit-scrollbar {
-        display: none;/*隐藏滚动条*/
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 22px;
+      background-image: url('~@/assets/images/left.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
     }
-
+    .sing:after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 22px;
+      background-image: url('~@/assets/images/right.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+    }
+    .friends {
+      height: 400px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      width: 510px;
+      margin: 0 auto;
+    }
+    .friends::-webkit-scrollbar {
+      display: none; /*隐藏滚动条*/
+    }
   }
   .card:before {
-     content: '';
+    content: '';
     display: block;
     position: absolute;
     left: -25px;
@@ -384,7 +358,6 @@ margin: 0 auto;
   }
 
   .warpper {
-
     .list {
       display: flex;
       flex-direction: column;
