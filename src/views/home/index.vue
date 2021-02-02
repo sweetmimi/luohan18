@@ -293,7 +293,7 @@ async created() {
     box-sizing: border-box;
     padding: 10px 20px;
 
-    top: 364px;
+    top: 324px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -357,7 +357,7 @@ async created() {
     .detl {
       letter-spacing: 1px;
       padding: 10px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-size: 28px;
       font-family: PingFang-SC-Medium, PingFang-SC;
       font-weight: 500;
@@ -365,8 +365,8 @@ async created() {
       line-height: 40px;
     }
     .yaoqin {
-      margin: 35px;
-      height: 84px;
+      margin: 20px 35px;
+      
       img {
         float: left;
         width: 28px;
@@ -415,7 +415,7 @@ async created() {
     display: block;
     position: absolute;
     left: -25px;
-    top: 118px;
+    top: 158px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;
@@ -426,7 +426,7 @@ async created() {
     display: block;
     position: absolute;
     right: -25px;
-    top: 118px;
+    top: 158px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;
