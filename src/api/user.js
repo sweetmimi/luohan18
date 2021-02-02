@@ -33,20 +33,49 @@ export function getUserInfo(data) {
   })
 }
 
-export function getPleaseLohan(params) {
+export function getPleaseLohan(data) {
   return request({
     url: api.PleaseLohan,
     method: 'post',
-    params,
+    data,
     hideloading: true
   })
 }
 
-export function getauthorization(params) {
+export function getauthorization(data) {
   return request({
     url: api.Authorization,
     method: 'post',
-    params,
+    data,
+    hideloading: true
+  })
+}
+
+export function getluohanData(data) {
+  return request({
+    url: api.luohanData,
+    method: 'post',
+    data,
+    hideloading: true
+  })
+}
+
+//拜罗汉
+
+export function getbyArhat(data) {
+  return request({
+    url: api.byArhat,
+    method: 'post',
+    data,
+    hideloading: true
+  })
+}
+
+export function gethome(data) {
+  return request({
+    url: api.home,
+    method: 'post',
+    data,
     hideloading: true
   })
 }

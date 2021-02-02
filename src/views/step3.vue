@@ -1,16 +1,19 @@
 <!-- home -->
 <template>
   <div class="step3-container">
-    <div class="card">
+    <div class="pageLoading" v-if="!infoData">
+      <van-loading type="spinner" class="lod"/>
+    </div>
+    <div class="card" v-else>
       <div class="header">
         <div class="left">
-          <img src="@/assets/images/bgluohan/1.jpeg" alt="" />
+          <img :src="infoData.userInfo.headUrl" alt="" />
         </div>
         <div class="right">
-          <div class="top">LJ</div>
+          <div class="top">{{infoData.userInfo.nickName}}</div>
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
-            <div class="lhName">·伏虎罗汉</div>
+            <div class="lhName">·{{infoData.arhat.arhatName}}</div>
             <div class="biaoqian">本尊罗汉</div>
           </div>
         </div>
@@ -18,11 +21,11 @@
       <div class="line" style="width: 70%"></div>
       <div class="main">
         <div class="header">
-          <span> 伏虎罗汉</span>
+          <span>{{infoData.arhat.arhatName}}</span>
         </div>
 
-        <div class="img">
-          <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
+        <div class="img" @click="topage()">
+          <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
         </div>
         <div class="minhandel">
           <img src="@/assets/images/minhandel.png" alt="" />
@@ -32,12 +35,12 @@
 
       <div class="text">
         <div class="title">
-          阿弥陀佛，施主已选择××罗汉为××年本尊罗汉，点击××罗汉即可前往拜本尊罗汉，护佑您今年一年好运！
+          阿弥陀佛，施主已选择{{infoData.arhat.arhatName}}为2021年本尊罗汉，点击{{infoData.arhat.arhatName}}即可前往拜本尊罗汉，护佑您今年一年好运！
         </div>
       </div>
-      <div class="bottomBtn">
-        <div class="cancelBtn btn" @click="topage('0')">取消</div>
-        <div class="okBtn btn" @click="topage('1')">确定</div>
+      <div class="bottomBtn" v-if="isExist==1">
+        <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
+        <div class="okBtn btn" @click="isreplace('1')">确定</div>
       </div>
     </div>
 
@@ -48,7 +51,7 @@
 <script>
 import BgcMusic from '@/components/BgcMusic'
 // 请求接口
-import { getUserInfo } from '@/api/user.js'
+import { getPleaseLohan,getluohanData } from '@/api/user.js'
 import { mapGetters } from 'vuex'
 export default {
   components: {
@@ -56,6 +59,8 @@ export default {
   },
   data() {
     return {
+      infoData:"",
+      isExist:'',//是否有本尊
       list: [],
       loading: false,
       finished: false,
@@ -65,14 +70,39 @@ export default {
   computed: {
     ...mapGetters(['userName'])
   },
-  mounted() {
+  created() {
+    
+     this.oldArhatId=this.$route.query.oldArhatId;
+     this.arhatId=this.$route.query.arhatId;
+
+     this.isExist=this.$route.query.isExist;
+
     this.initData()
   },
+  mounted() {
+   
+  },
   methods: {
-    topage(type) {
+    isreplace(type){
+      //如果type =1 替换罗汉
+     
+      this.isExist=0;
+      if(type==1){
+       getPleaseLohan({
+          arhatId:this.arhatId,
+          replace:1,
+        }).then(res => {
+          if (res.state == 200) {  
+            this.arhatId=this.oldArhatId;                                                                                                                                                                                                                                                                              
+             this.initData('1')
+          }
+        })}
+    },
+    
+    topage() {
       this.$router.replace({
         path: '/my',
-       
+        query: { arhatId: this.arhatId }
       })
     },
     //x下拉刷新
@@ -103,11 +133,14 @@ export default {
       this.onLoad()
     },
     // 请求数据案例
-    initData() {
-      // 请求接口数据，仅作为展示，需要配置src->config下环境文件
-      const params = { user: 'sunnie' }
-      getUserInfo(params)
-        .then(() => {})
+    initData(type) {
+      getluohanData({ 
+        arhatId : type==1?this.oldArhatId:this.arhatId
+      })
+        .then(res => {
+          this.infoData = res.data;
+          console.log(res.data)
+        })
         .catch(() => {})
     },
     // Action 通过 store.dispatch 方法触发
@@ -200,7 +233,6 @@ export default {
       border-radius: 21px;
       .header {
         text-align: center;
-
         position: absolute;
         top: -6px;
         left: 0;
@@ -210,7 +242,7 @@ export default {
         border-right: 25px solid transparent;
         height: 0;
         margin: 0 auto;
-        width: 220px;
+        width: 250px;
         span {
           top: -50px;
           left: 0px;

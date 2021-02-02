@@ -1,8 +1,12 @@
 <!-- home -->
 <template>
   <div class="index-container">
+    <div class="pageLoading" v-if="!infoData">
+      <van-loading type="spinner" class="lod"/>
+    </div>
+    <div class="main" v-else>
     <div class="top_bg">
-      <img src="@/assets/images/bgluohan/1.jpeg" alt="" />
+      <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
     </div>
     <div class="lh18">
       <img src="@/assets/images/lh18.png" alt="" />
@@ -10,19 +14,19 @@
     <div class="card">
       <div class="title">
         <div class="text">
-          <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
-          <span class="name"> LJ · 牛年本尊罗汉</span>
+          <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
+          <span class="name"> {{infoData.userInfo.nickName}}· 牛年本尊罗汉</span>
         </div>
       </div>
       <div class="line" style="width: 90%"></div>
       <div class="lhName">
         <img src="@/assets/images/fo.png" alt="" width="100%" />
-        <span class="name">· 伏虎罗汉</span>
+        <span class="name">· {{infoData.arhat.arhatName}}</span>
       </div>
-      <p class="blueTitle">【伏虎罗汉】（宝头卢尊者） 伏虎尊者</p>
+      <p class="blueTitle">【{{infoData.arhat.arhatName}}】{{infoData.arhat.descName}}</p>
       <div class="detl">
         <p>
-          一说是清朝由乾隆皇帝钦定的十八罗汉中的第十八位弥勒尊者。另一说法是四大声闻中的君屠钵叹。其所住的寺庙外，经常有猛虎因肚子饿长哮，伏虎尊者把自己的饭食分给这只老虎，时间一长，猛虎就被他降服了，故得名
+         {{infoData.arhat.describe}}
         </p>
       </div>
       <div class="line" style="width: 90%"></div>
@@ -30,7 +34,7 @@
         <img src="@/assets/images/handel.png" alt="" width="100%" />
         <span class="text">邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
       </div>
-      <div class="btn yl_btn" @click="requestLh">
+      <div class="btn yl_btn" @click="byArhat">
         <span class="btn_text"> 拜罗汉 </span>
       </div>
       <div class="btn gren_btn" @click="share">
@@ -53,22 +57,24 @@
     <div class="masklh" v-show="Masklh" @click="Masklh = false">
       <div class="main">
         <div class="header">
-          <span> 伏虎罗汉</span>
+          <span> {{infoData.arhat.arhatName}}</span>
         </div>
         <div class="img">
-          <img src="@/assets/images/bgluohan/1.jpeg" alt="" width="100%" />
+          <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
         </div>
 
         <div class="text">
           <div class="title">拜本尊罗汉积累福泽</div>
-          <div class="del">伏虎罗汉将庇佑您及家人一年健康好运</div>
+          <div class="del">{{infoData.arhat.arhatName}}将庇佑您及家人一年健康好运</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
+import {getluohanData,getbyArhat}from '@/api/user.js'
 import BgcMusic from '@/components/BgcMusic'
 export default {
   components: {
@@ -76,18 +82,39 @@ export default {
   },
   data() {
     return {
+      infoData:"",
       showMask: false,
       Masklh: false
     }
   },
-
+async created() {
+    this.arhatId=this.$route.query.arhatId
+    this.initData()
+  },
   computed: {},
 
   mounted() {},
 
   methods: {
-    requestLh() {
-      this.Masklh = true
+     initData() {
+      getluohanData({ 
+        arhatId :this.arhatId
+      })
+        .then(res => {
+          this.infoData = res.data;
+          console.log(res.data)
+        })
+        .catch(() => {})
+    },
+    byArhat() {
+      getbyArhat({
+         arhatId :this.arhatId
+      }).then(res=>{
+        if(res.state==200){
+             this.Masklh = true
+        }
+      })
+     
     },
     share() {
       this.showMask = true

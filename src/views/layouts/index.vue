@@ -41,18 +41,22 @@ export default {
   components: {
     TabBar
   },
+  created(){
+    this.arhatId=this.$route.query.arhatId;
+  },
   methods: {
     handleChange(v) {
+      console.log(v)
       if(v==0){
-          this.$router.replace({
+          this.$router.push({
               path: "/home",
-              // query: { appid: "123456" },
+              query: { arhatId: this.arhatId },
             });
 
       }else{
-         this.$router.replace({
+         this.$router.push({
               path: "/about",
-              // query: { appid: "123456" },
+              query: { arhatId: this.arhatId },
             });
       }
       console.log('tab value:', v)

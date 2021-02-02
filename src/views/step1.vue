@@ -2,6 +2,9 @@
 <template>
   <div class="contner">
     <div class="homePage">
+      <div class="gif">
+        <img :src="gif" />
+      </div>
       <div class="rulai"></div>
       <!-- 音乐 -->
       <BgcMusic></BgcMusic>
@@ -33,7 +36,9 @@ export default {
       timer: null,
       checked: true, // 默认开始音乐播放
       src: require('../assets/images/music.png'), // 注意图片资源的加载方式
-      mymove: true // 控制音乐控制按钮样式
+      mymove: true, // 控制音乐控制按钮样式
+       gif: '',
+      imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
 
@@ -42,10 +47,31 @@ export default {
   computed: {},
 
   mounted() {
+    this.i = 1
+    var that = this
+    this.ter = setInterval(function () {
+      if (that.i == 12) {
+        that.i = 1
+      }
+      that.chImg()
+    }, 300)
     window.addEventListener('scroll', this.handleScroll, true)
   },
-
+  beforeDestroy() {
+    //清除定时器
+    clearInterval(this.ter);
+    // console.log("beforeDestroy");
+  },
+  destroyed() {
+    //清除定时器
+    clearInterval(this.ter);
+    //console.log("destroyed");
+  },
   methods: {
+    chImg() {
+      this.gif = require(`@/assets/images/homeGif/${this.imgs[this.i]}.png`)
+      this.i++
+    },
     handleScroll() {
       // 页面滚动距顶部距离
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -63,7 +89,6 @@ export default {
           if (this.count > 1 && this.count <= TIME_COUNT) {
             this.count--
           } else {
-            this.show = true
             clearInterval(this.timer)
             this.timer = null
             this.$router.replace({
@@ -74,23 +99,7 @@ export default {
         }, 1000)
       }
     },
-    //播放音乐
-    open() {
-      console.log('open')
-      var audio = this.$refs.music
-      // var audio = document.getElementById("bg-music");
-      console.log(audio)
-      this.checked = !this.checked
-      if (this.checked) {
-        this.src = require('../assets/images/music.png')
-        audio.play()
-        this.mymove = true
-      } else {
-        this.src = require('../assets/images/music.png')
-        audio.pause()
-        this.mymove = false
-      }
-    }
+
   }
 }
 </script>
@@ -103,12 +112,20 @@ export default {
   background-image: url('../assets/images/rulai_bgc.png');
   background-size: cover;
   background-repeat: no-repeat;
+  .gif {
+    width: 750px;
+    height: 1200px;
+    img{
+      width:100%;
+      height: 100%;
+    }
+  }
   .rulai {
     z-index: 200;
     position: absolute;
     left: 0;
     right: 0;
-    top: 30%;
+    top: 400px;
     bottom: 0;
     margin: auto;
     width: 100%;

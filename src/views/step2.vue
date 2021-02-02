@@ -37,7 +37,7 @@
 <script>
 import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
-import { getUserInfo, getauthorization, getPleaseLohan } from '@/api/user.js'
+import { getUserInfo, getPleaseLohan } from '@/api/user.js'
 export default {
   name: '',
   components: {
@@ -46,8 +46,9 @@ export default {
 
   data() {
     return {
-      userinfo:{
-        openid:""
+      arhatId:Math.floor(Math.random()*10+1),
+      userinfo: {
+        openid: ''
       },
       showpleaseLohan: true,
       mydata: mydata,
@@ -57,24 +58,31 @@ export default {
   },
 
   async created() {
-
     this.getUser()
   },
 
   computed: {},
 
   mounted() {
-    this.size = this.imgs.length
     this.i = 1
     var that = this
-    this.tim = setInterval(function () {
+    this.ter = setInterval(function () {
       if (that.i == 12) {
         that.i = 1
       }
       that.chImg()
-    }, 200)
+    }, 300)
   },
-
+  beforeDestroy() {
+    //清除定时器
+    clearInterval(this.ter);
+    // console.log("beforeDestroy");
+  },
+  destroyed() {
+    //清除定时器
+    clearInterval(this.ter);
+    //console.log("destroyed");
+  },
   methods: {
     chImg() {
       this.gif = require(`@/assets/images/cardGif/${this.imgs[this.i]}.png`)
@@ -84,64 +92,31 @@ export default {
       this.showpleaseLohan = false
     },
     getUser() {
-      var openid = ""
-      var params = {}
-      try {
-         openid=this.$sessionStorage.get('userinfo').openid
-         params.openid=openid
-      } catch (error) {
-
-      }
-      getUserInfo(params).then(res => {
-         if(res.state==200){
-             this.$sessionStorage.set('userinfo', res.data)
-             this.PleaseLohan()
-         }
-
+      getUserInfo({}).then(res => {
+        if (res.state == 200) {
+          this.$sessionStorage.set('userinfo', res.data)
+         
+        }
       })
     },
     // 授权
     shouquan() {
-      var openid = ""
-      var params = {}
-      try {
-         openid=this.$sessionStorage.get('userinfo').openid
-         params.openid=openid
-      } catch (error) {
-
-      }
-      getauthorization(params).then(res => {
-         if(res.state==200){
-             this.$sessionStorage.set('userinfo', res.data)
-             this.PleaseLohan()
-         }
-      })
-    },
-    PleaseLohan() {
-     var openid = ""
-      var params = {
-        arhatId:1
-      }
-      try {
-         openid=this.$sessionStorage.get('userinfo').openid
-         params.openid=openid
-      } catch (error) {
-
-      }
-      getPleaseLohan(params)
-        .then((res) => {
-          if(res.state==200){
-             this.$router.replace({
-        path: '/step3',
-
-      })
+      if (this.$sessionStorage.get('userinfo')) {
+        getPleaseLohan({
+          arhatId:this.arhatId,
+        }).then(res => {
+          if (res.state == 200) {                                                                                                                                                                                                                                                                                 
+            this.$router.replace({
+              path: '/step3',
+              query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
+            })
           }
-
         })
-        .catch(() => {})
-
-
+      } else {
+        document.location.replace('http://luohan.wuhanhsj.com/vote/api/v1/android/authorization')
+      }
     },
+
     activated() {
       var _this = this
       _this.uuid = _this.$route.query.uuid
@@ -168,8 +143,10 @@ export default {
   .rulai {
     position: fixed;
     z-index: 200;
-    width: 398px;
-    left: 174px;
+    width: 300px;
+    left: 0px;
+    right:0;
+    margin: 0 auto;
     top: 255px;
     height: 397px;
     background-image: url('~@/assets/images/rulai2.png');
@@ -184,7 +161,7 @@ export default {
     margin: 0 auto;
     width: 700px;
     height: 700px;
-    border: 1px solid #ccc;
+    border: 1px dashed #f4f4f4;
     border-radius: 350px;
     li {
       width: 60px;
@@ -211,24 +188,60 @@ export default {
       left: 20px;
     }
     .div5 {
-      bottom: 338px;
-      left: 0;
+      bottom: 358px;
+      left: 40px;
     }
     .div6 {
-      bottom: 415px;
-      left: 0;
+      bottom: 455px;
+      left: 60px;
     }
     .div7 {
-      bottom: 492px;
-      left: 0;
+      bottom: 522px;
+      left: 120px;
     }
     .div8 {
-      bottom: 569px;
-      left: 0;
+      bottom: 580px;
+      left: 250px;
     }
     .div9 {
-      bottom: 360px;
+      bottom: 620px;
       left: 350px;
+    }
+     .div10 {
+      bottom: 0;
+      right: 50%;
+    }
+    .div11 {
+      bottom: 57px;
+      right: 190px;
+    }
+    .div12 {
+      bottom: 174px;
+      right: 100px;
+    }
+    .div13 {
+      bottom: 261px;
+      right: 20px;
+    }
+    .div14 {
+      bottom: 358px;
+      right: 40px;
+    }
+    .div15 {
+      bottom: 455px;
+      right: 60px;
+    }
+    .div16 {
+      bottom: 522px;
+      right: 120px;
+    }
+    .div17 {
+      bottom: 580px;
+      right: 250px;
+    }
+    .div18 {
+      bottom: 620px;
+      right: 350px;
     }
   }
   .banner {
@@ -252,21 +265,15 @@ export default {
     }
   }
   .gif {
-    position: fixed;
-    z-index: 150;
     width: 100%;
-    // top: 50px;
     height: 40px;
-    // left: 10%;
-    //  top: 0;
-    // transform: translateX(-125px);
   }
   .bottom {
-    position: fixed;
-
-    margin: 0 auto;
+    position: absolute;
+    margin: 20px auto;
     width: 80%;
-    top: 924px;
+    height: 88px;
+   bottom: 300px;
     left: 0;
     z-index: 1000;
     right: 0;
@@ -290,10 +297,10 @@ export default {
     }
   }
   .text {
-    position: fixed;
+    position: absolute;
     text-align: left;
     margin: 0 auto;
-    top: 1062px;
+    bottom: 100px;
     left: 0;
     z-index: 200;
     right: 0;

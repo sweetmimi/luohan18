@@ -1,16 +1,19 @@
 <!-- home -->
 <template>
   <div class="about-container">
-    <div class="card">
+    <div class="pageLoading" v-if="!infoData">
+      <van-loading type="spinner" class="lod" />
+    </div>
+    <div class="card" v-else>
       <div class="header">
         <div class="left">
-          <img src="@/assets/images/bgluohan/1.jpeg" alt="" />
+          <img :src="infoData.userInfo.headUrl" alt="" />
         </div>
         <div class="right">
-          <div class="top">LJ</div>
+          <div class="top">{{ infoData.userInfo.nickName }}</div>
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
-            <div class="lhName">·伏虎罗汉</div>
+            <div class="lhName">·{{ infoData.arhat.arhatName }}</div>
             <div class="biaoqian">本尊罗汉</div>
           </div>
         </div>
@@ -29,34 +32,56 @@
           <i class="iconfont icon-star"></i>
           <span
             >已连续拜佛
-            <span class="gold">3 </span>
-            天</span
-          >
+            <span class="gold">{{ infoData.continuous }}天 </span>
+          </span>
         </div>
       </div>
       <div class="sing">
-        <ul>
-          <li>
-            <div>13</div>
-
-            <img src="@/assets/images/fo.png" alt="" width="100%" />
+        <ul v-if="infoData.checkinList.length > 0">
+          <li v-for="(item, index) in infoData.checkinList" :key="index">
+            <div>{{ item.day }}</div>
+            <img v-if="item.chikin == 1" src="@/assets/images/fo.png" alt="" width="100%" />
+            <img v-else class="gray" src="@/assets/images/fo.png" alt="" width="100%" />
           </li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
         </ul>
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="title">好友互动</div>
-      <div class="friends">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list>
-        </van-pull-refresh>
+      <div class="cardlist" v-if="infoData.friendList.length > 0">
+        <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
+        <div class="list" v-for="(item, index) in infoData.friendList" :key="index">
+          <div class="left">
+            <img :src="item.headUrl" alt="" width="100%" />
+          </div>
+          <div class="right">
+            <div class="top">
+              <div class="nickName">
+                {{ item.nickName }}
+              </div>
+              <div class="myfriend">
+                拜好友本尊罗汉
+              </div>
+            </div>
+            <div class="bottom">
+               <div class="luohan">
+              {{ item.arhatName }}
+              <div class="ben">
+                本尊罗汉
+              </div>
+            </div>
+            <div class="time">
+              {{ item.lastLogin }}
+            </div>
+            </div>
+           
+          </div>
+           
+        </div>
+       <div class="line"></div>
+        <!-- </van-pull-refresh> -->
+      </div>
+      <div class="friends" v-else>
+        <p style="text-align: center">暂无好友,快去邀请好友一起拜罗汉.</p>
       </div>
     </div>
   </div>
@@ -64,11 +89,12 @@
 
 <script>
 // 请求接口
-import { getUserInfo } from '@/api/user.js'
+import { gethome } from '@/api/user.js'
 import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      infoData: '',
       list: [],
       loading: false,
       finished: false,
@@ -86,11 +112,13 @@ export default {
     onLoad() {
       setTimeout(() => {
         if (this.refreshing) {
-          this.list = []
+          let arrLength = this.infoData.friendList
+          console.log(arrLength)
+          // this.infoData.friendList = []
           this.refreshing = false
         }
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 3; i++) {
           this.list.push(this.list.length + 1)
         }
         this.loading = false
@@ -111,10 +139,10 @@ export default {
     },
     // 请求数据案例
     initData() {
-      // 请求接口数据，仅作为展示，需要配置src->config下环境文件
-      const params = { user: 'sunnie' }
-      getUserInfo(params)
-        .then(() => {})
+      gethome({})
+        .then(res => {
+          this.infoData = res.data
+        })
         .catch(() => {})
     },
     // Action 通过 store.dispatch 方法触发
@@ -147,6 +175,7 @@ export default {
       margin: 0 auto;
       text-align: center;
       height: 183px;
+
       box-sizing: border-box;
       padding: 21px 0px 45px;
       .left {
@@ -248,7 +277,7 @@ export default {
         top: 50%;
       }
       .dv2 {
-        font-size: 28px;
+        font-size: 24px;
         text-align: center;
         width: 205px;
         height: 40px;
@@ -285,6 +314,15 @@ export default {
             width: 25px;
             height: 37px;
             margin-left: 18px;
+          }
+          .gray {
+            -webkit-filter: grayscale(100%);
+            -moz-filter: grayscale(100%);
+            -ms-filter: grayscale(100%);
+            -o-filter: grayscale(100%);
+            filter: grayscale(100%);
+            filter: gray;
+            opacity: 0.7; //通过改变透明度来调节灰色的程度
           }
           div {
             font-size: 19px;
@@ -323,14 +361,103 @@ export default {
       width: 45px;
       height: 45px;
     }
-    .friends {
+    .cardlist {
+      bottom: 20px;
+      position: relative;
       height: 400px;
       overflow-y: scroll;
       overflow-x: hidden;
       width: 510px;
       margin: 0 auto;
+      .list {
+        margin: 20px 0;
+        box-sizing: border-box;
+       
+        // position: absolute;
+        width: 100%;
+        height: 103px;
+        .left {
+          position: absolute;
+          float: left;
+          width: 100px;
+          height: 100%;
+          border-radius: 52px;
+          margin-right: 20px;
+          img {
+            width: 100px;
+            height: 100px;
+            border-radius: 52px;
+          }
+        }
+        .right {
+          box-sizing: border-box;
+          float: left;
+          margin-left: 120px;
+          width: 350px;
+           height: 100%;
+          .top {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            padding:0 10px;
+            .nickName {
+             float: left;
+              width: 56px;
+              height: 20px;
+              font-size: 28px;
+              font-family: PingFang-SC-Medium, PingFang-SC;
+              font-weight: 500;
+              color: #4e5455;
+              line-height: 40px;
+            }
+            .myfriend {
+              text-align: center;
+              float: right;
+              width: 202px;
+              height: 37px;
+              background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
+              border-radius: 19px;
+
+              color: #4e5455;
+              font-size: 24px;
+
+              line-height: 33px;
+            }
+          }
+          .bottom{
+             width: 100%;
+            height: 50px;
+            line-height: 50px;
+            padding:0 10px;
+            .luohan{
+              font-size: 28px;
+               float: left;
+               
+font-weight: 500;
+color: #4E5455;
+line-height: 40px;
+.ben{
+  margin:0 5px ;
+  float: right;
+  width: 96px;
+font-size: 24px;
+font-family: PingFang-SC-Medium, PingFang-SC;
+font-weight: 500;
+color: #B88858;
+line-height: 43px;
+}
+            }
+            .time{
+             float: right;
+            }
+          }
+        }
+      }
+      .line{
+        position: absolute;
+      }
     }
-    .friends::-webkit-scrollbar {
+    .cardlist::-webkit-scrollbar {
       display: none; /*隐藏滚动条*/
     }
   }
