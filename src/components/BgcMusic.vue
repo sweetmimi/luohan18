@@ -95,7 +95,7 @@ export default {
     .img {
       position: fixed !important;
       right: 54px;
-      top: 77px;
+      top: 60px;
       width: 68px;
       height: 68px;
       z-index: 1000;

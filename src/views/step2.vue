@@ -272,7 +272,7 @@ export default {
     position: absolute;
     margin: 20px auto;
     width: 80%;
-    height: 88px;
+    height: 80px;
    bottom: 300px;
     left: 0;
     z-index: 1000;
@@ -282,7 +282,7 @@ export default {
       z-index: 300;
       position: absolute;
       width: 329px;
-      height: 88px;
+      height: 80px;
       left: 0;
       right: 0;
       margin: 0 auto;
@@ -292,7 +292,7 @@ export default {
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 600;
         color: #ffffff;
-        line-height: 88px;
+        line-height: 80px;
       }
     }
   }

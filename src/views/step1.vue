@@ -140,7 +140,7 @@ export default {
     bottom: 16%;
     position: absolute;
     width: 70%;
-    height: 88px;
+    height: 80px;
     left: 15%;
     border-radius: 50px;
     .btn_text {
@@ -148,7 +148,7 @@ export default {
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
       color: #ffffff;
-      line-height: 88px;
+      line-height: 80px;
     }
   }
 }

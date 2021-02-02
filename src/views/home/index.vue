@@ -385,26 +385,26 @@ async created() {
     }
     .yl_btn {
       width: 420px;
-      height: 88px;
+      height: 80px;
       border-radius: 44px;
       .btn_text {
         font-size: 32px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 600;
-        line-height: 88px;
+        line-height: 80px;
         color: #ffffff;
       }
     }
     .gren_btn {
       width: 420px;
       background: #03c160;
-      height: 88px;
+      height: 80px;
       border-radius: 44px;
       .btn_text {
         font-size: 32px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 600;
-        line-height: 88px;
+        line-height: 80px;
         color: #ffffff;
       }
     }

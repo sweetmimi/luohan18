@@ -161,7 +161,7 @@ export default {
     top: 30px;
     right: 30px;
     left: 30px;
-    bottom: 80px;
+    bottom: 50px;
     background: #fff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .header {
@@ -326,7 +326,7 @@ export default {
     }
     .bottomBtn {
       position: absolute;
-      bottom: 30px;
+      bottom: 10px;
       width: 578px;
       left: 0;
       right: 0;
@@ -335,10 +335,10 @@ export default {
       .btn {
         display: inline-block;
         width: 260px;
-        height: 88px;
-        border-radius: 44px;
+        height: 80px;
+        border-radius: 40px;
         font-size: 32px;
-        line-height: 88px;
+        line-height: 80px;
 
         font-weight: 500;
         color: #ffffff;
