@@ -1,7 +1,7 @@
 <!-- zys -->
 <template>
   <div>
-    
+
   </div>
 </template>
 
@@ -28,11 +28,11 @@ export default {
       var step = 1;
       switch(step){
         case 1:
-          this.$router.replace({ path: 'step1', query: { appid: "123456" } })
-        break; 
+          this.$router.replace({ path: 'step1',  })
+        break;
         case 2:
-          this.$router.replace({ path: 'step2', query: { appid: "56789" } })
-        break;  
+          this.$router.replace({ path: 'step2', })
+        break;
       }
     }
   }

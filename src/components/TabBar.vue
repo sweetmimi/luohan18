@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="menu">
     <van-tabbar fixed route v-model="active" @change="handleChange" active-color="#B88858" inactive-color="#8E8E93">
       <van-tabbar-item v-for="(item, index) in data"  :icon="active? item.icon1:item.icon" :key="index">
         {{ item.title }}
@@ -37,6 +37,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.menu{
+  position:fixed;
+  z-index: 99999;
+}
 h3 {
   margin: 40px 0 0;
 }

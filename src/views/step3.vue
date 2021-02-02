@@ -72,7 +72,7 @@ export default {
     topage(type) {
       this.$router.replace({
         path: '/my',
-        query: { appid: '123456' }
+       
       })
     },
     //x下拉刷新

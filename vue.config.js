@@ -55,7 +55,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-          target: "http://47.106.166.170/",
+          target: "http://luohan.wuhanhsj.com//",
           // ws:true,
           changOrigin:true,
           pathRewrite:{
@@ -128,13 +128,7 @@ module.exports = {
     /**
      * 打包分析
      */
-    if (IS_PROD) {
-      config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
-        {
-          analyzerMode: 'static'
-        }
-      ])
-    }
+
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(!IS_PROD, config => config.devtool('cheap-source-map'))

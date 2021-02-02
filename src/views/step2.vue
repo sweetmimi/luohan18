@@ -6,21 +6,24 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
-      <!-- <div class="luohan">
+      <div class="luohan rotate">
         <ul>
-          <li v-for="(item, index) in mydata.lohanList" :key="index">
+          <li v-for="(item, index) in mydata.lohanList" :key="index" :class="`div${index + 1}`">
             <img :src="item.icon" alt="" />
           </li>
         </ul>
-      </div> -->
-      <div class="banner">
+      </div>
+      <!-- <div class="banner">
         <div class="icon">
           <img src="../assets/images/rate.png" alt="" width="100%" />
         </div>
-      </div>
+      </div> -->
       <div class="bottom">
-        <div class="btn jump_btn" @click="jump">
+        <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
           <span class="btn_text">阿弥陀佛</span>
+        </div>
+        <div class="btn jump_btn" v-else @click="shouquan">
+          <span class="btn_text">请本尊罗汉</span>
         </div>
       </div>
       <div class="text">
@@ -34,6 +37,7 @@
 <script>
 import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
+import { getUserInfo, getauthorization, getPleaseLohan } from '@/api/user.js'
 export default {
   name: '',
   components: {
@@ -42,13 +46,20 @@ export default {
 
   data() {
     return {
+      userinfo:{
+        openid:""
+      },
+      showpleaseLohan: true,
       mydata: mydata,
       gif: '',
       imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
 
-  async created() {},
+  async created() {
+
+    this.getUser()
+  },
 
   computed: {},
 
@@ -61,7 +72,7 @@ export default {
         that.i = 1
       }
       that.chImg()
-    }, 100)
+    }, 200)
   },
 
   methods: {
@@ -69,11 +80,67 @@ export default {
       this.gif = require(`@/assets/images/cardGif/${this.imgs[this.i]}.png`)
       this.i++
     },
-    jump() {
-      this.$router.replace({
-        path: '/step3',
-        query: { appid: '123456' }
+    showBtn() {
+      this.showpleaseLohan = false
+    },
+    getUser() {
+      var openid = ""
+      var params = {}
+      try {
+         openid=this.$sessionStorage.get('userinfo').openid
+         params.openid=openid
+      } catch (error) {
+
+      }
+      getUserInfo(params).then(res => {
+         if(res.state==200){
+             this.$sessionStorage.set('userinfo', res.data)
+             this.PleaseLohan()
+         }
+
       })
+    },
+    // 授权
+    shouquan() {
+      var openid = ""
+      var params = {}
+      try {
+         openid=this.$sessionStorage.get('userinfo').openid
+         params.openid=openid
+      } catch (error) {
+
+      }
+      getauthorization(params).then(res => {
+         if(res.state==200){
+             this.$sessionStorage.set('userinfo', res.data)
+             this.PleaseLohan()
+         }
+      })
+    },
+    PleaseLohan() {
+     var openid = ""
+      var params = {
+        arhatId:1
+      }
+      try {
+         openid=this.$sessionStorage.get('userinfo').openid
+         params.openid=openid
+      } catch (error) {
+
+      }
+      getPleaseLohan(params)
+        .then((res) => {
+          if(res.state==200){
+             this.$router.replace({
+        path: '/step3',
+
+      })
+          }
+
+        })
+        .catch(() => {})
+
+
     },
     activated() {
       var _this = this
@@ -109,6 +176,61 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
   }
+  .luohan {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 100px;
+    margin: 0 auto;
+    width: 700px;
+    height: 700px;
+    border: 1px solid #ccc;
+    border-radius: 350px;
+    li {
+      width: 60px;
+      position: absolute;
+      transform: translateX(-20px);
+      img {
+        width: 100%;
+      }
+    }
+    .div1 {
+      bottom: 0;
+      left: 50%;
+    }
+    .div2 {
+      bottom: 57px;
+      left: 190px;
+    }
+    .div3 {
+      bottom: 174px;
+      left: 100px;
+    }
+    .div4 {
+      bottom: 261px;
+      left: 20px;
+    }
+    .div5 {
+      bottom: 338px;
+      left: 0;
+    }
+    .div6 {
+      bottom: 415px;
+      left: 0;
+    }
+    .div7 {
+      bottom: 492px;
+      left: 0;
+    }
+    .div8 {
+      bottom: 569px;
+      left: 0;
+    }
+    .div9 {
+      bottom: 360px;
+      left: 350px;
+    }
+  }
   .banner {
     position: relative;
     z-index: 500;
@@ -141,11 +263,12 @@ export default {
   }
   .bottom {
     position: fixed;
+
     margin: 0 auto;
     width: 80%;
     top: 924px;
     left: 0;
-    z-index: 200;
+    z-index: 1000;
     right: 0;
 
     .jump_btn {

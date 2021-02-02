@@ -68,7 +68,7 @@ export default {
             this.timer = null
             this.$router.replace({
               path: 'step2',
-              query: { appid: '123456' }
+              // query: { appid: '123456' }
             })
           }
         }, 1000)

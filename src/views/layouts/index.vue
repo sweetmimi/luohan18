@@ -46,13 +46,13 @@ export default {
       if(v==0){
           this.$router.replace({
               path: "/home",
-              query: { appid: "123456" },
+              // query: { appid: "123456" },
             });
 
       }else{
          this.$router.replace({
               path: "/about",
-              query: { appid: "123456" },
+              // query: { appid: "123456" },
             });
       }
       console.log('tab value:', v)

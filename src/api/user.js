@@ -11,6 +11,18 @@ export function login(data) {
   })
 }
 
+
+// 用户名称 get 方法
+export function getUserName(params) {
+  return request({
+    url: api.UserName,
+    method: 'get',
+    params,
+    hideloading: true
+  })
+}
+
+//请本尊
 // 用户信息 post 方法
 export function getUserInfo(data) {
   return request({
@@ -21,11 +33,19 @@ export function getUserInfo(data) {
   })
 }
 
-// 用户名称 get 方法
-export function getUserName(params) {
+export function getPleaseLohan(params) {
   return request({
-    url: api.UserName,
-    method: 'get',
+    url: api.PleaseLohan,
+    method: 'post',
+    params,
+    hideloading: true
+  })
+}
+
+export function getauthorization(params) {
+  return request({
+    url: api.Authorization,
+    method: 'post',
     params,
     hideloading: true
   })
