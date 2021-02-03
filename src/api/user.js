@@ -12,6 +12,7 @@ export function login(data) {
 }
 
 
+
 // 用户名称 get 方法
 export function getUserName(params) {
   return request({
@@ -22,7 +23,16 @@ export function getUserName(params) {
   })
 }
 
-//请本尊
+//微信sdk  wxsdk
+export function getWxSDKConfig(data) {
+  return request({
+    url: api.wxsdk,
+    method: 'post',
+    data,
+    hideloading: true
+  })
+}
+
 // 用户信息 post 方法
 export function getUserInfo(data) {
   return request({

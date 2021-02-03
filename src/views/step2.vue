@@ -13,11 +13,12 @@
           </li>
         </ul>
       </div>
-      <!-- <div class="banner">
-        <div class="icon">
-          <img src="../assets/images/rate.png" alt="" width="100%" />
+      <div class="check">
+        <img src="@/assets/images/check.png" alt="" width="100%">
+      </div>
+      <div class="icon">
+          <img src="@/assets/images/rate.png" alt="" width="100%" />
         </div>
-      </div> -->
       <div class="bottom">
         <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
           <span class="btn_text">阿弥陀佛</span>
@@ -91,21 +92,14 @@ export default {
     showBtn() {
       this.showpleaseLohan = false
     },
-    getUser() {
-      getUserInfo({}).then(res => {
-        if (res.state == 200) {
-          this.$sessionStorage.set('userinfo', res.data)
-         
-        }
-      })
-    },
+
     // 授权
     shouquan() {
       if (this.$sessionStorage.get('userinfo')) {
         getPleaseLohan({
           arhatId:this.arhatId,
         }).then(res => {
-          if (res.state == 200) {                                                                                                                                                                                                                                                                                 
+          if (res.state == 200) {
             this.$router.replace({
               path: '/step3',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
@@ -143,7 +137,7 @@ export default {
   .rulai {
     position: fixed;
     z-index: 200;
-    width: 300px;
+    width: 450px;
     left: 0px;
     right:0;
     margin: 0 auto;
@@ -153,15 +147,26 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
   }
+  .rotate{
+    // animation: myRotate 18s linear infinite;
+  }
+  @keyframes myRotate {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
   .luohan {
     position: relative;
     left: 0;
     right: 0;
-    top: 100px;
+    top: 60px;
     margin: 0 auto;
     width: 700px;
     height: 700px;
-    border: 1px dashed #f4f4f4;
+    // border: 1px dashed #f4f4f4;
     border-radius: 350px;
     li {
       width: 60px;
@@ -176,93 +181,92 @@ export default {
       left: 50%;
     }
     .div2 {
-      bottom: 57px;
-      left: 190px;
+      bottom: 20px;
+      left: 230px;
     }
     .div3 {
-      bottom: 174px;
-      left: 100px;
+      bottom: 95px;
+      left: 140px;
     }
     .div4 {
-      bottom: 261px;
-      left: 20px;
+      bottom: 160px;
+      left: 60px;
     }
     .div5 {
-      bottom: 358px;
-      left: 40px;
+      bottom: 300px;
+      left: 20px;
     }
     .div6 {
-      bottom: 455px;
-      left: 60px;
+      bottom: 435px;
+      left: 40px;
     }
     .div7 {
       bottom: 522px;
-      left: 120px;
+      left: 100px;
     }
     .div8 {
       bottom: 580px;
-      left: 250px;
+      left: 190px;
     }
     .div9 {
-      bottom: 620px;
-      left: 350px;
+      top: 00px;
+      left: 280px;
     }
      .div10 {
-      bottom: 0;
-      right: 50%;
+      top: 0px;
+      right: 260px;
     }
     .div11 {
-      bottom: 57px;
-      right: 190px;
+      top: 30px;
+      right: 160px;
     }
     .div12 {
-      bottom: 174px;
-      right: 100px;
+      top: 80px;
+      right: 60px;
     }
     .div13 {
-      bottom: 261px;
+      top: 170px;
       right: 20px;
     }
     .div14 {
-      bottom: 358px;
-      right: 40px;
+      top: 280px;
+      right: -20px;
     }
     .div15 {
-      bottom: 455px;
-      right: 60px;
+      top: 385px;
+      right: 0px;
     }
     .div16 {
-      bottom: 522px;
-      right: 120px;
+      top: 482px;
+      right: 30px;
     }
     .div17 {
-      bottom: 580px;
-      right: 250px;
+      top: 580px;
+      right: 100px;
     }
     .div18 {
-      bottom: 620px;
-      right: 350px;
+      bottom: 20px;
+      right: 180px;
     }
   }
-  .banner {
-    position: relative;
-    z-index: 500;
-    width: 700px;
-    height: 820px;
-    left: 0;
-    right: 0;
-    top: 71px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    .icon {
+  .check{
       position: absolute;
-      bottom: 10px;
+      width: 120px;
+      height: 120px;
+      top: 850px;
       margin: 0 auto;
       width: 90px;
       left: 0;
       right: 0;
-      text-align: center;
-    }
+  }
+  .icon {
+    position: absolute;
+    top: 920px;
+      margin: 0 auto;
+      width: 90px;
+      left: 0;
+      right: 0;
+
   }
   .gif {
     width: 100%;
@@ -273,7 +277,7 @@ export default {
     margin: 20px auto;
     width: 80%;
     height: 80px;
-   bottom: 300px;
+   top: 1000px;
     left: 0;
     z-index: 1000;
     right: 0;
@@ -300,7 +304,7 @@ export default {
     position: absolute;
     text-align: left;
     margin: 0 auto;
-    bottom: 100px;
+    bottom: 40px;
     left: 0;
     z-index: 200;
     right: 0;

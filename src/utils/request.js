@@ -15,11 +15,12 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
 
-    //如果有openid 
+    //如果有openid
     if (sessionStorage.get('userinfo')) {
+
       //console.log(config.data)
       Object.assign(config.data, {
-        //调试 
+        //调试
         openid: sessionStorage.get('userinfo').openid
       })
     }

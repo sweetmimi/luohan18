@@ -7,6 +7,8 @@
 </template>
 <script>
 import { env } from '@/config'
+import { getUserInfo,getWxSDKConfig } from "@/api/user";
+import util from './utils/wx'
 export default {
   name: 'App',
   data() {
@@ -17,9 +19,67 @@ export default {
     }
   },
   created() {
-    console.log(this.$wx)
+    console.log( 'wx',this.$wx)
+  },
+  mounted(){
+    this.getUser()
+    // this.checkUserAuth();
+    // this.getWechatConfig();
   },
   methods: {
+    getUser() {
+      getUserInfo({}).then(res => {
+        if (res.state == 200) {
+          this.$sessionStorage.set('userinfo', res.data)
+          this.$storage.set('userinfo', res.data)
+          this.getWechatConfig();
+        }
+      })
+    },
+     // 通过判断cookie中是否有 openId 检查用户是否授权过
+    checkUserAuth(){
+      let openId = this.$cookie.get('openId');
+      if(!openId){
+          // 通过修改地址栏发出get请求到后端
+        window.location.href = API.wechatRedirect;
+      }else{
+        this.getWechatConfig();
+      }
+    },
+    getWechatConfig(){
+    let url = location.href
+   // 我们后代开发人员的接口，不是微信那边的
+      getWxSDKConfig({
+        url:url,
+      })
+      .then(res=>{
+       console.log(res.data)
+          let data = res.data;
+          this.$wx.config({
+              // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
+              // 若要查看传入的参数，可以在pc端打开，参数信息会通过log打
+              // 出，仅在pc端时才会打印。
+            debug: true,
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: data.timestamp, // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature,// 必填，签名
+            jsApiList: [
+              // 必填，需要使用的JS接口列表
+               "onMenuShareTimeline", // 分享到朋友圈接口
+                "onMenuShareAppMessage", //  分享到朋友接口
+                "onMenuShareQQ", // 分享到QQ接口
+                "onMenuShareWeibo", // 分享到微博接口
+                "updateTimelineShareData",
+                "updateAppMessageShareData",
+            ]
+          })
+          this.$wx.ready(()=>{
+            util.initShareInfo();
+          })
+
+      })
+    },
     hasClass(obj, cls) {
       return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
     },

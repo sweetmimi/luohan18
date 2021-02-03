@@ -7,6 +7,7 @@ const api = {
   luohanData:'/vote/api/v1/android/getLohanDataByArhatId',//获取本尊信息
   byArhat:'/vote/api/v1/android/byArhat',//白罗汉
   home:'/vote/api/v1/android/home',//互动
+  wxsdk: '/vote/api/v1/android/getWxSDKConfig', //微信sdk配置
 }
 
 export default api

@@ -37,6 +37,9 @@
         </div>
       </div>
       <div class="sing">
+        <div class="turnleft" @click="changeDate('right')">
+          <img src="/assets/images/left.png" alt="" width="100%">
+        </div>
         <ul v-if="infoData.checkinList.length > 0">
           <li v-for="(item, index) in infoData.checkinList" :key="index">
             <div>{{ item.day }}</div>
@@ -44,6 +47,9 @@
             <img v-else class="gray" src="@/assets/images/fo.png" alt="" width="100%" />
           </li>
         </ul>
+        <div class="turnright" @click="changeDate('right')">
+          <img src="/assets/images/right.png" alt="" width="100%">
+        </div>
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="title">好友互动</div>
@@ -58,26 +64,20 @@
               <div class="nickName">
                 {{ item.nickName }}
               </div>
-              <div class="myfriend">
-                拜好友本尊罗汉
-              </div>
+              <div class="myfriend">拜好友本尊罗汉</div>
             </div>
             <div class="bottom">
-               <div class="luohan">
-              {{ item.arhatName }}
-              <div class="ben">
-                本尊罗汉
+              <div class="luohan">
+                {{ item.arhatName }}
+                <div class="ben">本尊罗汉</div>
+              </div>
+              <div class="time">
+                {{ item.lastLogin }}
               </div>
             </div>
-            <div class="time">
-              {{ item.lastLogin }}
-            </div>
-            </div>
-           
           </div>
-           
         </div>
-       <div class="line"></div>
+        <div class="line"></div>
         <!-- </van-pull-refresh> -->
       </div>
       <div class="friends" v-else>
@@ -108,6 +108,14 @@ export default {
     this.initData()
   },
   methods: {
+    changeDate(type){
+      if(type=='right')
+      {
+
+      }else{
+
+      }
+    },
     //x下拉刷新
     onLoad() {
       setTimeout(() => {
@@ -297,6 +305,20 @@ export default {
       width: 590px;
       height: 88px;
       list-style: none;
+      .turnright{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        right: 0;
+        top: 0;
+      }
+       .turnleft{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        left: 0;
+        top: 0;
+      }
       ul {
         overflow: hidden;
         height: 88px;
@@ -335,44 +357,19 @@ export default {
         }
       }
     }
-    .sing:before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 22px;
-      background-image: url('~@/assets/images/left.png');
-      background-size: 100%;
-      background-repeat: no-repeat;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-    }
-    .sing:after {
-      content: '';
-      display: block;
-      position: absolute;
-      right: 0;
-      top: 22px;
-      background-image: url('~@/assets/images/right.png');
-      background-size: 100%;
-      background-repeat: no-repeat;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-    }
+
     .cardlist {
       bottom: 20px;
       position: relative;
       height: 400px;
       overflow-y: scroll;
       overflow-x: hidden;
-      width: 510px;
+      width: 550px;
       margin: 0 auto;
       .list {
         margin: 20px 0;
         box-sizing: border-box;
-       
+
         // position: absolute;
         width: 100%;
         height: 103px;
@@ -393,15 +390,15 @@ export default {
           box-sizing: border-box;
           float: left;
           margin-left: 120px;
-          width: 350px;
-           height: 100%;
+          width: 400px;
+          height: 100%;
           .top {
             width: 100%;
             height: 50px;
             line-height: 50px;
-            padding:0 10px;
+            padding: 0 10px;
             .nickName {
-             float: left;
+              float: left;
               width: 56px;
               height: 20px;
               font-size: 28px;
@@ -424,36 +421,36 @@ export default {
               line-height: 33px;
             }
           }
-          .bottom{
-             width: 100%;
+          .bottom {
+            width: 100%;
             height: 50px;
             line-height: 50px;
-            padding:0 10px;
-            .luohan{
+            padding: 0 10px;
+            .luohan {
               font-size: 28px;
-               float: left;
-               
-font-weight: 500;
-color: #4E5455;
-line-height: 40px;
-.ben{
-  margin:0 5px ;
-  float: right;
-  width: 96px;
-font-size: 24px;
-font-family: PingFang-SC-Medium, PingFang-SC;
-font-weight: 500;
-color: #B88858;
-line-height: 43px;
-}
+              float: left;
+
+              font-weight: 500;
+              color: #4e5455;
+              line-height: 40px;
+              .ben {
+                margin: 0 5px;
+                float: right;
+                width: 96px;
+                font-size: 24px;
+                font-family: PingFang-SC-Medium, PingFang-SC;
+                font-weight: 500;
+                color: #b88858;
+                line-height: 43px;
+              }
             }
-            .time{
-             float: right;
+            .time {
+              float: right;
             }
           }
         }
       }
-      .line{
+      .line {
         position: absolute;
       }
     }

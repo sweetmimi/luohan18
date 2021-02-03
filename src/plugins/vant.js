@@ -12,15 +12,17 @@ import {
   Popup ,
   Loading ,
   PullRefresh,
-  
+  Toast,
 } from 'vant'
 Vue.use(Button)
 Vue.use(CellGroup)
 Vue.use(Cell)
 Vue.use(List)
-Vue.use(Tabbar).use(TabbarItem)
+Vue.use(Tabbar)
+Vue.use(TabbarItem)
 Vue.use(Swipe);
 Vue.use(SwipeItem);
 Vue.use(Popup);
 Vue.use(Loading);
 Vue.use(PullRefresh);
+Vue.use(Toast);

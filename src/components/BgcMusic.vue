@@ -101,13 +101,16 @@ export default {
       z-index: 1000;
     }
     .start {
-      animation: mymove 1.5s infinite linear; // 旋转动画部分
+      transform-origin:50% 50%;
+
+      animation: mymove 3s infinite linear; // 旋转动画部分
     }
     .pause {
       z-index: 1000;
     }
     // css 桢动画
     @keyframes mymove {
+
       0% {
         transform: rotate(0deg);
       }
