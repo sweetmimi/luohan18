@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      active: this.defaultActive
+      active: this.active
     }
   },
   methods: {

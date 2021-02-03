@@ -59,7 +59,6 @@ export default {
   },
 
   async created() {
-    this.getUser()
   },
 
   computed: {},
@@ -100,6 +99,9 @@ export default {
           arhatId:this.arhatId,
         }).then(res => {
           if (res.state == 200) {
+            if(res.data.oldArhatId){
+              this.$storage.set('oldArhatId', res.data.oldArhatId)  
+            }
             this.$router.replace({
               path: '/step3',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
@@ -148,7 +150,7 @@ export default {
     background-repeat: no-repeat;
   }
   .rotate{
-    // animation: myRotate 18s linear infinite;
+    animation: myRotate 18s linear infinite;
   }
   @keyframes myRotate {
   0% {

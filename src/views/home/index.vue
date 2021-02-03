@@ -32,12 +32,15 @@
       <div class="line" style="width: 90%"></div>
       <div class="yaoqin">
         <img src="@/assets/images/handel.png" alt="" width="100%" />
-        <span class="text">邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
+        <span class="text" v-if="!friendId">
+           邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
+           <span class="text" v-else>
+           拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
       </div>
       <div class="btn yl_btn" @click="byArhat">
         <span class="btn_text"> 拜罗汉 </span>
       </div>
-      <div class="btn gren_btn" @click="share">
+      <div class="btn gren_btn" @click="share" v-if="!friendId">
         <span class="btn_text"> 分享给好友 </span>
       </div>
     </div>
@@ -82,6 +85,7 @@ export default {
   },
   data() {
     return {
+      friendId:undefined,
       infoData:"",
       showMask: false,
       Masklh: false
@@ -89,6 +93,7 @@ export default {
   },
 async created() {
     this.arhatId=this.$route.query.arhatId
+    this.friendId=this.$route.query.friendId || undefined
     this.initData()
   },
   computed: {},
@@ -98,6 +103,7 @@ async created() {
   methods: {
      initData() {
       getluohanData({ 
+         friendId:this.friendId,
         arhatId :this.arhatId
       })
         .then(res => {
@@ -107,13 +113,22 @@ async created() {
         .catch(() => {})
     },
     byArhat() {
-      getbyArhat({
+      // 如果新用户 关注公众号
+      
+      if(!this.$storage.get('oldArhatId')){
+           location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNzc4MTkxMQ==&scene=110#wechat_redirect"
+      }else{
+            getbyArhat({
+        friendId:this.friendId,
          arhatId :this.arhatId
       }).then(res=>{
         if(res.state==200){
              this.Masklh = true
         }
       })
+      }
+     
+  
      
     },
     share() {
@@ -196,7 +211,7 @@ async created() {
         top: -6px;
         left: 0;
         right: 0;
-        border-top: 56px solid #c58925;
+        border-top: 56px solid #EFC75D;
         border-left: 25px solid transparent;
         border-right: 25px solid transparent;
         height: 0;
@@ -234,6 +249,7 @@ async created() {
           font-weight: bold;
           color: #b88858;
           line-height: 45px;
+          margin-bottom: 20px;
         }
         .del {
           text-align: left;
@@ -269,7 +285,7 @@ async created() {
   }
   .top_bg {
     width: 750px;
-    height: 456px;
+    height: 470px;
     position: fixed;
     img {
       width: 100%;
@@ -362,7 +378,7 @@ async created() {
       font-family: PingFang-SC-Medium, PingFang-SC;
       font-weight: 500;
       color: #666666;
-      line-height: 40px;
+      line-height: 45px;
     }
     .yaoqin {
       margin: 20px 35px;
@@ -415,7 +431,7 @@ async created() {
     display: block;
     position: absolute;
     left: -25px;
-    top: 158px;
+    top: 170px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;
@@ -426,7 +442,7 @@ async created() {
     display: block;
     position: absolute;
     right: -25px;
-    top: 158px;
+    top: 170px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;

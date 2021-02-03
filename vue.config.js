@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const resolve = dir => path.join(__dirname, dir)
 // page title
-const name = defaultSettings.title || 'vue mobile template'
+const name = defaultSettings.title || '慧生觉'
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 // externals

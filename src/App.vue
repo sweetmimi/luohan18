@@ -1,5 +1,4 @@
 <template>
-
   <div id="app">
     <router-view v-wechat-title="$route.meta.title" />
     <div class="vc-tigger" @click="toggleVc"></div>
@@ -7,8 +6,9 @@
 </template>
 <script>
 import { env } from '@/config'
-import { getUserInfo,getWxSDKConfig } from "@/api/user";
-import util from './utils/wx'
+import { getUserInfo, getWxSDKConfig } from '@/api/user'
+import wx from 'weixin-js-sdk'
+// import util from './utils/wx'
 export default {
   name: 'App',
   data() {
@@ -19,65 +19,87 @@ export default {
     }
   },
   created() {
-    console.log( 'wx',this.$wx)
-  },
-  mounted(){
     this.getUser()
+
+    console.log('wx', this.$wx)
+  },
+  mounted() {
     // this.checkUserAuth();
     // this.getWechatConfig();
   },
   methods: {
-    getUser() {
-      getUserInfo({}).then(res => {
-        if (res.state == 200) {
-          this.$sessionStorage.set('userinfo', res.data)
-          this.$storage.set('userinfo', res.data)
-          this.getWechatConfig();
-        }
-      })
+    //授权(如果没有用户信息就授权)
+    shouquan() {
+      document.location.replace('http://luohan.wuhanhsj.com/vote/api/v1/android/authorization')
     },
-     // 通过判断cookie中是否有 openId 检查用户是否授权过
-    checkUserAuth(){
-      let openId = this.$cookie.get('openId');
-      if(!openId){
-          // 通过修改地址栏发出get请求到后端
-        window.location.href = API.wechatRedirect;
-      }else{
-        this.getWechatConfig();
+    getUser() {
+      getUserInfo({})
+        .then(res => {
+          this.$sessionStorage.set('userinfo', res.data)
+          var userinfo = this.$sessionStorage.get('userinfo')
+
+          this.getWechatConfig()
+        })
+        .catch(error => {
+          this.shouquan()
+        })
+    },
+    // 通过判断cookie中是否有 openId 检查用户是否授权过
+    checkUserAuth() {
+      let openId = this.$cookie.get('openId')
+      if (!openId) {
+        // 通过修改地址栏发出get请求到后端
+        window.location.href = API.wechatRedirect
+      } else {
+        this.getWechatConfig()
       }
     },
-    getWechatConfig(){
-    let url = location.href
-   // 我们后代开发人员的接口，不是微信那边的
+    getWechatConfig() {
+      let url = location.href
+      // 我们后代开发人员的接口，不是微信那边的
       getWxSDKConfig({
-        url:url,
-      })
-      .then(res=>{
-       console.log(res.data)
-          let data = res.data;
-          this.$wx.config({
-              // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
-              // 若要查看传入的参数，可以在pc端打开，参数信息会通过log打
-              // 出，仅在pc端时才会打印。
-            debug: true,
-            appId: data.appId, // 必填，公众号的唯一标识
-            timestamp: data.timestamp, // 必填，生成签名的时间戳
-            nonceStr: data.nonceStr, // 必填，生成签名的随机串
-            signature: data.signature,// 必填，签名
-            jsApiList: [
-              // 必填，需要使用的JS接口列表
-               "onMenuShareTimeline", // 分享到朋友圈接口
-                "onMenuShareAppMessage", //  分享到朋友接口
-                "onMenuShareQQ", // 分享到QQ接口
-                "onMenuShareWeibo", // 分享到微博接口
-                "updateTimelineShareData",
-                "updateAppMessageShareData",
-            ]
-          })
-          this.$wx.ready(()=>{
-            util.initShareInfo();
-          })
-
+        url: url
+      }).then(res => {
+        console.log(res.data)
+        let data = res.data
+        wx.config({
+          // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
+          // 若要查看传入的参数，可以在pc端打开，参数信息会通过log打
+          // 出，仅在pc端时才会打印。
+          debug: true,
+          appId: data.appId, // 必填，公众号的唯一标识
+          timestamp: data.timestamp, // 必填，生成签名的时间戳
+          nonceStr: data.nonceStr, // 必填，生成签名的随机串
+          signature: data.signature, // 必填，签名
+          jsApiList: [
+            // 必填，需要使用的JS接口列表
+            'onMenuShareTimeline', // 分享到朋友圈接口
+            'onMenuShareAppMessage', //  分享到朋友接口
+            'onMenuShareQQ', // 分享到QQ接口
+            'updateTimelineShareData',
+            'updateAppMessageShareData'
+          ]
+        })
+        wx.ready(() => {
+          let url = ''
+          if (this.$sessionStorage.get('userinfo')) {
+            let href = location.href
+            let UserInfo = this.$sessionStorage.get('userinfo')
+            url = '?friendId=' + UserInfo.id + '&' + href
+          }
+          let shareInfo = {
+            title: '我是唐僧', // 分享标题
+            desc: '孙悟空,沙和尚,猪八戒', // 分享描述
+            // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: 'http://luohan.wuhanhsj.com/vote/api/v1/android/vote' + url,
+            imgUrl: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80' // 分享图标
+          }
+          wx.onMenuShareAppMessage(shareInfo)
+          wx.onMenuShareTimeline(shareInfo)
+          wx.onMenuShareQQ(shareInfo)
+          wx.updateAppMessageShareData(shareInfo)
+          wx.updateTimelineShareData(shareInfo)
+        })
       })
     },
     hasClass(obj, cls) {

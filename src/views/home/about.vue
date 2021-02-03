@@ -38,7 +38,7 @@
       </div>
       <div class="sing">
         <div class="turnleft" @click="changeDate('right')">
-          <img src="/assets/images/left.png" alt="" width="100%">
+          <img src="@/assets/images/left.png" alt="" width="100%">
         </div>
         <ul v-if="infoData.checkinList.length > 0">
           <li v-for="(item, index) in infoData.checkinList" :key="index">
@@ -48,14 +48,14 @@
           </li>
         </ul>
         <div class="turnright" @click="changeDate('right')">
-          <img src="/assets/images/right.png" alt="" width="100%">
+          <img src="@/assets/images/right.png" alt="" width="100%">
         </div>
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="title">好友互动</div>
       <div class="cardlist" v-if="infoData.friendList.length > 0">
         <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
-        <div class="list" v-for="(item, index) in infoData.friendList" :key="index">
+        <div class="list" v-for="(item, index) in infoData.friendList" :key="index" @click="byfriend(item.friendId,item.arhatId)">
           <div class="left">
             <img :src="item.headUrl" alt="" width="100%" />
           </div>
@@ -153,6 +153,14 @@ export default {
         })
         .catch(() => {})
     },
+//拜好友罗汉
+byfriend(friendId,arhatId){
+  this.$router.push({
+              path: '/my',
+              query: { friendId: friendId,arhatId:arhatId }
+      })
+},
+
     // Action 通过 store.dispatch 方法触发
     doDispatch() {
       this.$store.dispatch('setUserName', '12313')
@@ -310,7 +318,11 @@ export default {
         width: 40px;
         height: 40px;
         right: 0;
-        top: 0;
+        top: 30px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
        .turnleft{
         position: absolute;
@@ -318,6 +330,11 @@ export default {
         height: 40px;
         left: 0;
         top: 0;
+        top: 30px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
       ul {
         overflow: hidden;

@@ -93,7 +93,8 @@ export default {
           replace:1,
         }).then(res => {
           if (res.state == 200) {  
-            this.arhatId=this.oldArhatId;                                                                                                                                                                                                                                                                              
+            this.arhatId=this.oldArhatId;  
+                                                                                                                                                                                                                                                                                      
              this.initData('1')
           }
         })}
