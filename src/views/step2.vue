@@ -6,13 +6,29 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
-      <div class="luohan rotate">
-        <ul>
-          <li v-for="(item, index) in mydata.lohanList" :key="index" :class="`div${index + 1}`">
-            <img :src="item.icon" alt="" />
-          </li>
-        </ul>
+        <div class="overall">
+    <div class="circle-box">
+      <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
+        <div
+          class="origin"
+          :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${stard}deg);`"
+        >
+          <div
+            :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${-stard}deg);`"
+            class="img-box"
+            v-for="(i,index) in mydata.lohanList"
+            :key="index"
+            @click="Turn(index)"
+          >
+            <div class="box">
+              <img :src="i.icon" alt="" width="100%">
+              <!-- <div class="content">{{index+1}}</div> -->
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
       <div class="check">
         <img src="@/assets/images/check.png" alt="" width="100%">
       </div>
@@ -40,14 +56,23 @@ import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
 import { getUserInfo, getPleaseLohan } from '@/api/user.js'
 export default {
-  name: '',
+  name: 'mydata.lohanList',
   components: {
     BgcMusic
   },
 
   data() {
     return {
-      arhatId:Math.floor(Math.random()*10+1),
+       circle_w: 350, //圆盘的宽
+      circle_h: 350, //圆盘的高
+      box_w: 80, //圆盘上覆盖的小圆点宽
+      box_h: 80, //圆盘上覆盖的小圆点高
+      PI:360, //分布角度，默认为360deg
+      stard: 0, //起始角度
+      stard_s: null, //用来默认储存第一个初始值
+      boxNum: 18, //圆盘上覆盖的小圆点个数
+      activeIndex: 1, //默认下标
+      arhatId:"",
       userinfo: {
         openid: ''
       },
@@ -59,11 +84,14 @@ export default {
   },
 
   async created() {
+    this.stard_s = this.stard;
   },
 
   computed: {},
 
   mounted() {
+     this.init();
+    this.Turn(this.activeIndex);
     this.i = 1
     var that = this
     this.ter = setInterval(function () {
@@ -72,15 +100,25 @@ export default {
       }
       that.chImg()
     }, 300)
+     this.inde =1
+    this.rateTer = setInterval(function () {
+       that.inde++
+       if(that.inde==18){
+         that.inde==1
+       }
+      that.automatic(that.inde)
+    }, 1000)
   },
   beforeDestroy() {
     //清除定时器
     clearInterval(this.ter);
+    clearInterval(this.rateTer);
     // console.log("beforeDestroy");
   },
   destroyed() {
     //清除定时器
     clearInterval(this.ter);
+    clearInterval(this.rateTer);
     //console.log("destroyed");
   },
   methods: {
@@ -89,6 +127,7 @@ export default {
       this.i++
     },
     showBtn() {
+      clearInterval(this.rateTer);
       this.showpleaseLohan = false
     },
 
@@ -100,7 +139,7 @@ export default {
         }).then(res => {
           if (res.state == 200) {
             if(res.data.oldArhatId){
-              this.$storage.set('oldArhatId', res.data.oldArhatId)  
+              this.$storage.set('oldArhatId', res.data.oldArhatId)
             }
             this.$router.replace({
               path: '/step3',
@@ -112,7 +151,45 @@ export default {
         document.location.replace('http://luohan.wuhanhsj.com/vote/api/v1/android/authorization')
       }
     },
-
+        //初始化小圆点，根据计算使其分布到对应位置
+    init() {
+      let box = document.querySelectorAll(".img-box");
+      let avd = this.PI / box.length; //每一个 img-box 对应的角度
+      let ahd = (avd * Math.PI) / 180; //每一个 img-box 对应的弧度
+      let radius = this.circle_w / 2; //圆的半径
+      for (let i = 0; i < box.length; i++) {
+        box[i].style.left = Math.sin(ahd * i) * radius + "px";
+        box[i].style.top = Math.cos(ahd * i) * radius + "px";
+      }
+    },
+    //点击相对应小圆点，圆盘进行相对应角度的转动
+    Turn(index) {
+       clearInterval(this.rateTer);
+      this.arhatId=index;
+      let _this = this;
+      let bx = document.querySelectorAll(".box");
+      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
+      for (let i = 0; i < bx.length; i++) {
+        if (i == index) {
+          bx[i].classList.add("box-active");
+        } else {
+          bx[i].classList.remove("box-active");
+        }
+      }
+    },
+    automatic(index){
+         this.arhatId=index;
+      let _this = this;
+      let bx = document.querySelectorAll(".box");
+      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
+      for (let i = 0; i < bx.length; i++) {
+        if (i == index) {
+          bx[i].classList.add("box-active");
+        } else {
+          bx[i].classList.remove("box-active");
+        }
+      }
+    },
     activated() {
       var _this = this
       _this.uuid = _this.$route.query.uuid
@@ -136,6 +213,92 @@ export default {
   background-image: url('~@/assets/images/black_bgc.png');
   background-size: cover;
   background-repeat: no-repeat;
+  //ccs
+  .overall {
+   position: relative;
+    left: 0;
+    right: 0;
+    top: 60px;
+    margin: 0 auto;
+    width: 700px;
+    height: 700px;
+    // border: 1px dashed #f4f4f4;
+    border-radius: 350px;
+
+.circle-box {
+  position: absolute;//注释--------------------------此处显示全圆
+  // overflow: hidden;//注释----------------------此处显示全圆
+   right: 0;//注释---------------------此处显示全圆
+   left: 0;
+   margin: 0 auto;
+  .circle {
+
+    transform: scale(0.9);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-sizing: border-box;
+    // border: 1px solid #4d4c4c;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin-left: 50%; //注释----------------此处显示全圆
+    .origin {
+      position: relative;
+      transition: 0.5s; //控制圆盘的的旋转速率
+      .img-box {
+        user-select: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: none !important;
+        pointer-events: none;
+        .box {
+          pointer-events: all !important;
+          width: 100%;
+          height: 100%;
+          transition: 0.3s;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          left: 0;
+          top: 0;
+          // border-radius: 50%;
+          transform: scale(0.5);
+          cursor: pointer;
+          color: white;
+          font-size: 40px;
+          // background: black;
+          overflow: hidden;
+          &:hover {
+            transform: scale(0.3);
+          }
+          &:hover .content {
+            opacity: 1;
+          }
+          .content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+          }
+        }
+        .box-active {
+          transition-delay: 0.3s;
+          transform: scale(1) !important;
+          .content {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+    }  //end
   .rulai {
     position: fixed;
     z-index: 200;

@@ -35,7 +35,8 @@
 
       <div class="text">
         <div class="title">
-          阿弥陀佛，施主已选择{{infoData.arhat.arhatName}}为2021年本尊罗汉，点击{{infoData.arhat.arhatName}}即可前往拜本尊罗汉，护佑您今年一年好运！
+          {{infoData.tip}}
+          <!-- 阿弥陀佛，施主已选择{{infoData.arhat.arhatName}}为2021年本尊罗汉，点击{{infoData.arhat.arhatName}}即可前往拜本尊罗汉，护佑您今年一年好运！ -->
         </div>
       </div>
       <div class="bottomBtn" v-if="isExist==1">
@@ -71,7 +72,7 @@ export default {
     ...mapGetters(['userName'])
   },
   created() {
-    
+
      this.oldArhatId=this.$route.query.oldArhatId;
      this.arhatId=this.$route.query.arhatId;
 
@@ -80,26 +81,26 @@ export default {
     this.initData()
   },
   mounted() {
-   
+
   },
   methods: {
     isreplace(type){
       //如果type =1 替换罗汉
-     
+
       this.isExist=0;
       if(type==1){
        getPleaseLohan({
           arhatId:this.arhatId,
           replace:1,
         }).then(res => {
-          if (res.state == 200) {  
-            this.arhatId=this.oldArhatId;  
-                                                                                                                                                                                                                                                                                      
+          if (res.state == 200) {
+            this.arhatId=this.oldArhatId;
+
              this.initData('1')
           }
         })}
     },
-    
+
     topage() {
       this.$router.replace({
         path: '/my',
@@ -135,7 +136,7 @@ export default {
     },
     // 请求数据案例
     initData(type) {
-      getluohanData({ 
+      getluohanData({
         arhatId : type==1?this.oldArhatId:this.arhatId
       })
         .then(res => {
