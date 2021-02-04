@@ -20,7 +20,8 @@ import '@/assets/css/index.scss'
 import 'lib-flexible/flexible.js'
 // import '@/utils/rem'
 // 引入移动端调试
-import '@/utils/vconsole.js'
+import VConsole from 'vconsole';
+new VConsole()
 // filters
 import './filters'
 // 全局注册微信js-sdk
@@ -34,7 +35,6 @@ Vue.prototype.$sessionStorage = sessionStorage
 Vue.use(require('vue-wechat-title'))
 
 Vue.config.productionTip = false
-
 
 
 new Vue({

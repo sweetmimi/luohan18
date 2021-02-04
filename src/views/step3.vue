@@ -27,7 +27,7 @@
         <div class="img" @click="topage()">
           <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
         </div>
-        <div class="minhandel">
+        <div class="minhandel" @click="topage()">
           <img src="@/assets/images/minhandel.png" alt="" />
           <div class="div">点击罗汉</div>
         </div>
@@ -51,6 +51,7 @@
     </div>
 
     <BgcMusic></BgcMusic>
+  </div>
   </div>
 </template>
 
@@ -105,9 +106,7 @@ export default {
             this.infoData = res.data;
              this.infoData.arhat.describe = res.data.tip;
           }
-        })}else{
-          localStorage.removeItem('oldArhatId')
-        }
+        })}
     },
 
     topage() {
@@ -161,7 +160,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .step3-container {
   /* 你的命名空间 */
   height: calc(100vh - 50px);
@@ -333,7 +332,7 @@ export default {
       margin: 35px auto 25px;
       font-size: 28px;
       font-weight: bold;
-      color: #303f7b;
+      color: #B88858;
     }
     .bottomBtn {
       position: absolute;

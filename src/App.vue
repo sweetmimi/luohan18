@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title" />
-    <div class="vc-tigger" @click="toggleVc"></div>
+    <!-- <div class="vc-tigger" @click="toggleVc"></div> -->
   </div>
 </template>
 <script>
@@ -19,22 +19,30 @@ export default {
     }
   },
   created() {
-
+   
   },
   mounted() {
-    this.getUser()
+     this.getUser()
     // this.checkUserAuth();
     this.getWechatConfig();
   },
   methods: {
     //授权(如果没有用户信息就授权)
     shouquan() {
-      document.location.replace('http://luohan.wuhanhsj.com/vote/api/v1/android/authorization')
+      if(!this.$sessionStorage.get('userinfo')){
+        window.location.href="http://luohan.wuhanhsj.com/vote/api/v1/android/authorization"
+      
+      }
+      
     },
     getUser() {
       getUserInfo({})
         .then(res => {
-          this.$sessionStorage.set('userinfo', res.data)
+          if(res.data!=undefined){
+            localStorage.clear();
+            this.$sessionStorage.set('userinfo', res.data)
+          }
+          
         })
         .catch(error => {
           this.shouquan()
@@ -50,13 +58,13 @@ export default {
         this.getWechatConfig()
       }
     },
-    getWechatConfig() {
+   async getWechatConfig() {
       let url = location.href
       // 我们后代开发人员的接口，不是微信那边的
-      getWxSDKConfig({
+     await getWxSDKConfig({
         url: url
       }).then(res => {
-        console.log(res.data)
+        if(res.state==200){
         let data = res.data
         wx.config({
           // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
@@ -69,33 +77,53 @@ export default {
           signature: data.signature, // 必填，签名
           jsApiList: [
             // 必填，需要使用的JS接口列表
-            'onMenuShareTimeline', // 分享到朋友圈接口
-            'onMenuShareAppMessage', //  分享到朋友接口
-            'onMenuShareQQ', // 分享到QQ接口
-            'updateTimelineShareData',
-            'updateAppMessageShareData'
+           
+            
+            "onMenuShareWeibo",
+            "onMenuShareQZone",
+            "updateTimelineShareData",
+            "updateAppMessageShareData"
           ]
         })
+        wx.checkJsApi({
+          jsApiList: [
+            // 必填，需要使用的JS接口列表
+            "onMenuShareWeibo",
+            "onMenuShareQZone",
+            "updateTimelineShareData",
+            "updateAppMessageShareData"
+          ],
+          success: function (res) {
+            // alert("checkJsApi:success1111111111111");
+          },
+        });
         wx.ready(() => {
-          let url = ''
-          if (this.$sessionStorage.get('userinfo')) {
-            let href = location.href
-            let UserInfo = this.$sessionStorage.get('userinfo')
-            url = '?friendId=' + UserInfo.id + '&' + href
-          }
-          let shareInfo = {
+          let url =""
+          // let UserInfo = this.$sessionStorage.get('userinfo')
+          let shareInfo ={}
+          if(UserInfo.arhatName){
+            url = `http://luohan.wuhanhsj.com/h5/#/share?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+            shareInfo = {
             title: '新年好!数罗汉看运势,拜罗汉得保佑', // 分享标题
-            desc: '我今年的本尊罗汉是xxx,今年特别关注的是身体和健康,邀请你一起来拜拜罗汉,相互增加好运!', // 分享描述
-            // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            link: 'http://luohan.wuhanhsj.com/vote/api/v1/android/vote' + url,
-            imgUrl: 'http://luohan.wuhanhsj.com/fileserver/static/bgluohan/2.jpeg' // 分享图标
+            desc: `我今年的本尊罗汉是${UserInfo.arhatName},今年特别关注的是身体和健康,邀请你一起来拜拜罗汉,相互增加好运!`, // 分享描述
+            link: url,//分享url
+            imgUrl: UserInfo.arhatUrl // 分享图标
           }
-          wx.onMenuShareAppMessage(shareInfo)
-          wx.onMenuShareTimeline(shareInfo)
-          wx.onMenuShareQQ(shareInfo)
-          wx.updateAppMessageShareData(shareInfo)
+         }else{
+            url = `http://luohan.wuhanhsj.com/h5/step1?friendId=${UserInfo.id}`
+            shareInfo = {
+            title: '新年好!数罗汉看运势,拜罗汉得保佑', // 分享标题
+            desc: `${UserInfo.nickName}邀请你一起来拜拜罗汉,相互增加好运!`, // 分享描述
+            link: url,//分享url
+            imgUrl: UserInfo.headUrl // 分享图标
+           }
+         }
+          wx.onMenuShareWeibo(shareInfo)
+          wx.onMenuShareQZone(shareInfo)
           wx.updateTimelineShareData(shareInfo)
-        })
+          wx.updateAppMessageShareData(shareInfo)
+        
+        })}
       })
     },
     hasClass(obj, cls) {

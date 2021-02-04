@@ -41,7 +41,7 @@
         <span class="btn_text"> 拜罗汉 </span>
       </div>
       <div class="btn gren_btn" @click="share" >
-        <span class="btn_text"> 分享给好友 </span>
+        <span class="btn_text"> 返回 </span>
       </div>
     </div>
     <!-- 音乐 -->
@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- 拜罗汉 -->
-    <div class="masklh" v-show="Masklh" @click="closeMasklh">
+    <div class="masklh" v-show="Masklh" @click="Masklh = false">
       <div class="main">
         <div class="header">
           <span> {{infoData.arhat.arhatName}}</span>
@@ -72,17 +72,12 @@
         </div>
       </div>
     </div>
-    <div class="attentionmodel" v-show="attentionmodel">
-      <p class="title" >关注公众号,积累福泽!</p>
-        <div class="btn cancel" @click="attentionmodel = false">取消</div>
-        <div class="btn ok" @click="goattention">去关注</div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getluohanData,getbyArhat}from '@/api/user.js'
+import {getluohanData,getbyArhat,getUserInfo}from '@/api/user.js'
 import BgcMusic from '@/components/BgcMusic'
 export default {
   components: {
@@ -90,38 +85,65 @@ export default {
   },
   data() {
     return {
-      friendId:"",
-      arhatId:"",
+      friendId:undefined,
       infoData:"",
       showMask: false,
-      Masklh: false,
-      attentionmodel:false,
+      Masklh: false
     }
   },
 async created() {
-   
+    
+    this.getUser()
     this.initData()
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    //如果自己分享自己
+    this.comeback()
+  },
 
   methods: {
-     initData() {
-        try {
-        this.arhatId=this.$route.query.arhatId
-       
-      } catch (error) {
-        
+     getUser() {
+      getUserInfo({})
+        .then(res => {
+          if(res.data!=undefined){
+             this.$sessionStorage.set('userinfo', res.data)
+          }
+         
+        })
+        .catch(error => {
+          this.shouquan()
+        })
+    },
+     shouquan() {
+      if(!this.$sessionStorage.get('userinfo')){
+        window.location.href="http://luohan.wuhanhsj.com/vote/api/v1/android/authorization"
+      
       }
+      
+    },
+    comeback(){
+      if(this.friendId==this.$sessionStorage.get('userinfo').id){
+       
+        let UserInfo=this.$sessionStorage.get('userinfo')
+        window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+      }
+    },
+     initData() {
        try {
-         this.friendId=this.$route.query.friendId 
+         this.arhatId=this.$route.query.arhatId
+       } catch (error) {
+         
+       }
+        try {
+        this.friendId=this.$route.query.friendId 
        } catch (error) {
          
        }
       getluohanData({
-          friendId:this.friendId || undefined,
-         arhatId :this.arhatId || undefined,
+         friendId:this.friendId,
+        arhatId :this.arhatId
       })
         .then(res => {
           this.infoData = res.data;
@@ -130,92 +152,44 @@ async created() {
         .catch(() => {})
     },
     byArhat() {
-      try {
-        this.arhatId=this.$route.query.arhatId
-       
-      } catch (error) {
-        
-      }
        try {
-         this.friendId=this.$route.query.friendId 
+         this.arhatId=this.$route.query.arhatId
+       } catch (error) {
+         
+       }
+        try {
+        this.friendId=this.$route.query.friendId 
        } catch (error) {
          
        }
       // 如果新用户 关注公众号
       getbyArhat({
-        friendId:this.friendId || undefined,
-         arhatId :this.arhatId || undefined,
+        friendId:this.friendId,
+         arhatId :this.arhatId
       }).then(res=>{
         if(res.state==200){
-          //没有罗汉关注
-          this.issubscribe = res.data.subscribe
-         
+
               this.Masklh = true
           
         }
       })
       
     },
-    closeMasklh(){
-      if(this.issubscribe !=1){
-        this.Masklh = false
-         this.attentionmodel =true
-      }
-    },
-
-    //关注
-    goattention(){
-       this.attentionmodel = false
-       window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNzc4MTkxMQ==&scene=110#wechat_redirect"
-    },
     share() {
-      this.showMask = true
+      if(this.$sessionStorage.get('userinfo').id){
+         let UserInfo=this.$sessionStorage.get('userinfo')
+       
+        window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+      }else{
+        window.location.href=`http://luohan.wuhanhsj.com/h5/step1`
+      }
+
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .index-container {
-  .attentionmodel{
-    width: 100%;
-    height: 300px;
-    position: fixed;
-     bottom: 0;
-      z-index: 1001;
-     background: rgba(0, 0, 0, 0.8);
-     .title{
-        color: #EFC75D;
-         font-size: 36px;
-         width: 100%;
-          position: absolute;
-        top: 20px;
-       text-align: center;
-     }
-     .btn{
-       
-      color: #ffffff;
-       width: 30%;
-       height: 80px;
-       border-radius: 40px;
-       font-size: 24px;
-       text-align: center;
-       line-height: 80px;
-     }
-     .cancel{
-       background: #4E5455;
-       position: absolute;
-        top: 60px;
-       left:10%;
-      
-     }
-     .ok{
-        
-background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
-       position: absolute;
-        top: 60px;
-       right: 10%;
-     }
-  }
   .mask {
     position: fixed;
     z-index: 1001;

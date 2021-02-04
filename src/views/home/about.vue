@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     changeDate(type) {
-      var step = 3
+      var step = 4
       if (type == 'left') {
         if (this.newcutnum > step) {
           return
@@ -420,7 +420,7 @@ export default {
       height: 400px;
       overflow-y: scroll;
       overflow-x: hidden;
-      width: 550px;
+      width: 600px;
       margin: 0 auto;
       .list {
         margin: 20px 0;
@@ -446,7 +446,7 @@ export default {
           box-sizing: border-box;
           float: left;
           margin-left: 120px;
-          width: 400px;
+          width: 420px;
           height: 100%;
           .top {
             width: 100%;
@@ -455,7 +455,7 @@ export default {
             padding: 0 10px;
             .nickName {
               float: left;
-              width: 56px;
+             
               height: 20px;
               font-size: 28px;
               font-family: PingFang-SC-Medium, PingFang-SC;

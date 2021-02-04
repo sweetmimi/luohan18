@@ -6,13 +6,14 @@ export const constantRouterMap = [
   {
     path: '/',
     component: () => import('@/views/topage.vue'),
+    redirect: '/step1'
   },
   {
     path: '/step1',
     component: () => import('@/views/step1.vue'),
     meta: {
       title: '拜佛',
-      // keepAlive: false
+      keepAlive: false
     },
   },
   {
@@ -20,7 +21,7 @@ export const constantRouterMap = [
     component: () => import('@/views/step3.vue'),
     meta: {
       title: '本尊罗汉',
-      // keepAlive: false
+      keepAlive: false
     },
   },
   {
@@ -28,7 +29,15 @@ export const constantRouterMap = [
     component: () => import('@/views/step2.vue'),
     meta: {
       title: '罗汉堂',
-      // keepAlive: false
+       keepAlive: false
+    },
+  },
+  {
+    path: '/share',
+    component: () => import('@/views/share.vue'),
+    meta: {
+      title: '拜罗汉',
+      keepAlive: false
     },
   },
   {
@@ -37,20 +46,20 @@ export const constantRouterMap = [
     redirect: '/home',
     meta: {
       title: '首页',
-      keepAlive: false
+      keepAlive: true
     },
     children: [
       {
         path: '/home',
         name: 'Home',
         component: () => import('@/views/home/index'),
-        meta: { title: '拜佛', keepAlive: false }
+        meta: { title: '拜佛', keepAlive: true }
       },
       {
         path: '/about',
         name: 'About',
         component: () => import('@/views/home/about'),
-        meta: { title: '互动', keepAlive: false }
+        meta: { title: '互动', keepAlive: true }
       }
     ]
   }

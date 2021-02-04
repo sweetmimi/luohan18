@@ -18,7 +18,7 @@
             class="img-box"
             v-for="(i,index) in mydata.lohanList"
             :key="index"
-            @click="Turn(index)"
+            @click="Turn(index,i.text)"
           >
             <div class="box">
               <img :src="i.icon" alt="" width="100%">
@@ -39,7 +39,7 @@
         <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
           <span class="btn_text">阿弥陀佛</span>
         </div>
-        <div class="btn jump_btn" v-else @click="shouquan">
+        <div class="btn jump_btn" v-else @click="PleaseLohan">
           <span class="btn_text">请本尊罗汉</span>
         </div>
       </div>
@@ -54,7 +54,7 @@
 <script>
 import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
-import { getUserInfo, getPleaseLohan } from '@/api/user.js'
+import {  getPleaseLohan } from '@/api/user.js'
 export default {
   name: 'mydata.lohanList',
   components: {
@@ -131,26 +131,19 @@ export default {
       this.showpleaseLohan = false
     },
 
-    // 授权
-    shouquan() {
-      if (this.$sessionStorage.get('userinfo')) {
+    // 亲本尊
+    PleaseLohan() {
         getPleaseLohan({
           arhatId:this.arhatId,
         }).then(res => {
           if (res.state == 200) {
-            if(res.data.oldArhatId){
-              this.$storage.set('oldArhatId', res.data.oldArhatId)
-               this.$sessionStorage.set('oldArhatTip', res.data.tip)
-            }
             this.$router.replace({
               path: '/step3',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
             })
           }
         })
-      } else {
-        document.location.replace('http://luohan.wuhanhsj.com/vote/api/v1/android/authorization')
-      }
+      
     },
         //初始化小圆点，根据计算使其分布到对应位置
     init() {
@@ -164,9 +157,9 @@ export default {
       }
     },
     //点击相对应小圆点，圆盘进行相对应角度的转动
-    Turn(index) {
+    Turn(index,arhatId) {
        clearInterval(this.rateTer);
-      this.arhatId=index;
+      this.arhatId=arhatId;
       let _this = this;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
@@ -179,7 +172,7 @@ export default {
       }
     },
     automatic(index){
-         this.arhatId=index;
+      this.arhatId=8;
       let _this = this;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
@@ -439,18 +432,18 @@ export default {
     height: 40px;
   }
   .bottom {
-    position: absolute;
+    position: fixed;
     margin: 20px auto;
     width: 80%;
     height: 80px;
-   top: 1000px;
+   bottom: 250px;
     left: 0;
-    z-index: 1000;
+    z-index: 99;
     right: 0;
 
     .jump_btn {
       z-index: 300;
-      position: absolute;
+      position: fixed;
       width: 329px;
       height: 80px;
       left: 0;
@@ -470,7 +463,7 @@ export default {
     position: absolute;
     text-align: left;
     margin: 0 auto;
-    bottom: 40px;
+    bottom: 80px;
     left: 0;
     z-index: 200;
     right: 0;
