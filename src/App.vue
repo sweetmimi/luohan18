@@ -19,13 +19,12 @@ export default {
     }
   },
   created() {
-    this.getUser()
 
-    console.log('wx', this.$wx)
   },
   mounted() {
+    this.getUser()
     // this.checkUserAuth();
-    // this.getWechatConfig();
+    this.getWechatConfig();
   },
   methods: {
     //授权(如果没有用户信息就授权)
@@ -36,9 +35,6 @@ export default {
       getUserInfo({})
         .then(res => {
           this.$sessionStorage.set('userinfo', res.data)
-          var userinfo = this.$sessionStorage.get('userinfo')
-
-          this.getWechatConfig()
         })
         .catch(error => {
           this.shouquan()
