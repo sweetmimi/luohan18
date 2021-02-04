@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .menu{
   position:fixed;
-  z-index: 99999;
+  z-index: 999999;
 }
 h3 {
   margin: 40px 0 0;

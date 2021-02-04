@@ -102,7 +102,7 @@ async created() {
 
   methods: {
      initData() {
-      getluohanData({ 
+      getluohanData({
          friendId:this.friendId,
         arhatId :this.arhatId
       })
@@ -114,7 +114,7 @@ async created() {
     },
     byArhat() {
       // 如果新用户 关注公众号
-      
+
       if(!this.$storage.get('oldArhatId')){
            location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNzc4MTkxMQ==&scene=110#wechat_redirect"
       }else{
@@ -127,9 +127,9 @@ async created() {
         }
       })
       }
-     
-  
-     
+
+
+
     },
     share() {
       this.showMask = true
@@ -309,13 +309,13 @@ async created() {
     box-sizing: border-box;
     padding: 10px 20px;
 
-    top: 324px;
+    top: 280px;
     left: 0;
     right: 0;
     margin: 0 auto;
     z-index: 100;
     width: 690px;
-    height: 970px;
+    height: 880px;
     background: #ffffff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
@@ -382,7 +382,7 @@ async created() {
     }
     .yaoqin {
       margin: 20px 35px;
-      
+
       img {
         float: left;
         width: 28px;

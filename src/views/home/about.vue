@@ -37,25 +37,30 @@
         </div>
       </div>
       <div class="sing">
-        <div class="turnleft" @click="changeDate('right')">
-          <img src="@/assets/images/left.png" alt="" width="100%">
+        <div class="turnleft" @click="changeDate('left')">
+          <img src="@/assets/images/left.png" alt="" width="100%" />
         </div>
         <ul v-if="infoData.checkinList.length > 0">
-          <li v-for="(item, index) in infoData.checkinList" :key="index">
+          <li v-for="(item, index) in newArr[newcutnum]" :key="index">
             <div>{{ item.day }}</div>
             <img v-if="item.chikin == 1" src="@/assets/images/fo.png" alt="" width="100%" />
             <img v-else class="gray" src="@/assets/images/fo.png" alt="" width="100%" />
           </li>
         </ul>
         <div class="turnright" @click="changeDate('right')">
-          <img src="@/assets/images/right.png" alt="" width="100%">
+          <img src="@/assets/images/right.png" alt="" width="100%" />
         </div>
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="title">好友互动</div>
       <div class="cardlist" v-if="infoData.friendList.length > 0">
         <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
-        <div class="list" v-for="(item, index) in infoData.friendList" :key="index" @click="byfriend(item.friendId,item.arhatId)">
+        <div
+          class="list"
+          v-for="(item, index) in infoData.friendList"
+          :key="index"
+          @click="byfriend(item.friendId, item.arhatId)"
+        >
           <div class="left">
             <img :src="item.headUrl" alt="" width="100%" />
           </div>
@@ -96,6 +101,8 @@ export default {
     return {
       infoData: '',
       list: [],
+      newcutnum: 0,
+      newArr: [],
       loading: false,
       finished: false,
       refreshing: false
@@ -108,12 +115,20 @@ export default {
     this.initData()
   },
   methods: {
-    changeDate(type){
-      if(type=='right')
-      {
-
-      }else{
-
+    changeDate(type) {
+      var step = 3
+      if (type == 'left') {
+        if (this.newcutnum > step) {
+          return
+        } else {
+          this.newcutnum++
+        }
+      } else {
+        if (this.newcutnum < 1) {
+          return
+        } else {
+          this.newcutnum--
+        }
       }
     },
     //x下拉刷新
@@ -149,17 +164,41 @@ export default {
     initData() {
       gethome({})
         .then(res => {
-          this.infoData = res.data
+          if (res.state == 200) {
+            this.infoData = res.data
+            this.cutArry(res.data.checkinList)
+          }
         })
         .catch(() => {})
     },
-//拜好友罗汉
-byfriend(friendId,arhatId){
-  this.$router.push({
-              path: '/my',
-              query: { friendId: friendId,arhatId:arhatId }
+    cutArry(data) {
+       this.newArr =[]
+      let arry = data.reverse()
+      let arrLength = arry.length // 数组长度
+      let num = 7 // 每页显示 7 条
+      let index = 0
+
+      for (let i = 0; i < arrLength; i++) {
+        if (i % num === 0 && i !== 0) {
+          // 可以被 7 整除
+          this.newArr.push(arry.slice(index,i).reverse())
+          index = i
+        }
+        if (i + 1 === arrLength) {
+          this.newArr.push(arry.slice(index,i+1 ).reverse())
+        }
+      }
+      console.log(index + 1)
+      this.cutnum = index + 1
+      console.log(this.newArr)
+    },
+    //拜好友罗汉
+    byfriend(friendId, arhatId) {
+      this.$router.push({
+        path: '/my',
+        query: { friendId: friendId, arhatId: arhatId }
       })
-},
+    },
 
     // Action 通过 store.dispatch 方法触发
     doDispatch() {
@@ -313,25 +352,25 @@ byfriend(friendId,arhatId){
       width: 590px;
       height: 88px;
       list-style: none;
-      .turnright{
+      .turnright {
         position: absolute;
         width: 40px;
         height: 40px;
         right: 0;
         top: 30px;
-        img{
+        img {
           width: 100%;
           height: 100%;
         }
       }
-       .turnleft{
+      .turnleft {
         position: absolute;
         width: 40px;
         height: 40px;
         left: 0;
         top: 0;
         top: 30px;
-        img{
+        img {
           width: 100%;
           height: 100%;
         }

@@ -35,9 +35,15 @@
 
       <div class="text">
         <div class="title">
-          {{infoData.tip}}
-          <!-- 阿弥陀佛，施主已选择{{infoData.arhat.arhatName}}为2021年本尊罗汉，点击{{infoData.arhat.arhatName}}即可前往拜本尊罗汉，护佑您今年一年好运！ -->
-        </div>
+          <p v-if="oldArhatId">
+            阿弥陀佛，施主已有2021年本尊罗汉为{{infoData.arhat.arhatName}}，若选择××罗汉替换之前的本尊罗汉，则之前的罗汉互动数据全部无效，施主确认替换么
+              
+          </p>
+          <p v-else>
+             {{infoData.arhat.describe}}
+          </p>
+
+
       </div>
       <div class="bottomBtn" v-if="isExist==1">
         <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
@@ -94,11 +100,13 @@ export default {
           replace:1,
         }).then(res => {
           if (res.state == 200) {
-            this.arhatId=this.oldArhatId;
-
-             this.initData('1')
+            // this.arhatId=this.oldArhatId;
+            this.infoData = res.data;
+             this.infoData.arhat.describe = res.data.tip;
           }
-        })}
+        })}else{
+          localStorage.removeItem('oldArhatId')
+        }
     },
 
     topage() {
@@ -135,9 +143,9 @@ export default {
       this.onLoad()
     },
     // 请求数据案例
-    initData(type) {
+    initData() {
       getluohanData({
-        arhatId : type==1?this.oldArhatId:this.arhatId
+        arhatId :this.oldArhatId?this.oldArhatId:this.arhatId
       })
         .then(res => {
           this.infoData = res.data;
@@ -173,9 +181,9 @@ export default {
       justify-content: center;
       margin: 0 auto;
       text-align: center;
-      height: 183px;
+      height: 153px;
       box-sizing: border-box;
-      padding: 21px 0px 45px;
+      padding: 25px 0px 25px;
       .left {
         float: left;
         width: 120px;
@@ -190,9 +198,9 @@ export default {
         padding: 10px;
         .top {
           text-align: left;
-          font-size: 36px;
+          font-size: 32px;
           font-weight: bold;
-          margin: 5px 8px;
+          margin: 5px 10px;
         }
         .bottom {
           img {
@@ -202,7 +210,7 @@ export default {
           }
           .lhName {
             display: inline-block;
-            font-size: 36px;
+            font-size: 32px;
             height: 50px;
             font-weight: bold;
             margin-right: 5px;
@@ -229,7 +237,7 @@ export default {
       margin: 0 auto;
       margin-top: 50px;
       width: 499px;
-      height: 659px;
+      height: 560px;
 
       background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
       border-radius: 21px;
@@ -244,14 +252,14 @@ export default {
         border-right: 25px solid transparent;
         height: 0;
         margin: 0 auto;
-        width: 250px;
+        width: 280px;
         span {
           top: -50px;
           left: 0px;
           right: 0;
           margin: 0 auto;
           position: absolute;
-          font-size: 36px;
+          font-size: 28px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: bold;
           color: #ffffff;
@@ -260,9 +268,9 @@ export default {
 
       .img {
         position: relative;
-        width: 403px;
-        height: 526px;
-        top: 74px;
+        width: 380px;
+        height: 440px;
+        top: 60px;
         margin: 0 auto;
       }
       .minhandel {
@@ -303,7 +311,7 @@ export default {
         .title {
           text-align: left;
 
-          font-size: 28px;
+          font-size: 24px;
           font-family: PingFang-SC-Medium, PingFang-SC;
           font-weight: 500;
           color: #b88858;
