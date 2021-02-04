@@ -11,7 +11,7 @@ export const constantRouterMap = [
     path: '/step1',
     component: () => import('@/views/step1.vue'),
     meta: {
-      title: '罗汉堂',
+      title: '拜佛',
       // keepAlive: false
     },
   },
@@ -19,7 +19,7 @@ export const constantRouterMap = [
     path: '/step3',
     component: () => import('@/views/step3.vue'),
     meta: {
-      title: '选择罗汉',
+      title: '本尊罗汉',
       // keepAlive: false
     },
   },
@@ -27,7 +27,7 @@ export const constantRouterMap = [
     path: '/step2',
     component: () => import('@/views/step2.vue'),
     meta: {
-      title: '数罗汉',
+      title: '罗汉堂',
       // keepAlive: false
     },
   },

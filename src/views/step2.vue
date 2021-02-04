@@ -140,6 +140,7 @@ export default {
           if (res.state == 200) {
             if(res.data.oldArhatId){
               this.$storage.set('oldArhatId', res.data.oldArhatId)
+               this.$sessionStorage.set('oldArhatTip', res.data.tip)
             }
             this.$router.replace({
               path: '/step3',

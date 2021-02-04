@@ -35,9 +35,8 @@
 
       <div class="text">
         <div class="title">
-          <p v-if="oldArhatId">
-            阿弥陀佛，施主已有2021年本尊罗汉为{{infoData.arhat.arhatName}}，若选择××罗汉替换之前的本尊罗汉，则之前的罗汉互动数据全部无效，施主确认替换么
-              
+          <p v-if="isExist==1">
+            {{tip}}
           </p>
           <p v-else>
              {{infoData.arhat.describe}}
@@ -66,6 +65,7 @@ export default {
   },
   data() {
     return {
+      tip:"",
       infoData:"",
       isExist:'',//是否有本尊
       list: [],
@@ -83,6 +83,7 @@ export default {
      this.arhatId=this.$route.query.arhatId;
 
      this.isExist=this.$route.query.isExist;
+     this.tip = this.$sessionStorage.get('oldArhatTip')
 
     this.initData()
   },

@@ -88,11 +88,11 @@ export default {
             url = '?friendId=' + UserInfo.id + '&' + href
           }
           let shareInfo = {
-            title: '我是唐僧', // 分享标题
-            desc: '孙悟空,沙和尚,猪八戒', // 分享描述
+            title: '新年好!数罗汉看运势,拜罗汉得保佑', // 分享标题
+            desc: '我今年的本尊罗汉是xxx,今年特别关注的是身体和健康,邀请你一起来拜拜罗汉,相互增加好运!', // 分享描述
             // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             link: 'http://luohan.wuhanhsj.com/vote/api/v1/android/vote' + url,
-            imgUrl: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80' // 分享图标
+            imgUrl: 'http://luohan.wuhanhsj.com/fileserver/static/bgluohan/2.jpeg' // 分享图标
           }
           wx.onMenuShareAppMessage(shareInfo)
           wx.onMenuShareTimeline(shareInfo)
