@@ -6,7 +6,34 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
-        <div class="overall">
+      <div class="height jieruwang flexbox center">
+    <div class='jrwLeft center' id="div1" ref='bigcircle' :style="{
+                transform: `rotate(${turnRotate}deg)`,
+                height:clientWidth+'px'
+            }" @mouseover="stop" @mouseout="start()">
+      <div v-for="(item,idx) in mydata.lohanList" :key='item+idx' @mousedown.prevent @mouseup.prevent @mousemove.prevent :class='["city","city"+idx,city==item?"active":""]'
+        :style="computedCardPosStyle(idx-1)">
+               <img :src="i.icon" alt="" width="100%">
+        </div>
+      <div class='block center' :style="{transform: `rotate(${-turnRotate}deg)`}">
+        <div class='middle center'>
+          <!-- <p>{{city}}-信息概览</p >
+                    <div class='block center leftTitle'>
+                        <div class='small center'>
+                            <div class=' center' ref='svg'>
+                                <svg :width='width' :height='height'>
+                                        <a  v-for='(tag,idx) in tags' :key='idx+"only"'>
+                                            <text :x='tag.x' :y='tag.y'  :font-size='14 * (600/(600-tag.z))' :fill-opacity='((400+tag.z)/600)' stroke='#559ae7' stroke-width="1" fill='#559ae7'>{{tag.text}}</text>
+                                        </a>
+                                    </svg>
+                            </div>
+                        </div>
+                    </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+        <!-- <div class="overall">
     <div class="circle-box">
       <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
         <div
@@ -22,13 +49,13 @@
           >
             <div class="box">
               <img :src="i.icon" alt="" width="100%">
-              <!-- <div class="content">{{index+1}}</div> -->
+              <div class="content">{{index+1}}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
       <div class="check">
         <img src="@/assets/images/check.png" alt="" width="100%">
       </div>
@@ -137,13 +164,14 @@ export default {
           arhatId:this.arhatId,
         }).then(res => {
           if (res.state == 200) {
+             this.$sessionStorage.set('oldArhatTip', res.data.tip)
             this.$router.replace({
               path: '/step3',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
             })
           }
         })
-      
+
     },
         //初始化小圆点，根据计算使其分布到对应位置
     init() {

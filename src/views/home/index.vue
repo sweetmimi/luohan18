@@ -99,7 +99,7 @@ export default {
     }
   },
 async created() {
-   
+
     this.initData()
   },
   computed: {},
@@ -110,14 +110,14 @@ async created() {
      initData() {
         try {
         this.arhatId=this.$route.query.arhatId
-       
+
       } catch (error) {
-        
+
       }
        try {
-         this.friendId=this.$route.query.friendId 
+         this.friendId=this.$route.query.friendId
        } catch (error) {
-         
+
        }
       getluohanData({
           friendId:this.friendId || undefined,
@@ -132,14 +132,14 @@ async created() {
     byArhat() {
       try {
         this.arhatId=this.$route.query.arhatId
-       
+
       } catch (error) {
-        
+
       }
        try {
-         this.friendId=this.$route.query.friendId 
+         this.friendId=this.$route.query.friendId
        } catch (error) {
-         
+
        }
       // 如果新用户 关注公众号
       getbyArhat({
@@ -149,12 +149,12 @@ async created() {
         if(res.state==200){
           //没有罗汉关注
           this.issubscribe = res.data.subscribe
-         
+
               this.Masklh = true
-          
+
         }
       })
-      
+
     },
     closeMasklh(){
       if(this.issubscribe !=1){
@@ -192,7 +192,7 @@ async created() {
        text-align: center;
      }
      .btn{
-       
+
       color: #ffffff;
        width: 30%;
        height: 80px;
@@ -206,10 +206,10 @@ async created() {
        position: absolute;
         top: 60px;
        left:10%;
-      
+
      }
      .ok{
-        
+
 background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
        position: absolute;
         top: 60px;
@@ -383,7 +383,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
     margin: 0 auto;
     z-index: 100;
     width: 690px;
-    height: 880px;
+    height: 920px;
     background: #ffffff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
@@ -440,7 +440,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
     }
     .detl {
       letter-spacing: 1px;
-      padding: 10px;
+      padding: 10px 15px;
       margin-bottom: 20px;
       font-size: 28px;
       font-family: PingFang-SC-Medium, PingFang-SC;

@@ -46,20 +46,20 @@ export const constantRouterMap = [
     redirect: '/home',
     meta: {
       title: '首页',
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
         path: '/home',
         name: 'Home',
         component: () => import('@/views/home/index'),
-        meta: { title: '拜佛', keepAlive: true }
+        meta: { title: '拜佛', keepAlive: false }
       },
       {
         path: '/about',
         name: 'About',
         component: () => import('@/views/home/about'),
-        meta: { title: '互动', keepAlive: true }
+        meta: { title: '互动', keepAlive: false }
       }
     ]
   }

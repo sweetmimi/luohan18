@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "jquery": "^3.5.1",
     "jquery_carousel": "^1.1.0",
     "lib-flexible": "^0.3.2",
     "lodash": "^4.17.15",
