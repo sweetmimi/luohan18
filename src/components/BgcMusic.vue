@@ -78,11 +78,11 @@ export default {
       console.log(audio);
       this.checked = !this.checked;
       if (this.checked) {
-        this.src = require("../assets/images/music.png");
+        this.src = require("../assets/images/stop.png");
         audio.play();
         this.mymove = true;
       } else {
-        this.src = require("../assets/images/music.png");
+        this.src = require("../assets/images/stop.png");
         audio.pause();
         this.mymove = false;
       }
