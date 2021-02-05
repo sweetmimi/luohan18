@@ -10,7 +10,7 @@
     <div class="circle-box" @mousedown.prevent @mouseup.prevent @mousemove.prevent>
       <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
         <div
-        
+
           class="origin"
           :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${stard}deg);`"
         >
@@ -344,7 +344,7 @@ export default {
     right:0;
     margin: 0 auto;
     top: 255px;
-    height: 397px;
+    height: 600px;
     background-image: url('~@/assets/images/rulai2.png');
     background-size: 100%;
     background-repeat: no-repeat;
