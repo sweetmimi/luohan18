@@ -157,8 +157,9 @@ async created() {
 
     },
     closeMasklh(){
+      this.Masklh = false
       if(this.issubscribe !=1){
-        this.Masklh = false
+        
          this.attentionmodel =true
       }
     },

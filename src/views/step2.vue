@@ -116,11 +116,11 @@ export default {
       }
       that.chImg()
     }, 300)
-     this.inde =1
+     that.inde =1
     this.rateTer = setInterval(function () {
        that.inde++
        if(that.inde==18){
-         that.inde==1
+         that.inde=1
        }
       that.automatic(that.inde)
     }, 5000)
@@ -180,6 +180,7 @@ export default {
           arhatId:this.arhatId,
         }).then(res => {
           if (res.state == 200) {
+            this.$sessionStorage.set('oldArhatTip', res.data.tip)
             this.$router.replace({
               path: '/step3',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
@@ -201,8 +202,9 @@ export default {
     },
     //点击相对应小圆点，圆盘进行相对应角度的转动
     Turn(index,arhatId) {
-       clearInterval(this.rateTer);
       this.arhatId=arhatId;
+       clearInterval(this.rateTer);
+      
       let _this = this;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
@@ -215,7 +217,7 @@ export default {
       }
     },
     automatic(index){
-      this.arhatId=8;
+      this.arhatId=index;
       let _this = this;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
@@ -344,7 +346,7 @@ export default {
     right:0;
     margin: 0 auto;
     top: 255px;
-    height: 600px;
+    height: 500px;
     background-image: url('~@/assets/images/rulai2.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -455,7 +457,7 @@ export default {
       position: absolute;
       width: 120px;
       height: 120px;
-      top: 850px;
+      bottom: 420px;
       margin: 0 auto;
       width: 90px;
       left: 0;
@@ -463,7 +465,7 @@ export default {
   }
   .icon {
     position: absolute;
-    top: 920px;
+    bottom: 360px;
       margin: 0 auto;
       width: 90px;
       left: 0;

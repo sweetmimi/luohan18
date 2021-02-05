@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     changeDate(type) {
-      var step = 4
+      var step = 3
       if (type == 'left') {
         if (this.newcutnum > step) {
           return

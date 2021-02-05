@@ -19,12 +19,12 @@ export default {
     }
   },
   created() {
-   
+   this.getUser()
   },
   mounted() {
-     this.getUser()
+     
     // this.checkUserAuth();
-    this.getWechatConfig();
+    
   },
   methods: {
     //授权(如果没有用户信息就授权)
@@ -41,6 +41,7 @@ export default {
           if(res.data!=undefined){
             localStorage.clear();
             this.$sessionStorage.set('userinfo', res.data)
+            this.getWechatConfig();
           }
           
         })
@@ -97,9 +98,9 @@ export default {
             // alert("checkJsApi:success1111111111111");
           },
         });
-        wx.ready(() => {
+        wx.ready((res) => {
           let url =""
-          // let UserInfo = this.$sessionStorage.get('userinfo')
+          let UserInfo = this.$sessionStorage.get('userinfo')
           let shareInfo ={}
           if(UserInfo.arhatName){
             url = `http://luohan.wuhanhsj.com/h5/#/share?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
@@ -122,7 +123,7 @@ export default {
           wx.onMenuShareQZone(shareInfo)
           wx.updateTimelineShareData(shareInfo)
           wx.updateAppMessageShareData(shareInfo)
-        
+          resolve(wx,res)//重载
         })}
       })
     },

@@ -102,6 +102,8 @@ export default {
           replace:1,
         }).then(res => {
           if (res.state == 200) {
+            this.$sessionStorage.set('userinfo', res.data.userInfo)
+            this.$sessionStorage.set('oldArhatTip', res.data.tip);
             // this.arhatId=this.oldArhatId;
             this.infoData = res.data;
              this.infoData.arhat.describe = res.data.tip;
