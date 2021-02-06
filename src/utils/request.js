@@ -20,14 +20,13 @@ service.interceptors.request.use(
 
       //console.log(config.data)
       Object.assign(config.data, {
-        //调试
         openid: sessionStorage.get('userinfo').openid
       })
     }
 
     else {
       //调试
-      //  config.data.openid='orMjE6PC_xe0ACAom8SuOrl7s7bQ'
+      // config.data.openid='orMjE6PC_xe0ACAom8SuOrl7s7bQ'
 
     }
     // 不传递默认开启loading

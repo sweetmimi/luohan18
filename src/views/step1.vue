@@ -137,7 +137,7 @@ export default {
   }
   .home_btn {
     z-index: 300;
-    bottom: 16%;
+    bottom: 60px;
     position: absolute;
     width: 70%;
     height: 80px;

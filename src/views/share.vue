@@ -94,7 +94,7 @@ export default {
 async created() {
 
     this.getUser()
-    this.initData()
+    
   },
   computed: {},
 
@@ -107,8 +107,18 @@ async created() {
      getUser() {
       getUserInfo({})
         .then(res => {
-          if(res.data!=undefined){
+          if(res.data){
              this.$sessionStorage.set('userinfo', res.data)
+             let userinfo = res.data
+             if(userinfo.yidamArhatId){
+               if(userinfo.id ==this.$route.query.friendId){
+                 window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+               }else{
+                this.initData() 
+               }
+             }else{
+               this.initData()
+             }
           }
 
         })
@@ -117,30 +127,32 @@ async created() {
         })
     },
      shouquan() {
-      if(!this.$sessionStorage.get('userinfo')){
         let url = encodeURIComponent(location.href)
-       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?form=${url}`
-
-      }
+       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
 
     },
     comeback(){
-      if(this.friendId==this.$sessionStorage.get('userinfo').id){
-
-        let UserInfo=this.$sessionStorage.get('userinfo')
+       let UserInfo=this.$sessionStorage.get('userinfo')
+       this.$toast('yidamArhatId',UserInfo.yidamArhatId);
+      if(UserInfo.yidamArhatId!=undefined){
         window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+      }else{
+        let friendId = this.$route.query.friendId
+        window.location.href=`http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
       }
     },
      initData() {
        try {
          this.arhatId=this.$route.query.arhatId
        } catch (error) {
-
+         let userinfo =  this.$sessionStorage.get('userinfo')
+        this.arhatId=userinfo.yidamArhatId
        }
         try {
         this.friendId=this.$route.query.friendId
        } catch (error) {
-
+        let userinfo =  this.$sessionStorage.get('userinfo')
+        this.arhatId=userinfo.id
        }
       getluohanData({
          friendId:this.friendId,
@@ -156,12 +168,14 @@ async created() {
        try {
          this.arhatId=this.$route.query.arhatId
        } catch (error) {
-
+         let userinfo =  this.$sessionStorage.get('userinfo')
+        this.arhatId=userinfo.yidamArhatId
        }
         try {
         this.friendId=this.$route.query.friendId
        } catch (error) {
-
+        let userinfo =  this.$sessionStorage.get('userinfo')
+        this.friendId=userinfo.id
        }
       // 如果新用户 关注公众号
       getbyArhat({

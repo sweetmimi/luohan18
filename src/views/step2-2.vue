@@ -6,20 +6,33 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
-        <div class="swiper">
-        <swiper
-            :slides-per-view="3"
-            :space-between="50"
-            @swiper="onSwiper"
-            @slideChange="onSlideChange"
+        <div class="overall">
+    <div class="circle-box" @mousedown.prevent @mouseup.prevent @mousemove.prevent>
+      <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
+        <div
+
+          class="origin"
+          :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${stard}deg);`"
         >
-            <swiper-slide v-for="(item,index) in mydata.lohanList" :key="index">
-                <img :src="item.icon" alt="">
-            </swiper-slide>
-           
-            
-        </swiper>
+          <div
+            :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${-stard}deg);`"
+            class="img-box"
+            v-for="(i,index) in mydata.lohanList"
+            :key="index"
+            @click="Turn(index,i.text)"
+          >
+            <div class="box" >
+              <img :src="i.icon" alt="" width="100%">
+              <!-- <div class="content">{{index+1}}</div> -->
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="agebox">
+    <div>{{age}}</div> 
+      </div>  
+  </div>
       <div class="check">
         <img src="@/assets/images/check.png" alt="" width="100%">
       </div>
@@ -44,31 +57,28 @@
 
 <script>
 import $ from 'jquery'
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/swiper.scss';
 import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
 import {  getPleaseLohan } from '@/api/user.js'
 export default {
   name: 'mydata.lohanList',
   components: {
-       Swiper,
-      SwiperSlide,
     BgcMusic
   },
 
   data() {
     return {
-       circle_w: 375, //圆盘的宽
-      circle_h: 375, //圆盘的高
-      box_w: 80, //圆盘上覆盖的小圆点宽
-      box_h: 80, //圆盘上覆盖的小圆点高
+       circle_w: 355, //圆盘的宽
+      circle_h: 355, //圆盘的高
+      box_w: 100, //圆盘上覆盖的小圆点宽
+      box_h: 100, //圆盘上覆盖的小圆点高
       PI:360, //分布角度，默认为360deg
       stard: 0, //起始角度
       stard_s: null, //用来默认储存第一个初始值
       boxNum: 18, //圆盘上覆盖的小圆点个数
       activeIndex: 1, //默认下标
       arhatId:"",
+      age:0,
       userinfo: {
         openid: ''
       },
@@ -86,25 +96,45 @@ export default {
   computed: {},
 
   mounted() {
-    
+     this.$nextTick(() => {
+     
+      let container_dom = this.$refs.bigcircle;
+      container_dom.addEventListener('mousedown', this.handleMouseDown.bind(this));
+      container_dom.addEventListener('mouseup', this.handleMouseUp.bind(this));
+      container_dom.addEventListener('mouseleave', this.handleMouseUp.bind(this));
+      container_dom.addEventListener('mousemove', this.handleMouseMove.bind(this));
+      container_dom.addEventListener('touchstart', this.handleMouseDown.bind(this));
+      container_dom.addEventListener('touchend', this.handleMouseUp.bind(this));
+      container_dom.addEventListener('touchcancel', this.handleMouseUp.bind(this));
+      container_dom.addEventListener('touchmove', this.handleMouseMove.bind(this));
+      window.addEventListener('resize', this.responseContainerScale.bind(this));
+      window.addEventListener('load', this.responseContainerScale.bind(this));
+    })
      this.init();
     this.Turn(this.activeIndex);
     this.i = 1
+    
     var that = this
     this.ter = setInterval(function () {
       if (that.i == 12) {
         that.i = 1
       }
+      
       that.chImg()
     }, 300)
      that.inde =1
+     that.age=0;
+     that.luohanid =1;
     this.rateTer = setInterval(function () {
        that.inde++
-       if(that.inde==18){
-         that.inde=1
+       if(that.luohanid<18){
+         that.luohanid=1
        }
-      that.automatic(that.inde)
-    }, 5000)
+      that.luohanid++
+
+       that.age++
+      that.automatic(that.inde,that.luohanid)
+    }, 4000)
   },
   beforeDestroy() {
     //清除定时器
@@ -183,6 +213,7 @@ export default {
     },
     //点击相对应小圆点，圆盘进行相对应角度的转动
     Turn(index,arhatId) {
+      this.age = Number(this.age)+ Number(arhatId) ;
       this.arhatId=arhatId;
        clearInterval(this.rateTer);
       
@@ -197,9 +228,10 @@ export default {
         }
       }
     },
-    automatic(index){
-      this.arhatId=index;
+    automatic(index,luohanid){
+     
       let _this = this;
+       _this.arhatId=luohanid;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
       for (let i = 0; i < bx.length; i++) {
@@ -322,12 +354,12 @@ export default {
   .rulai {
     position: fixed;
     z-index: 200;
-    width: 450px;
+    width: 400px;
     left: 0px;
     right:0;
     margin: 0 auto;
     top: 255px;
-    height: 500px;
+    height: 450px;
     background-image: url('~@/assets/images/rulai2.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -433,6 +465,29 @@ export default {
       bottom: 20px;
       right: 180px;
     }
+  }
+  .agebox{
+    text-align: center;
+   
+    position:absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 40px;
+    width: 102px;
+height: 102px;
+background: rgba(0, 0, 0, 0.65);
+border-radius: 15px;
+border: 1px solid #979797;
+
+ div{
+  
+margin-top: 20px;
+line-height: 56px;
+font-size: 48px;
+  color: #ffffff;
+ }
+
   }
   .check{
       position: absolute;

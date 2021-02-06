@@ -109,19 +109,21 @@ async created() {
   methods: {
      initData() {
         try {
+          
         this.arhatId=this.$route.query.arhatId
 
       } catch (error) {
-
+       let  userinfo =this.$sessionStorage.get('userinfo')
+       this.arhatId = userinfo.yidamArhatId
       }
        try {
          this.friendId=this.$route.query.friendId
        } catch (error) {
-
+          this.friendId = userinfo.id
        }
       getluohanData({
-          friendId:this.friendId || undefined,
-         arhatId :this.arhatId || undefined,
+          friendId:this.friendId ,
+         arhatId :this.arhatId,
       })
         .then(res => {
           this.infoData = res.data;
@@ -134,7 +136,7 @@ async created() {
         this.arhatId=this.$route.query.arhatId
 
       } catch (error) {
-
+        
       }
        try {
          this.friendId=this.$route.query.friendId
@@ -143,8 +145,8 @@ async created() {
        }
       // 如果新用户 关注公众号
       getbyArhat({
-        friendId:this.friendId || undefined,
-         arhatId :this.arhatId || undefined,
+        friendId:this.friendId,
+         arhatId :this.arhatId ,
       }).then(res=>{
         if(res.state==200){
           //没有罗汉关注
@@ -166,8 +168,8 @@ async created() {
 
     //关注
     goattention(){
-       this.attentionmodel = false
-       window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUyNzc4MTkxMQ==&scene=110#wechat_redirect"
+       this.attentionmodel = false 
+       window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect"
     },
     share() {
       this.showMask = true

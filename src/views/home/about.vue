@@ -483,7 +483,7 @@ export default {
     .cardlist {
       bottom: 20px;
       position: relative;
-      height: 400px;
+      height: 210px;
       overflow-y: scroll;
       overflow-x: hidden;
       width: 600px;

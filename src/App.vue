@@ -30,8 +30,9 @@ export default {
     //授权(如果没有用户信息就授权)
     shouquan() {
       if(!this.$sessionStorage.get('userinfo')){
+  
         let url = encodeURIComponent(location.href)
-       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?form=${url}`
+       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
 
       }
 
