@@ -19,21 +19,22 @@ export default {
     }
   },
   created() {
-   this.getUser()
+
   },
   mounted() {
-     
+    this.getUser()
     // this.checkUserAuth();
-    
+
   },
   methods: {
     //授权(如果没有用户信息就授权)
     shouquan() {
       if(!this.$sessionStorage.get('userinfo')){
-        window.location.href="http://luohan.wuhanhsj.com/vote/api/v1/android/authorization"
-      
+        let url = encodeURIComponent(location.href)
+       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?form=${url}`
+
       }
-      
+
     },
     getUser() {
       getUserInfo({})
@@ -43,7 +44,7 @@ export default {
             this.$sessionStorage.set('userinfo', res.data)
             this.getWechatConfig();
           }
-          
+
         })
         .catch(error => {
           this.shouquan()
@@ -78,8 +79,8 @@ export default {
           signature: data.signature, // 必填，签名
           jsApiList: [
             // 必填，需要使用的JS接口列表
-           
-            
+
+
             "onMenuShareWeibo",
             "onMenuShareQZone",
             "updateTimelineShareData",
@@ -123,7 +124,6 @@ export default {
           wx.onMenuShareQZone(shareInfo)
           wx.updateTimelineShareData(shareInfo)
           wx.updateAppMessageShareData(shareInfo)
-          resolve(wx,res)//重载
         })}
       })
     },

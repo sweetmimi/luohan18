@@ -30,7 +30,7 @@
         </p>
       </div>
       <div class="line" style="width: 90%"></div>
-      <div class="yaoqin">
+      <div class="yaoqin" @click="showMask = true">
         <img src="@/assets/images/handel.png" alt="" width="100%" />
         <span class="text" v-if="!friendId">
            邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
@@ -159,7 +159,7 @@ async created() {
     closeMasklh(){
       this.Masklh = false
       if(this.issubscribe !=1){
-        
+
          this.attentionmodel =true
       }
     },
@@ -354,7 +354,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
   }
   .top_bg {
     width: 750px;
-    height: 470px;
+    height: 500px;
     position: fixed;
     img {
       width: 100%;
@@ -500,7 +500,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
     display: block;
     position: absolute;
     left: -25px;
-    top: 170px;
+    top: 240px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;
@@ -511,7 +511,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
     display: block;
     position: absolute;
     right: -25px;
-    top: 170px;
+    top: 240px;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;

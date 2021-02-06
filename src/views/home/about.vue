@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="line" style="width: 70%"></div>
-      <div class="yellow_card">
+      <div class="yellow_card" @click="share">
         <div class="yaoqin">
           <img src="@/assets/images/handel.png" alt="" width="100%" />
           <span class="text">邀请更多好友来拜本尊罗汉 可以给施主增添好运哦！</span>
@@ -88,6 +88,16 @@
       <div class="friends" v-else>
         <p style="text-align: center">暂无好友,快去邀请好友一起拜罗汉.</p>
       </div>
+
+    </div>
+      <div class="mask" v-show="showMask" @click="showMask = false">
+      <div class="point">
+        <img src="@/assets/images/share.png" alt="" />
+      </div>
+      <div class="text">
+        <img src="@/assets/images/share_rulai.png" alt="" />
+        <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
+      </div>
     </div>
   </div>
 </template>
@@ -103,6 +113,7 @@ export default {
       list: [],
       newcutnum: 0,
       newArr: [],
+      showMask:false,
       loading: false,
       finished: false,
       refreshing: false
@@ -115,6 +126,9 @@ export default {
     this.initData()
   },
   methods: {
+    share() {
+      this.showMask = true
+    },
     changeDate(type) {
       var step = 3
       if (type == 'left') {
@@ -195,7 +209,7 @@ export default {
     //拜好友罗汉
     byfriend(friendId, arhatId) {
       this.$router.push({
-        path: '/my',
+        path: '/share',
         query: { friendId: friendId, arhatId: arhatId }
       })
     },
@@ -213,6 +227,46 @@ export default {
   height: calc(100vh - 50px);
   box-sizing: border-box;
   position: relative;
+    .mask {
+    position: fixed;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    .point {
+      right: 62px;
+      top: 21px;
+      width: 414px;
+      height: 368px;
+      position: absolute;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text {
+      position: absolute;
+      top: 405px;
+      height: 112px;
+      padding: 20px;
+      img {
+        width: 112px;
+        height: 112px;
+        float: left;
+        vertical-align: middle;
+        margin-left: 40px;
+        margin-right: 27px;
+      }
+      span {
+        vertical-align: middle;
+        font-size: 32px;
+        font-family: PingFang-SC-Bold, PingFang-SC;
+        font-weight: bold;
+        color: #ffffff;
+        line-height: 1.6;
+      }
+    }
+  }
   .card {
     position: absolute;
     top: 30px;
@@ -351,6 +405,9 @@ export default {
       margin: 52px 41px 70px;
       width: 590px;
       height: 88px;
+      left: 0;
+      right: 0;
+      margin: 52px auto 70px;
       list-style: none;
       .turnright {
         position: absolute;
@@ -377,13 +434,22 @@ export default {
       }
       ul {
         overflow: hidden;
-        height: 88px;
+        height: 90px;
+        position: absolute;
+        display:flex;
+
+　　flex-direction:column;
+
+　　justify-content:center;
+         left: 0;
+      right: 0;
         margin: 0 60px;
         li {
-          margin: 0 1px;
+
+          margin: 0 auto;
           display: inline;
           float: left;
-          width: 62px;
+          width: 60px;
           height: 87px;
           background: #fff8e8;
           border-radius: 13px;
@@ -432,21 +498,22 @@ export default {
         .left {
           position: absolute;
           float: left;
-          width: 100px;
+          width: 80px;
           height: 100%;
           border-radius: 52px;
-          margin-right: 20px;
+          margin-right: 10px;
           img {
-            width: 100px;
-            height: 100px;
-            border-radius: 52px;
+            margin-top: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
           }
         }
         .right {
           box-sizing: border-box;
           float: left;
-          margin-left: 120px;
-          width: 420px;
+          margin-left: 90px;
+
           height: 100%;
           .top {
             width: 100%;
@@ -455,7 +522,7 @@ export default {
             padding: 0 10px;
             .nickName {
               float: left;
-             
+
               height: 20px;
               font-size: 28px;
               font-family: PingFang-SC-Medium, PingFang-SC;
@@ -492,7 +559,7 @@ export default {
               .ben {
                 margin: 0 5px;
                 float: right;
-                width: 96px;
+
                 font-size: 24px;
                 font-family: PingFang-SC-Medium, PingFang-SC;
                 font-weight: 500;
@@ -501,6 +568,7 @@ export default {
               }
             }
             .time {
+               line-height: 40px;
               float: right;
             }
           }

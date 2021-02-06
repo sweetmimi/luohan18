@@ -30,7 +30,7 @@
         </p>
       </div>
       <div class="line" style="width: 90%"></div>
-      <div class="yaoqin">
+      <div class="yaoqin" @click="showMask = true">
         <img src="@/assets/images/handel.png" alt="" width="100%" />
         <span class="text" v-if="!friendId">
            邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
@@ -92,7 +92,7 @@ export default {
     }
   },
 async created() {
-    
+
     this.getUser()
     this.initData()
   },
@@ -110,7 +110,7 @@ async created() {
           if(res.data!=undefined){
              this.$sessionStorage.set('userinfo', res.data)
           }
-         
+
         })
         .catch(error => {
           this.shouquan()
@@ -118,14 +118,15 @@ async created() {
     },
      shouquan() {
       if(!this.$sessionStorage.get('userinfo')){
-        window.location.href="http://luohan.wuhanhsj.com/vote/api/v1/android/authorization"
-      
+        let url = encodeURIComponent(location.href)
+       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?form=${url}`
+
       }
-      
+
     },
     comeback(){
       if(this.friendId==this.$sessionStorage.get('userinfo').id){
-       
+
         let UserInfo=this.$sessionStorage.get('userinfo')
         window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
       }
@@ -134,12 +135,12 @@ async created() {
        try {
          this.arhatId=this.$route.query.arhatId
        } catch (error) {
-         
+
        }
         try {
-        this.friendId=this.$route.query.friendId 
+        this.friendId=this.$route.query.friendId
        } catch (error) {
-         
+
        }
       getluohanData({
          friendId:this.friendId,
@@ -155,12 +156,12 @@ async created() {
        try {
          this.arhatId=this.$route.query.arhatId
        } catch (error) {
-         
+
        }
         try {
-        this.friendId=this.$route.query.friendId 
+        this.friendId=this.$route.query.friendId
        } catch (error) {
-         
+
        }
       // 如果新用户 关注公众号
       getbyArhat({
@@ -170,15 +171,15 @@ async created() {
         if(res.state==200){
 
               this.Masklh = true
-          
+
         }
       })
-      
+
     },
     share() {
       if(this.$sessionStorage.get('userinfo').id){
          let UserInfo=this.$sessionStorage.get('userinfo')
-       
+
         window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
       }else{
         window.location.href=`http://luohan.wuhanhsj.com/h5/step1`
