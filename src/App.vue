@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view v-wechat-title="$route.meta.title" />
-    <!-- <div class="vc-tigger" @click="toggleVc"></div> -->
+    <div class="vc-tigger" @click="toggleVc"></div>
   </div>
 </template>
 <script>
@@ -15,7 +15,7 @@ export default {
     return {
       lastClickTime: 0,
       count: 0,
-      limit: env == 'production' ? 10 : 0
+      limit: env == 'production' ? 5 : 0
     }
   },
   created() {
@@ -30,7 +30,7 @@ export default {
     //授权(如果没有用户信息就授权)
     shouquan() {
       if(!this.$sessionStorage.get('userinfo')){
-  
+
         let url = encodeURIComponent(location.href)
        window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
 
@@ -40,15 +40,14 @@ export default {
     getUser() {
       getUserInfo({})
         .then(res => {
-          if(res.data!=undefined){
-            localStorage.clear();
             this.$sessionStorage.set('userinfo', res.data)
             this.getWechatConfig();
-          }
-
         })
         .catch(error => {
-          this.shouquan()
+          let _this = this
+          setTimeout(() => {
+            env == 'production'?_this.shouquan():this.$toast('调试环境')
+          }, 1000);
         })
     },
     // 通过判断cookie中是否有 openId 检查用户是否授权过
@@ -107,16 +106,16 @@ export default {
           if(UserInfo.arhatName){
             url = `http://luohan.wuhanhsj.com/h5/#/share?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
             shareInfo = {
-            title: '新年好!数罗汉看运势,拜罗汉得保佑', // 分享标题
-            desc: `我今年的本尊罗汉是${UserInfo.arhatName},今年特别关注的是身体和健康,邀请你一起来拜拜罗汉,相互增加好运!`, // 分享描述
+            title: '拜罗汉,得保佑', // 分享标题
+            desc: `新年数罗汉,看一年的运势和重点! --我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
             link: url,//分享url
             imgUrl: UserInfo.arhatUrl // 分享图标
           }
          }else{
             url = `http://luohan.wuhanhsj.com/h5/step1?friendId=${UserInfo.id}`
             shareInfo = {
-            title: '新年好!数罗汉看运势,拜罗汉得保佑', // 分享标题
-            desc: `${UserInfo.nickName}邀请你一起来拜拜罗汉,相互增加好运!`, // 分享描述
+            title: '拜罗汉,得保佑', // 分享标题
+            desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
             link: url,//分享url
             imgUrl: UserInfo.headUrl // 分享图标
            }
@@ -147,31 +146,32 @@ export default {
         obj.className = obj.className.replace(reg, ' ')
       }
     },
-    toggleVc() {
-      const nowTime = new Date().getTime()
-      if (nowTime - this.lastClickTime < 3000) {
-        this.count++
-      } else {
-        this.count = 0
-      }
-      this.lastClickTime = nowTime
-      if (this.count >= this.limit) {
-        let vconDom = document.getElementById('__vconsole')
-        this.toggleClass(vconDom, 'show')
-        this.count = 0
-      }
-    }
+    toggleVc(){
+            const nowTime = new Date().getTime();
+            if(nowTime - this.lastClickTime < 3000){
+              this.count ++;
+            } else {
+              this.count = 0;
+            }
+            this.lastClickTime = nowTime;
+            if(this.count >= this.limit) {
+              let vconDom = document.getElementById('__vconsole');
+              this.toggleClass(vconDom,'show')
+              this.count = 0;
+
+            }
+          }
   }
 }
 </script>
 <style lang="scss">
 .vc-tigger {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 5px;
-  height: 5px;
-  // background: red;
+  position: fixed;
+  z-index: 9999;
+  width: 160px;
+  height: 80px;
+  right: 20px;
+  bottom: 20px;
 }
 .show {
   display: block !important;

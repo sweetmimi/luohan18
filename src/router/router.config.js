@@ -53,7 +53,7 @@ export const constantRouterMap = [
         path: '/home',
         name: 'Home',
         component: () => import('@/views/home/index'),
-        meta: { title: '拜佛', keepAlive: false }
+        meta: { title: '拜罗汉', keepAlive: false }
       },
       {
         path: '/about',

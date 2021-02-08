@@ -2,7 +2,7 @@
 @import './mixin.scss';
 
 html,
-body .app {
+body  {
   color: #333333;
   font-family: Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
   background-color: $background-color;
@@ -10,6 +10,15 @@ body .app {
   height: 100%;
   font-family: PingFang-SC-Bold,
   PingFang-SC;
+}
+body{
+  height: 100%;
+}
+#app{
+   height: 100%;
+}
+#__vconsole {
+  display: none;
 }
 p{
   padding: 0;

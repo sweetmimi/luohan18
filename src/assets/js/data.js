@@ -1,5 +1,5 @@
 export const mydata = {
-   
+
     tabs: [{
         label: "Home",
         link: "home",
@@ -24,79 +24,79 @@ export const mydata = {
     lohanList: [
       {
         icon: require("../images/luohan/1.png"),
-        text: '1'
+        id: '1'
       },
       {
         icon: require("../images/luohan/2.png"),
-        text: '2'
+        id: '2'
       },
       {
         icon: require("../images/luohan/3.png"),
-        text: '3'
+        id: '3'
       },
       {
         icon: require("../images/luohan/4.png"),
-        text: '4'
+        id: '4'
       },
       {
         icon: require("../images/luohan/5.png"),
-        text: '5'
+        id: '5'
       },
       {
         icon: require("../images/luohan/6.png"),
-        text: '6'
+        id: '6'
       },
       {
         icon: require("../images/luohan/7.png"),
-        text: '7'
+        id: '7'
       },
       {
         icon: require("../images/luohan/8.png"),
-        text: '8'
+        id: '8'
       },
       {
         icon: require("../images/luohan/9.png"),
-        text: '9'
+        id: '9'
       },
       {
         icon: require("../images/luohan/10.png"),
-        text: '10'
+        id: '10'
       },
       {
         icon: require("../images/luohan/11.png"),
-        text: '11'
+        id: '11'
       },
       {
         icon: require("../images/luohan/12.png"),
-        text: '12'
+        id: '12'
       },
       {
         icon: require("../images/luohan/13.png"),
-        text: '13'
+        id: '13'
       },
       {
         icon: require("../images/luohan/14.png"),
-        text: '14'
+        id: '14'
       },
       {
         icon: require("../images/luohan/15.png"),
-        text: '15'
+        id: '15'
       },
       {
         icon: require("../images/luohan/16.png"),
-        text: '16'
+        id: '16'
       },
       {
         icon: require("../images/luohan/17.png"),
-        text: '17'
+        id: '17'
       },
       {
         icon: require("../images/luohan/18.png"),
-        text: '18'
+        id: '18'
       },
-   
+
     ],
-  
+
       productdata1: [{
             id: 1,
             title: "Pinjaman Pribadi",
@@ -148,10 +148,10 @@ export const mydata = {
             ],
           },
         ],
-    
-       
-     
-  
-  
+
+
+
+
+
 
 }

@@ -31,7 +31,7 @@
         <div class="dv2">
           <i class="iconfont icon-star"></i>
           <span
-            >已连续拜佛
+            >已连续拜罗汉
             <span class="gold">{{ infoData.continuous }}天 </span>
           </span>
         </div>

@@ -2,6 +2,9 @@
 <template>
   <div class="contner">
     <div class="homePage">
+
+  <v-touch v-on:swipeleft="onSwipeLeft" v-on:swiperight="onSwipeRight" >
+
       <div class="gif">
         <img :src="gif" />
       </div>
@@ -11,9 +14,10 @@
 
       <!-- 按钮 -->
       <div class="btn home_btn" @click="getCode">
-        <span class="btn_text" v-if="show"> 静 心 拜 佛</span>
+        <span class="btn_text" v-if="show"> 请施主静心拜佛再进入罗汉堂</span>
         <span class="btn_text" v-else>静心拜佛 ({{ count }}s后进入罗汉堂)</span>
       </div>
+  </v-touch>
     </div>
   </div>
 </template>
@@ -68,6 +72,12 @@ export default {
     //console.log("destroyed");
   },
   methods: {
+    onSwipeLeft(){
+     this.$toast('向左滑动')
+    },
+    onSwipeRight(){
+      this.$toast('向右滑动')
+    },
     chImg() {
       this.gif = require(`@/assets/images/homeGif/${this.imgs[this.i]}.png`)
       this.i++
@@ -106,17 +116,19 @@ export default {
 <style lang='scss' scoped>
 .homePage {
   z-index: 100;
-  position: fixed;
+  position: relative;
   width: 750px;
   height: 100%;
   background-image: url('../assets/images/rulai_bgc.png');
   background-size: cover;
   background-repeat: no-repeat;
   .gif {
-    width: 750px;
+     position: absolute;
+     left: -80px;
+    width: 106%;
     height: 1200px;
     img{
-      width:100%;
+      width:106%;
       height: 100%;
     }
   }
@@ -125,26 +137,26 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    top: 400px;
+    top: 300px;
     bottom: 0;
     margin: auto;
     width: 100%;
     height: 70%;
     margin: 0 auto;
     background-image: url('~@/assets/images/rulai.png');
-    background-size: 100%;
+    background-size: 100% ;
     background-repeat: no-repeat;
   }
   .home_btn {
     z-index: 300;
-    bottom: 60px;
+    bottom: 20px;
     position: absolute;
     width: 70%;
     height: 80px;
     left: 15%;
     border-radius: 50px;
     .btn_text {
-      font-size: 32px;
+      font-size: 30px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
       color: #ffffff;

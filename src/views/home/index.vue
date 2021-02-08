@@ -2,87 +2,85 @@
 <template>
   <div class="index-container">
     <div class="pageLoading" v-if="!infoData">
-      <van-loading type="spinner" class="lod"/>
+      <van-loading type="spinner" class="lod" />
     </div>
     <div class="main" v-else>
-    <div class="top_bg">
-      <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
-    </div>
-    <div class="lh18">
-      <img src="@/assets/images/lh18.png" alt="" />
-    </div>
-    <div class="card">
-      <div class="title">
+      <div class="top_bg">
+        <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
+      </div>
+      <div class="lh18">
+        <img src="@/assets/images/lh18.png" alt="" />
+      </div>
+      <div class="card">
+        <div class="title">
+          <div class="text">
+            <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
+            <span class="name"> {{ infoData.userInfo.nickName }}· 牛年本尊罗汉</span>
+          </div>
+        </div>
+        <div class="line" style="width: 90%"></div>
+        <div class="lhName">
+          <img src="@/assets/images/fo.png" alt="" width="100%" />
+          <span class="name">· {{ infoData.arhat.arhatName }}</span>
+        </div>
+        <p class="blueTitle">【{{ infoData.arhat.arhatName }}】{{ infoData.arhat.descName }}</p>
+        <div class="detl">
+          <p>
+            {{ infoData.arhat.describe }}
+          </p>
+        </div>
+        <div class="line" style="width: 90%"></div>
+        <div class="yaoqin" @click="showMask = true">
+          <img src="@/assets/images/handel.png" alt="" width="100%" />
+          <span class="text" v-if="!friendId"> 邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
+          <span class="text" v-else> 拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
+        </div>
+        <div class="btn yl_btn" @click="byArhat">
+          <span class="btn_text"> 拜罗汉 </span>
+        </div>
+        <div class="btn gren_btn" @click="share">
+          <span class="btn_text"> 分享给好友 </span>
+        </div>
+      </div>
+      <!-- 音乐 -->
+      <BgcMusic></BgcMusic>
+      <!-- 分享 -->
+      <div class="mask" v-show="showMask" @click="showMask = false">
+        <div class="point">
+          <img src="@/assets/images/share.png" alt="" />
+        </div>
         <div class="text">
-          <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
-          <span class="name"> {{infoData.userInfo.nickName}}· 牛年本尊罗汉</span>
+          <img src="@/assets/images/share_rulai.png" alt="" />
+          <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
         </div>
       </div>
-      <div class="line" style="width: 90%"></div>
-      <div class="lhName">
-        <img src="@/assets/images/fo.png" alt="" width="100%" />
-        <span class="name">· {{infoData.arhat.arhatName}}</span>
-      </div>
-      <p class="blueTitle">【{{infoData.arhat.arhatName}}】{{infoData.arhat.descName}}</p>
-      <div class="detl">
-        <p>
-         {{infoData.arhat.describe}}
-        </p>
-      </div>
-      <div class="line" style="width: 90%"></div>
-      <div class="yaoqin" @click="showMask = true">
-        <img src="@/assets/images/handel.png" alt="" width="100%" />
-        <span class="text" v-if="!friendId">
-           邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
-           <span class="text" v-else>
-           拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
-      </div>
-      <div class="btn yl_btn" @click="byArhat">
-        <span class="btn_text"> 拜罗汉 </span>
-      </div>
-      <div class="btn gren_btn" @click="share" >
-        <span class="btn_text"> 分享给好友 </span>
-      </div>
-    </div>
-    <!-- 音乐 -->
-    <BgcMusic></BgcMusic>
-    <!-- 分享 -->
-    <div class="mask" v-show="showMask" @click="showMask = false">
-      <div class="point">
-        <img src="@/assets/images/share.png" alt="" />
-      </div>
-      <div class="text">
-        <img src="@/assets/images/share_rulai.png" alt="" />
-        <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
-      </div>
-    </div>
-    <!-- 拜罗汉 -->
-    <div class="masklh" v-show="Masklh" @click="closeMasklh">
-      <div class="main">
-        <div class="header">
-          <span> {{infoData.arhat.arhatName}}</span>
-        </div>
-        <div class="img">
-          <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
-        </div>
+      <!-- 拜罗汉 -->
+      <div class="masklh" v-show="Masklh" @click="closeMasklh">
+        <div class="main">
+          <div class="header">
+            <span> {{ infoData.arhat.arhatName }}</span>
+          </div>
+          <div class="img">
+            <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
+          </div>
 
-        <div class="text">
-          <div class="title">拜本尊罗汉积累福泽</div>
-          <div class="del">{{infoData.arhat.arhatName}}将庇佑您及家人一年健康好运</div>
+          <div class="text">
+            <div class="title">拜本尊罗汉积累福泽</div>
+            <div class="del">{{ infoData.arhat.arhatName }}将庇佑您及家人一年健康好运</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="attentionmodel" v-show="attentionmodel">
-      <p class="title" >关注公众号,积累福泽!</p>
+      <div class="attentionmodel" v-show="attentionmodel">
+        <p class="title">关注公众号,积累福泽!</p>
         <div class="btn cancel" @click="attentionmodel = false">取消</div>
         <div class="btn ok" @click="goattention">去关注</div>
-    </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getluohanData,getbyArhat}from '@/api/user.js'
+import { getluohanData, getbyArhat } from '@/api/user.js'
 import BgcMusic from '@/components/BgcMusic'
 export default {
   components: {
@@ -90,16 +88,15 @@ export default {
   },
   data() {
     return {
-      friendId:"",
-      arhatId:"",
-      infoData:"",
+      friendId: '',
+      arhatId: '',
+      infoData: '',
       showMask: false,
       Masklh: false,
-      attentionmodel:false,
+      attentionmodel: false
     }
   },
-async created() {
-
+  async created() {
     this.initData()
   },
   computed: {},
@@ -107,69 +104,45 @@ async created() {
   mounted() {},
 
   methods: {
-     initData() {
-        try {
-          
-        this.arhatId=this.$route.query.arhatId
-
-      } catch (error) {
-       let  userinfo =this.$sessionStorage.get('userinfo')
-       this.arhatId = userinfo.yidamArhatId
-      }
-       try {
-         this.friendId=this.$route.query.friendId
-       } catch (error) {
-          this.friendId = userinfo.id
-       }
+    initData() {
+      let userinfo = this.$sessionStorage.get('userinfo')
       getluohanData({
-          friendId:this.friendId ,
-         arhatId :this.arhatId,
+        friendId: userinfo.id,
+        arhatId: userinfo.yidamArhatId
       })
         .then(res => {
-          this.infoData = res.data;
+          this.infoData = res.data
           console.log(res.data)
         })
         .catch(() => {})
     },
     byArhat() {
-      try {
-        this.arhatId=this.$route.query.arhatId
-
-      } catch (error) {
-        
-      }
-       try {
-         this.friendId=this.$route.query.friendId
-       } catch (error) {
-
-       }
+      let userinfo = this.$sessionStorage.get('userinfo')
       // 如果新用户 关注公众号
       getbyArhat({
-        friendId:this.friendId,
-         arhatId :this.arhatId ,
-      }).then(res=>{
-        if(res.state==200){
+        friendId: userinfo.id,
+        arhatId: userinfo.yidamArhatId
+      }).then(res => {
+        if (res.state == 200) {
           //没有罗汉关注
           this.issubscribe = res.data.subscribe
 
-              this.Masklh = true
-
+          this.Masklh = true
         }
       })
-
     },
-    closeMasklh(){
+    closeMasklh() {
       this.Masklh = false
-      if(this.issubscribe !=1){
-
-         this.attentionmodel =true
+      if (this.issubscribe != 1) {
+        this.attentionmodel = true
       }
     },
 
     //关注
-    goattention(){
-       this.attentionmodel = false 
-       window.location.href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect"
+    goattention() {
+      this.attentionmodel = false
+      window.location.href =
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
     share() {
       this.showMask = true
@@ -179,45 +152,42 @@ async created() {
 </script>
 <style lang="scss" scoped>
 .index-container {
-  .attentionmodel{
+  .attentionmodel {
     width: 100%;
     height: 300px;
     position: fixed;
-     bottom: 0;
-      z-index: 1001;
-     background: rgba(0, 0, 0, 0.8);
-     .title{
-        color: #EFC75D;
-         font-size: 36px;
-         width: 100%;
-          position: absolute;
-        top: 20px;
-       text-align: center;
-     }
-     .btn{
-
+    bottom: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.8);
+    .title {
+      color: #efc75d;
+      font-size: 36px;
+      width: 100%;
+      position: absolute;
+      top: 20px;
+      text-align: center;
+    }
+    .btn {
       color: #ffffff;
-       width: 30%;
-       height: 80px;
-       border-radius: 40px;
-       font-size: 24px;
-       text-align: center;
-       line-height: 80px;
-     }
-     .cancel{
-       background: #4E5455;
-       position: absolute;
-        top: 60px;
-       left:10%;
-
-     }
-     .ok{
-
-background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
-       position: absolute;
-        top: 60px;
-       right: 10%;
-     }
+      width: 30%;
+      height: 80px;
+      border-radius: 40px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 80px;
+    }
+    .cancel {
+      background: #4e5455;
+      position: absolute;
+      top: 60px;
+      left: 10%;
+    }
+    .ok {
+      background: linear-gradient(90deg, #efc75d 0%, #c58925 100%);
+      position: absolute;
+      top: 60px;
+      right: 10%;
+    }
   }
   .mask {
     position: fixed;
@@ -261,12 +231,14 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
   }
   .masklh {
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 1001;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     .main {
-      position: absolute;
+      position: fixed;
       z-index: 1002;
       left: 125px;
       top: 270px;
@@ -282,7 +254,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
         top: -6px;
         left: 0;
         right: 0;
-        border-top: 56px solid #EFC75D;
+        border-top: 56px solid #efc75d;
         border-left: 25px solid transparent;
         border-right: 25px solid transparent;
         height: 0;
@@ -356,7 +328,7 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
   }
   .top_bg {
     width: 750px;
-    height: 500px;
+    height: 650px;
     position: fixed;
     img {
       width: 100%;
@@ -497,27 +469,27 @@ background: linear-gradient(90deg, #EFC75D 0%, #C58925 100%);
     }
   }
 
-  .card:before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: -25px;
-    top: 240px;
-    background: #f8f8f8;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-  }
-  .card:after {
-    content: '';
-    display: block;
-    position: absolute;
-    right: -25px;
-    top: 240px;
-    background: #f8f8f8;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-  }
+  // .card:before {
+  //   content: '';
+  //   display: block;
+  //   position: absolute;
+  //   left: -25px;
+  //   top: 240px;
+  //   background: #f8f8f8;
+  //   border-radius: 50%;
+  //   width: 50px;
+  //   height: 50px;
+  // }
+  // .card:after {
+  //   content: '';
+  //   display: block;
+  //   position: absolute;
+  //   right: -25px;
+  //   top: 240px;
+  //   background: #f8f8f8;
+  //   border-radius: 50%;
+  //   width: 50px;
+  //   height: 50px;
+  // }
 }
 </style>

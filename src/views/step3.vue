@@ -35,12 +35,13 @@
 
       <div class="text">
         <div class="title">
-          <p v-if="isExist==1">
+          <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p>
+          <!-- <p v-if="isExist==1">
             {{tip}}
           </p>
           <p v-else>
              {{infoData.arhat.describe}}
-          </p>
+          </p> -->
 
 
       </div>
@@ -114,7 +115,7 @@ export default {
     topage() {
       this.$router.replace({
         path: '/my',
-        query: { arhatId: this.arhatId }
+        
       })
     },
     //x下拉刷新
@@ -151,6 +152,7 @@ export default {
       })
         .then(res => {
           this.infoData = res.data;
+           this.$sessionStorage.set('userinfo', res.data.userInfo)
           console.log(res.data)
         })
         .catch(() => {})

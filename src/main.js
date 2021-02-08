@@ -20,10 +20,16 @@ import '@/assets/css/index.scss'
 import 'lib-flexible/flexible.js'
 // import '@/utils/rem'
 // 引入移动端调试
-import VConsole from 'vconsole';
-new VConsole()
+const VConsole = require('@/utils/vconsole');
+
+
 // filters
 import './filters'
+//屏幕滑动事件
+import VueTouch from 'vue-touch'
+Vue.use(VueTouch, {
+  name: 'v-touch'
+})
 // 全局注册微信js-sdk
 import WechatPlugin from '@/utils/wechatPlugin'
 Vue.use(WechatPlugin)

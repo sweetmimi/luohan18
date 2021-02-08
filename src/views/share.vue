@@ -2,82 +2,80 @@
 <template>
   <div class="index-container">
     <div class="pageLoading" v-if="!infoData">
-      <van-loading type="spinner" class="lod"/>
+      <van-loading type="spinner" class="lod" />
     </div>
     <div class="main" v-else>
-    <div class="top_bg">
-      <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
-    </div>
-    <div class="lh18">
-      <img src="@/assets/images/lh18.png" alt="" />
-    </div>
-    <div class="card">
-      <div class="title">
+      <div class="top_bg">
+        <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
+      </div>
+      <div class="lh18">
+        <img src="@/assets/images/lh18.png" alt="" />
+      </div>
+      <div class="card">
+        <div class="title">
+          <div class="text">
+            <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
+            <span class="name"> {{ infoData.userInfo.nickName }}· 牛年本尊罗汉</span>
+          </div>
+        </div>
+        <div class="line" style="width: 90%"></div>
+        <div class="lhName">
+          <img src="@/assets/images/fo.png" alt="" width="100%" />
+          <span class="name">· {{ infoData.arhat.arhatName }}</span>
+        </div>
+        <p class="blueTitle">【{{ infoData.arhat.arhatName }}】{{ infoData.arhat.descName }}</p>
+        <div class="detl">
+          <p>
+            {{ infoData.arhat.describe }}
+          </p>
+        </div>
+        <div class="line" style="width: 90%"></div>
+        <div class="yaoqin" @click="showMask = true">
+          <img src="@/assets/images/handel.png" alt="" width="100%" />
+          <span class="text" v-if="!friendId"> 邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
+          <span class="text" v-else> 拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
+        </div>
+        <div class="btn yl_btn" @click="byArhat">
+          <span class="btn_text"> 拜罗汉 </span>
+        </div>
+        <div class="btn gren_btn" @click="comeback">
+          <span class="btn_text"> 返回 </span>
+        </div>
+      </div>
+      <!-- 音乐 -->
+      <BgcMusic></BgcMusic>
+      <!-- 分享 -->
+      <div class="mask" v-show="showMask" @click="showMask = false">
+        <div class="point">
+          <img src="@/assets/images/share.png" alt="" />
+        </div>
         <div class="text">
-          <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
-          <span class="name"> {{infoData.userInfo.nickName}}· 牛年本尊罗汉</span>
+          <img src="@/assets/images/share_rulai.png" alt="" />
+          <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
         </div>
       </div>
-      <div class="line" style="width: 90%"></div>
-      <div class="lhName">
-        <img src="@/assets/images/fo.png" alt="" width="100%" />
-        <span class="name">· {{infoData.arhat.arhatName}}</span>
-      </div>
-      <p class="blueTitle">【{{infoData.arhat.arhatName}}】{{infoData.arhat.descName}}</p>
-      <div class="detl">
-        <p>
-         {{infoData.arhat.describe}}
-        </p>
-      </div>
-      <div class="line" style="width: 90%"></div>
-      <div class="yaoqin" @click="showMask = true">
-        <img src="@/assets/images/handel.png" alt="" width="100%" />
-        <span class="text" v-if="!friendId">
-           邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
-           <span class="text" v-else>
-           拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
-      </div>
-      <div class="btn yl_btn" @click="byArhat">
-        <span class="btn_text"> 拜罗汉 </span>
-      </div>
-      <div class="btn gren_btn" @click="share" >
-        <span class="btn_text"> 返回 </span>
-      </div>
-    </div>
-    <!-- 音乐 -->
-    <BgcMusic></BgcMusic>
-    <!-- 分享 -->
-    <div class="mask" v-show="showMask" @click="showMask = false">
-      <div class="point">
-        <img src="@/assets/images/share.png" alt="" />
-      </div>
-      <div class="text">
-        <img src="@/assets/images/share_rulai.png" alt="" />
-        <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
-      </div>
-    </div>
-    <!-- 拜罗汉 -->
-    <div class="masklh" v-show="Masklh" @click="Masklh = false">
-      <div class="main">
-        <div class="header">
-          <span> {{infoData.arhat.arhatName}}</span>
-        </div>
-        <div class="img">
-          <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
-        </div>
+      <!-- 拜罗汉 -->
+      <div class="masklh" v-show="Masklh" @click="Masklh = false">
+        <div class="main">
+          <div class="header">
+            <span> {{ infoData.arhat.arhatName }}</span>
+          </div>
+          <div class="img">
+            <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
+          </div>
 
-        <div class="text">
-          <div class="title">拜本尊罗汉积累福泽</div>
-          <div class="del">{{infoData.arhat.arhatName}}将庇佑您及家人一年健康好运</div>
+          <div class="text">
+            <div class="title">拜本尊罗汉积累福泽</div>
+            <div class="del">{{ infoData.arhat.arhatName }}将庇佑您及家人一年健康好运</div>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getluohanData,getbyArhat,getUserInfo}from '@/api/user.js'
+import { getluohanData, getbyArhat, getUserInfo } from '@/api/user.js'
 import BgcMusic from '@/components/BgcMusic'
 export default {
   components: {
@@ -85,121 +83,102 @@ export default {
   },
   data() {
     return {
-      friendId:undefined,
-      infoData:"",
+      friendId: '',
+      arhatId: '',
+      infoData: '',
       showMask: false,
       Masklh: false
     }
   },
-async created() {
-
-    this.getUser()
-    
-  },
+  async created() {},
   computed: {},
 
   mounted() {
+    this.getUser()
     //如果自己分享自己
-    this.comeback()
+    // this.comeback()
   },
 
   methods: {
-     getUser() {
+    getUser() {
       getUserInfo({})
         .then(res => {
-          if(res.data){
-             this.$sessionStorage.set('userinfo', res.data)
-             let userinfo = res.data
-             if(userinfo.yidamArhatId){
-               if(userinfo.id ==this.$route.query.friendId){
-                 window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-               }else{
-                this.initData() 
-               }
-             }else{
-               this.initData()
-             }
+          if (res.data) {
+            this.$sessionStorage.set('userinfo', res.data)
+            let userinfo = res.data
+            if (userinfo.yidamArhatId) {
+              if (userinfo.id == this.$route.query.friendId) {
+                window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+              } else {
+                this.initData()
+              }
+            } else {
+              this.initData()
+            }
           }
-
         })
         .catch(error => {
           this.shouquan()
         })
     },
-     shouquan() {
-        let url = encodeURIComponent(location.href)
-       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
-
+    shouquan() {
+      let url = encodeURIComponent(location.href)
+      window.location.href = `http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
     },
-    comeback(){
-       let UserInfo=this.$sessionStorage.get('userinfo')
-       this.$toast('yidamArhatId',UserInfo.yidamArhatId);
-      if(UserInfo.yidamArhatId!=undefined){
-        window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-      }else{
+    comeback() {
+      let UserInfo = this.$sessionStorage.get('userinfo')
+      //  this.$toast('yidamArhatId',UserInfo.yidamArhatId);
+      if (UserInfo.yidamArhatId) {
+        window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+      } else {
         let friendId = this.$route.query.friendId
-        window.location.href=`http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
+        window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
       }
     },
-     initData() {
-       try {
-         this.arhatId=this.$route.query.arhatId
-       } catch (error) {
-         let userinfo =  this.$sessionStorage.get('userinfo')
-        this.arhatId=userinfo.yidamArhatId
-       }
-        try {
-        this.friendId=this.$route.query.friendId
-       } catch (error) {
-        let userinfo =  this.$sessionStorage.get('userinfo')
-        this.arhatId=userinfo.id
-       }
+    initData() {
+      if (this.$route.query.friendId && this.$route.query.arhatId) {
+        this._getluohanData(this.$route.query.friendId, this.$route.query.arhatId)
+      } else {
+        let userinfo = this.$sessionStorage.get('userinfo')
+        let friendId = userinfo.id
+        let arhatId = userinfo.yidamArhatId
+        this._getluohanData(friendId, arhatId)
+      }
+    },
+    _getluohanData(friendId, arhatId) {
       getluohanData({
-         friendId:this.friendId,
-        arhatId :this.arhatId
+        friendId: friendId,
+        arhatId: arhatId
       })
         .then(res => {
-          this.infoData = res.data;
+          this.infoData = res.data
           console.log(res.data)
         })
         .catch(() => {})
     },
     byArhat() {
-       try {
-         this.arhatId=this.$route.query.arhatId
-       } catch (error) {
-         let userinfo =  this.$sessionStorage.get('userinfo')
-        this.arhatId=userinfo.yidamArhatId
-       }
-        try {
-        this.friendId=this.$route.query.friendId
-       } catch (error) {
-        let userinfo =  this.$sessionStorage.get('userinfo')
-        this.friendId=userinfo.id
-       }
+
+      let friendId ="";
+      let arhatId="";
+      if(this.$sessionStorage.get('userinfo')){
+        let userinfo = this.$sessionStorage.get('userinfo')
+         friendId = userinfo.id
+         arhatId = userinfo.yidamArhatId
+      }else{
+          friendId = this.$route.query.friendId
+          arhatId = this.$route.query.arhatId
+      }
       // 如果新用户 关注公众号
       getbyArhat({
-        friendId:this.friendId,
-         arhatId :this.arhatId
-      }).then(res=>{
-        if(res.state==200){
-
-              this.Masklh = true
-
+        friendId: friendId,
+        arhatId: arhatId
+      }).then(res => {
+        if (res.state == 200) {
+          this.Masklh = true
         }
       })
-
     },
-    share() {
-      if(this.$sessionStorage.get('userinfo').id){
-         let UserInfo=this.$sessionStorage.get('userinfo')
 
-        window.location.href=`http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-      }else{
-        window.location.href=`http://luohan.wuhanhsj.com/h5/step1`
-      }
-
-    }
   }
 }
 </script>
@@ -248,6 +227,8 @@ async created() {
   .masklh {
     position: fixed;
     z-index: 1001;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
@@ -268,7 +249,7 @@ async created() {
         top: -6px;
         left: 0;
         right: 0;
-        border-top: 56px solid #EFC75D;
+        border-top: 56px solid #efc75d;
         border-left: 25px solid transparent;
         border-right: 25px solid transparent;
         height: 0;
@@ -342,8 +323,8 @@ async created() {
   }
   .top_bg {
     width: 750px;
-    height: 470px;
-    position: fixed;
+    height: 600px;
+    position: relative;
     img {
       width: 100%;
       height: 100%;
@@ -352,7 +333,7 @@ async created() {
   .lh18 {
     width: 68px;
     height: 85px;
-    position: fixed;
+    position: absolute;
     left: 100px;
     top: 45px;
     z-index: 100;
@@ -362,17 +343,17 @@ async created() {
     }
   }
   .card {
-    position: fixed;
+    position: absolute;
     box-sizing: border-box;
     padding: 10px 20px;
 
-    top: 280px;
+    top: 25%;
     left: 0;
     right: 0;
     margin: 0 auto;
     z-index: 100;
     width: 690px;
-    height: 880px;
+    height: 70%;
     background: #ffffff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
@@ -488,7 +469,7 @@ async created() {
     display: block;
     position: absolute;
     left: -25px;
-    top: 170px;
+    top: 50%;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;
@@ -499,7 +480,7 @@ async created() {
     display: block;
     position: absolute;
     right: -25px;
-    top: 170px;
+    top: 50%;
     background: #f8f8f8;
     border-radius: 50%;
     width: 50px;

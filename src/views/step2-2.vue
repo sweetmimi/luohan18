@@ -2,64 +2,54 @@
 <template>
   <div class="contner">
     <div class="luohanPage">
-      <div class="gif">
-        <img :src="gif" width="100%" />
-      </div>
-      <div class="rulai"></div>
-        <div class="overall">
-    <div class="circle-box" @mousedown.prevent @mouseup.prevent @mousemove.prevent>
-      <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
-        <div
+      <v-touch v-on:swipeleft="onSwipeLeft" v-on:swiperight="onSwipeRight" style="width:100%;height:100%">
+          <keep-alive>
+          <audio
+            id="mymusic"
+            ref="music"
+            controls
+            hidden="true"
+            :src="require('@/assets/music/muyu.mp3')"
+          ></audio>
 
-          class="origin"
-          :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${stard}deg);`"
-        >
-          <div
-            :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${-stard}deg);`"
-            class="img-box"
-            v-for="(i,index) in mydata.lohanList"
-            :key="index"
-            @click="Turn(index,i.text)"
-          >
-            <div class="box" >
-              <img :src="i.icon" alt="" width="100%">
-              <!-- <div class="content">{{index+1}}</div> -->
+        </keep-alive>
+        <canvas class="myCanvas" id="myCanvas" width="375" height="420"> </canvas>
+        <div class="gif">
+          <img :src="gif" />
+        </div>
+        <div class="rulai"></div>
+
+        <div class="check">
+          <img src="@/assets/images/check.png" alt="" width="100%" />
+        </div>
+        <div class="icon">
+          <img src="@/assets/images/rate.png" alt="" width="100%" />
+        </div>
+        <div class="bottom">
+          <div class=" jump_btn" v-show="showpleaseLohan" @click="emtuofo_click">
+            <div class="btn_text btn">阿弥陀佛</div>
+             <div class="text">
+              <p >阿弥陀佛，请施主左右滑动十八罗汉图，选择罗汉菩并点击“阿弥陀佛”作为数罗汉的起始点</p>
+            </div>
+          </div>
+          <div class=" jump_btn" v-show="!showpleaseLohan" @click="qingbenzun_click">
+            <div class="btn_text btn">请本尊罗汉</div>
+            <div class="text">
+              <p >阿弥陀佛，施主已选择罗汉为数罗汉起始点，请男施主往左划，女施主往右划，划到自己虚岁对应的数字所指的罗汉，选择罗汉作为年本尊罗汉</p>
             </div>
           </div>
         </div>
-      </div>
+
+      </v-touch>
     </div>
-    <div class="agebox">
-    <div>{{age}}</div> 
-      </div>  
-  </div>
-      <div class="check">
-        <img src="@/assets/images/check.png" alt="" width="100%">
-      </div>
-      <div class="icon">
-          <img src="@/assets/images/rate.png" alt="" width="100%" />
-        </div>
-      <div class="bottom">
-        <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
-          <span class="btn_text">阿弥陀佛</span>
-        </div>
-        <div class="btn jump_btn" v-else @click="PleaseLohan">
-          <span class="btn_text">请本尊罗汉</span>
-        </div>
-      </div>
-      <div class="text">
-        <p>阿弥陀佛，请施主左右滑动十八罗汉图，选择罗汉菩并点击“阿弥陀佛”作为数罗汉的起始点</p>
-      </div>
-    </div>
-    <BgcMusic></BgcMusic>
+    <BgcMusic ref="child"></BgcMusic>
   </div>
 </template>
 
 <script>
-import $ from 'jquery'
 import BgcMusic from '@/components/BgcMusic'
 import { mydata } from '../assets/js/data.js'
-import {  getPleaseLohan } from '@/api/user.js'
+import { getPleaseLohan } from '@/api/user.js'
 export default {
   name: 'mydata.lohanList',
   components: {
@@ -68,17 +58,27 @@ export default {
 
   data() {
     return {
-       circle_w: 355, //圆盘的宽
-      circle_h: 355, //圆盘的高
-      box_w: 100, //圆盘上覆盖的小圆点宽
-      box_h: 100, //圆盘上覆盖的小圆点高
-      PI:360, //分布角度，默认为360deg
-      stard: 0, //起始角度
-      stard_s: null, //用来默认储存第一个初始值
-      boxNum: 18, //圆盘上覆盖的小圆点个数
-      activeIndex: 1, //默认下标
-      arhatId:"",
-      age:0,
+      showage:false,//默认不展示年龄
+      ableclick:0,//0可点击阿弥陀佛 1否
+      artid:1,//罗汉id
+      roundter:null,
+      luohan_status: 0, // 0 表示开始， 1 表示已选取罗汉起始点， 2 表示已获取本尊罗汉。
+      luohans: [], //画布中的罗汉信息
+      luohan_scales: [1.2, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.4, 0.4], //罗汉缩放比例。
+      mycv: null, //罗汉画布
+      count: 0,
+      showCnt: 0,
+      center_x: 195, //罗汉圆心x坐标
+      center_y: 190, //罗汉圆心y坐标
+      cyc_rad: 152, //罗汉圆半径
+      touched: false,
+      luohan_width: 30,
+      luohan_height: 40,
+      luohan_touch_start_x: 0,
+      luohan_touch_start_y: 0,
+      luohan_touch_end_x: 0,
+      luohan_touch_end_y: 0,
+      user_age: 1, //用户年龄
       userinfo: {
         openid: ''
       },
@@ -90,158 +90,303 @@ export default {
   },
 
   async created() {
-    this.stard_s = this.stard;
+    this.stard_s = this.stard
   },
 
   computed: {},
 
   mounted() {
-     this.$nextTick(() => {
-     
-      let container_dom = this.$refs.bigcircle;
-      container_dom.addEventListener('mousedown', this.handleMouseDown.bind(this));
-      container_dom.addEventListener('mouseup', this.handleMouseUp.bind(this));
-      container_dom.addEventListener('mouseleave', this.handleMouseUp.bind(this));
-      container_dom.addEventListener('mousemove', this.handleMouseMove.bind(this));
-      container_dom.addEventListener('touchstart', this.handleMouseDown.bind(this));
-      container_dom.addEventListener('touchend', this.handleMouseUp.bind(this));
-      container_dom.addEventListener('touchcancel', this.handleMouseUp.bind(this));
-      container_dom.addEventListener('touchmove', this.handleMouseMove.bind(this));
-      window.addEventListener('resize', this.responseContainerScale.bind(this));
-      window.addEventListener('load', this.responseContainerScale.bind(this));
-    })
-     this.init();
-    this.Turn(this.activeIndex);
+    this.load()
+    // this.$refs.child.open();
+    // this.$nextTick(() => {
+    //   window.addEventListener('load', this.load.bind(this))
+    // })
+
     this.i = 1
-    
     var that = this
     this.ter = setInterval(function () {
       if (that.i == 12) {
         that.i = 1
       }
-      
       that.chImg()
     }, 300)
-     that.inde =1
-     that.age=0;
-     that.luohanid =1;
-    this.rateTer = setInterval(function () {
-       that.inde++
-       if(that.luohanid<18){
-         that.luohanid=1
-       }
-      that.luohanid++
-
-       that.age++
-      that.automatic(that.inde,that.luohanid)
-    }, 4000)
   },
   beforeDestroy() {
     //清除定时器
-    clearInterval(this.ter);
-    clearInterval(this.rateTer);
+    clearInterval(this.ter)
+    clearInterval(this.roundter)
     // console.log("beforeDestroy");
   },
   destroyed() {
     //清除定时器
-    clearInterval(this.ter);
-    clearInterval(this.rateTer);
+    clearInterval(this.ter)
+    clearInterval(this.roundter)
     //console.log("destroyed");
   },
   methods: {
-        handleMouseDown (e) {
-      clearInterval(this.UDLMactionTimer);
-      this.mouseIsDown = true;
-      this.startX = e.clientX || e.touches[0].clientX;
-      this.endX = e.clientX || e.touches[0].clientX;
+    onSwipeLeft() {
+      var oAudio = document.getElementById('mymusic')
+      oAudio.play();
+      this.runLuohan(-1, 1)
+
+      // this.$toast('向左滑动')
     },
-    handleMouseUp () {
-      this.mouseIsDown = false;
-      clearInterval(this.timer);
-      this.timer = null;
-      this.startX = 0;
-      this.endX = 0;
-      if (this.lastSpeed) this.UDLMaction();
+    onSwipeRight() {
+      var oAudio = document.getElementById('mymusic')
+      oAudio.play();
+      // clearInterval(this.roundter)//清除定时器
+      this.runLuohan(1, 1)
+
+      // this.$toast('向右滑动')
     },
-    handleMouseMove (e) {
-      this.endX = e.clientX || e.touches[0].clientX;
-      if (!this.mouseIsDown) return;
-      if (!this.timer) {
-        this.timer = setInterval(() => {
-          let moveGap = this.endX - this.startX;
-          this.lastSpeed = moveGap / this.timeGap;
-          this.xGap += moveGap;
-          this.direction = moveGap > 0 ? 1 : -1;
-          this.startX = this.endX;
-        }, this.timeGap);
+    //画罗汉开始出现位置
+    drawLuohan(beauty) {
+      // console.log("src" ,beauty)
+      this.mycv = document.getElementById('myCanvas')
+      // console.log(this.mycv)
+      var myctx = this.mycv.getContext('2d')
+      myctx.strokeStyle = 'rgba(255,0,0,0.3)'
+      // myctx.drawImage(beauty, 0, 0, this.luohan_width, this.luohan_height)
+      var luohan = {
+        artid:beauty.artid,
+        img: beauty,
+        index: this.luohans.length,
+        angle: 270,
+        px: this.center_x,
+        py: this.center_y + this.cyc_rad,
+        width: 0,
+        height: 0,
+        visible: false,
+        isStart: false,
+        age: 0
+      }
+      this.luohans.push(luohan)
+      // console.log('luohans', this.luohans)
+      // setTimeout(function(beauty){
+      //     var mycv = document.getElementById("myCanvas");
+      //     var myctx = mycv.getContext("2d");
+      //     myctx.clearRect(0,0, mycv.width,mycv.height);
+      //     myctx.drawImage(beauty, 100, 100, 50, 50);
+      // }, 3000);
+    },
+    //备用，当前图片缩放比例用三角函数控制
+    getScaleByAngle(ang) {
+      len_scale = luohan_scales.length
+      if (ang < 100 && ang > 0) {
+        ang += 360
+      }
+      scale_postion = (ang - 270) / 20
+      scale_postion %= len_scale
+      return luohan_scales[scale_postion]
+    },
+    //抽取本尊罗汉时，转动罗汉，
+    //dir 转动方向，-1 顺时，1 逆时 。
+    //step, 旋转总步数，默认给 1
+    runLuohan(dir, steps) {
+
+      var _this = this
+      if (0 == _this.luohans.length) return
+      for (var i = 1; i <= steps; i++) {
+        setTimeout(
+          function (dir) {
+            var myctx = _this.mycv.getContext('2d')
+            myctx.beginPath() //把笔抬起来
+            myctx.clearRect(0, 0, _this.mycv.width, _this.mycv.height)//擦除一个矩形区域 矩形的左上角坐标和矩形的宽高
+            _this.luohans.forEach(function (val, index, lhs) {
+              val.angle += 20 * dir
+              if (val.angle < 0) {
+                val.angle += 360
+              }
+              val.angle %= 360
+              //缩放比例
+              var imgScale = Math.abs(1 + Math.sin(((2 * Math.PI) / 360) * (val.angle + 180))) //getScaleByAngle(); //
+              if (imgScale < 0.5) {
+                imgScale = 0.5
+              }
+              val.width = _this.luohan_width * imgScale
+              val.height = _this.luohan_height * imgScale
+
+              //圆心的坐标为（a,b)。则圆上每个点的X坐标=a + Math.cos(2*Math.PI / 360) * r ；Y坐标=b + Math.sin(2*Math.PI / 360) * r ；
+              myctx.drawImage(
+                val.img,
+                _this.center_x + Math.cos(((2 * Math.PI) / 360) * val.angle) * _this.cyc_rad - val.width / 2,
+                _this.center_y - Math.sin(((2 * Math.PI) / 360) * val.angle) * _this.cyc_rad - val.height / 2,
+                val.width,
+                val.height
+              )
+              //画岁数
+              if (270 == val.angle && _this.showage) {
+                var pri_use_age = _this.user_age
+                _this.user_age += dir
+                if (0 == _this.user_age) {
+                  _this.user_age = -2
+                  if (pri_use_age < 0) {
+                    _this.user_age = 2
+                  }
+                }
+               _this.show_user_age = Math.abs(_this.user_age) % 120
+                myctx.font = 'normal 28px Verdana'
+                 myctx.fillStyle = '#fff'
+                myctx.fillText(
+                  _this.show_user_age,
+              _this.center_x - val.width / 2+15 ,
+              _this.center_y + _this.cyc_rad - val.height / 2
+                  )
+              }
+            })
+            myctx.fill() //下笔作画
+
+            //播放背景音乐
+          },
+          600 * i,
+          dir
+        )
       }
     },
+    //阿弥陀佛按钮
+    emtuofo_click(e) {
+      this.showage = true;
+      this.user_age=1;
+      this.show_user_age=1
+      if(this.ableclick==1){
+          clearInterval(this.roundter)
+
+      this.showpleaseLohan = false
+      this.luohan_status = 1
+
+      console.log(this.artid)
+      this.luohans.forEach(function (val, index, lhs) {
+        if (270 == val.angle) {
+          val.isStart = true
+          val.age = 1
+        }
+
+
+      })
+      }else{
+        // this.$toast('请等待罗汉出场')
+      }
+
+
+    },
+    //请本尊按钮
+    qingbenzun_click(e) {
+      this.luohan_status = 2
+      var artid =1
+       if(this.show_user_age<=18){
+        artid=this.show_user_age
+      }else{
+         artid=this.show_user_age%18
+      }
+      this.PleaseLohan(artid)
+    },
+    load() {
+      let _this = this
+      mydata.lohanList.forEach((item, index) => {
+        var beauty = new Image()
+        beauty.src = item.icon //"./static/img/1.b382b24a.png";//"http://images.cnblogs.com/cnblogs_com/html5test/359114/r_test.jpg";
+        beauty.artid = item.id//罗汉
+        if (beauty.complete) {
+          _this.drawLuohan(beauty)
+        } else {
+          beauty.onload = function () {
+            _this.drawLuohan(beauty)
+          }
+          beauty.onerror = function () {
+            _this.$toast('罗汉加载失败，请重试')
+            //写点log，记录
+          }
+        }
+      })
+
+      //自动旋转罗汉
+
+     this.roundter= setInterval(function () {
+        if (_this.luohans.length == 0) return
+        if (1 == _this.luohan_status) return //&& touched
+        var myctx = _this.mycv.getContext('2d')
+
+        myctx.beginPath() //把笔抬起来
+        myctx.clearRect(0, 0, _this.mycv.width, _this.mycv.height) //擦除一个矩形区域 矩形的左上角坐标和矩形的宽高
+        // mycv.fillStyle="black";
+        // //canCon.fill的意思在这张宣纸上拿起一只画实心图形的笔，
+        // //style="black"的意思就是蘸上一个黑色墨
+        // //连起来看的话就是拿起一只画实心图形的笔并粘上有黑色的墨水
+        // mycv.arc(233,y++,66,0,Math.PI*2);
+        // //在宣纸上构思画一个圆（圆心的X位置，Y位置，圆的半径，从什么位置开始画圆，画到哪里结束）；
+        _this.showCnt = 0
+        _this.luohans.forEach(function (val, index, lhs) {
+          _this.artid = val.artid
+          if (1 == _this.showCnt) {
+            return
+          }
+
+          if (!val.visible) {
+            //缩放比例
+            var imgScale = Math.abs(1 + Math.sin(((2 * Math.PI) / 360) * (val.angle + 180)))
+            if (imgScale < 0.5) {
+              imgScale = 0.5
+            }
+            val.width = _this.luohan_width * imgScale
+            val.height = _this.luohan_height * imgScale
+            _this.showCnt++
+            val.visible = true
+            myctx.drawImage(val.img, val.px - val.width / 2, val.py - val.height / 2, val.width, val.height)
+            return
+          }
+          val.angle += 20
+          val.angle %= 360
+          //缩放比例
+          var imgScale = Math.abs(1 + Math.sin(((2 * Math.PI) / 360) * (val.angle + 180)))
+          if (imgScale < 0.5) {
+            imgScale = 0.5
+          }
+          val.width = _this.luohan_width * imgScale
+          val.height = _this.luohan_height * imgScale
+          //圆心的坐标为（a,b)。则圆上每个点的X坐标=a + Math.cos(2*Math.PI / 360) * r ；Y坐标=b + Math.sin(2*Math.PI / 360) * r ；
+          myctx.drawImage(
+            val.img,
+            _this.center_x + Math.cos(((2 * Math.PI) / 360) * val.angle) * _this.cyc_rad - val.width / 2,
+            _this.center_y - Math.sin(((2 * Math.PI) / 360) * val.angle) * _this.cyc_rad - val.height / 2,
+            val.width,
+            val.height
+          )
+          //测试用，整合代码后，请屏蔽 此端代码。
+          if (270 == val.angle) {
+            _this.user_age += 1
+            _this.ableclick = 1
+          }
+        })
+
+        myctx.fill() //下笔作画
+        //count++;
+      }, 1000)
+    }, //load
+
     chImg() {
       this.gif = require(`@/assets/images/cardGif/${this.imgs[this.i]}.png`)
       this.i++
     },
     showBtn() {
-      clearInterval(this.rateTer);
-      this.showpleaseLohan = false
+
     },
 
     // 亲本尊
-    PleaseLohan() {
-        getPleaseLohan({
-          arhatId:this.arhatId,
-        }).then(res => {
-          if (res.state == 200) {
-            this.$sessionStorage.set('oldArhatTip', res.data.tip)
-            this.$router.replace({
-              path: '/step3',
-              query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
-            })
-          }
-        })
+    PleaseLohan(id) {
+      this.arhatId = id;
+      getPleaseLohan({
+        arhatId: id
+      }).then(res => {
+        if (res.state == 200) {
+          this.$sessionStorage.set('oldArhatTip', res.data.tip)
+          this.$router.replace({
+            path: '/step3',
+            query: { arhatId: this.arhatId, isExist: res.data.isExist, oldArhatId: res.data.oldArhatId }
+          })
+        }
+      })
+    },
 
-    },
-        //初始化小圆点，根据计算使其分布到对应位置
-    init() {
-      let box = document.querySelectorAll(".img-box");
-      let avd = this.PI / box.length; //每一个 img-box 对应的角度
-      let ahd = (avd * Math.PI) / 180; //每一个 img-box 对应的弧度
-      let radius = this.circle_w / 2; //圆的半径
-      for (let i = 0; i < box.length; i++) {
-        box[i].style.left = Math.sin(ahd * i) * radius + "px";
-        box[i].style.top = Math.cos(ahd * i) * radius + "px";
-      }
-    },
-    //点击相对应小圆点，圆盘进行相对应角度的转动
-    Turn(index,arhatId) {
-      this.age = Number(this.age)+ Number(arhatId) ;
-      this.arhatId=arhatId;
-       clearInterval(this.rateTer);
-      
-      let _this = this;
-      let bx = document.querySelectorAll(".box");
-      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
-      for (let i = 0; i < bx.length; i++) {
-        if (i == index) {
-          bx[i].classList.add("box-active");
-        } else {
-          bx[i].classList.remove("box-active");
-        }
-      }
-    },
-    automatic(index,luohanid){
-     
-      let _this = this;
-       _this.arhatId=luohanid;
-      let bx = document.querySelectorAll(".box");
-      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
-      for (let i = 0; i < bx.length; i++) {
-        if (i == index) {
-          bx[i].classList.add("box-active");
-        } else {
-          bx[i].classList.remove("box-active");
-        }
-      }
-    },
     activated() {
       var _this = this
       _this.uuid = _this.$route.query.uuid
@@ -257,126 +402,33 @@ export default {
 </script>
 <style lang='scss' scoped>
 .luohanPage {
-  margin: 0 auto;
-  position: fixed;
-  z-index: 100;
   width: 100%;
   height: 100%;
   background-image: url('~@/assets/images/black_bgc.png');
   background-size: cover;
   background-repeat: no-repeat;
   //ccs
-  .overall {
-   position: relative;
-    left: 0;
-    right: 0;
-    top: 60px;
-    margin: 0 auto;
-    width: 700px;
-    height: 700px;
-    // border: 1px dashed #f4f4f4;
-    border-radius: 350px;
-
-.circle-box {
-  position: absolute;//注释--------------------------此处显示全圆
-  // overflow: hidden;//注释----------------------此处显示全圆
-   right: 0;//注释---------------------此处显示全圆
-   left: 0;
-   margin: 0 auto;
-  .circle {
-
-    transform: scale(0.9);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-sizing: border-box;
-    // border: 1px solid #4d4c4c;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // margin-left: 50%; //注释----------------此处显示全圆
-    .origin {
-      position: relative;
-      transition: 0.5s; //控制圆盘的的旋转速率
-      .img-box {
-        user-select: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: none !important;
-        pointer-events: none;
-        .box {
-          pointer-events: all !important;
-          width: 100%;
-          height: 100%;
-          transition: 0.3s;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          left: 0;
-          top: 0;
-          // border-radius: 50%;
-          transform: scale(0.3);
-          cursor: pointer;
-          color: white;
-          font-size: 40px;
-          // background: black;
-          // overflow: hidden;
-          &:hover {
-            transform: scale(0.3);
-          }
-          &:hover .content {
-            opacity: 1;
-          }
-          .content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-          }
-        }
-        .box-active {
-          transition-delay: 0.3s;
-          transform: scale(1) !important;
-          .content {
-            opacity: 1;
-          }
-        }
-      }
-    }
-  }
-}
-    }  //end
   .rulai {
-    position: fixed;
+    position: absolute;
     z-index: 200;
-    width: 400px;
+    width: 350px;
     left: 0px;
-    right:0;
+    right: 0;
     margin: 0 auto;
-    top: 255px;
-    height: 450px;
+    top: 225px;
+    height: 400px;
     background-image: url('~@/assets/images/rulai2.png');
     background-size: 100%;
     background-repeat: no-repeat;
   }
-  .rotate{
-    animation: myRotate 18s linear infinite;
+  .myCanvas {
+    position: fixed;
+    z-index: 399;
+
   }
-  @keyframes myRotate {
-  0% {
-    transform: rotate(0deg)
-  }
-  100% {
-    transform: rotate(360deg)
-  }
-}
+
   .luohan {
-    position: relative;
+    position: absolute;
     left: 0;
     right: 0;
     top: 60px;
@@ -429,7 +481,7 @@ export default {
       top: 00px;
       left: 280px;
     }
-     .div10 {
+    .div10 {
       top: 0px;
       right: 260px;
     }
@@ -466,100 +518,108 @@ export default {
       right: 180px;
     }
   }
-  .agebox{
+  .agebox {
     text-align: center;
-   
-    position:absolute;
+
+    position: absolute;
     left: 0;
     right: 0;
     margin: 0 auto;
     bottom: 40px;
     width: 102px;
-height: 102px;
-background: rgba(0, 0, 0, 0.65);
-border-radius: 15px;
-border: 1px solid #979797;
+    height: 102px;
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 15px;
+    border: 1px solid #979797;
 
- div{
-  
-margin-top: 20px;
-line-height: 56px;
-font-size: 48px;
-  color: #ffffff;
- }
-
+    div {
+      margin-top: 20px;
+      line-height: 56px;
+      font-size: 48px;
+      color: #ffffff;
+    }
   }
-  .check{
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      bottom: 420px;
-      margin: 0 auto;
-      width: 90px;
-      left: 0;
-      right: 0;
+  .check {
+    position: absolute;
+    height: 60px;
+    top: 780px;
+    margin: 0 auto;
+    width: 90px;
+    left: 0;
+    right: 0;
   }
   .icon {
     position: absolute;
-    bottom: 360px;
-      margin: 0 auto;
-      width: 90px;
-      left: 0;
-      right: 0;
-
+    top: 850px;
+    margin: 0 auto;
+    width: 90px;
+    left: 0;
+    right: 0;
   }
   .gif {
+    left: -10px;
+    top: 30px;
     width: 100%;
-    height: 40px;
+    height: 700px;
+    position: absolute;
+    img {
+      height: 100%;
+      width: 100%;
+    }
   }
   .bottom {
-    position: fixed;
+    position: absolute;
     margin: 20px auto;
     width: 80%;
-    height: 80px;
-   bottom: 250px;
+    height: 280px;
+    bottom: 30px;
     left: 0;
     z-index: 99;
     right: 0;
 
     .jump_btn {
+      position: absolute;
       z-index: 300;
-      position: fixed;
-      width: 329px;
-      height: 80px;
+      width: 100%;
+      height: 100%;
       left: 0;
       right: 0;
       margin: 0 auto;
       border-radius: 50px;
       .btn_text {
+        border-radius: 40px;
+        width: 300px;
         font-size: 32px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 600;
         color: #ffffff;
         line-height: 80px;
       }
+
     }
-  }
-  .text {
+     .text {
     position: absolute;
     text-align: left;
     margin: 0 auto;
-    bottom: 80px;
+    top: 130px;
+
     left: 0;
     z-index: 200;
     right: 0;
-    width: 611px;
-    height: 168px;
+    width: 100%;
+
     background: rgba(187, 187, 187, 0.25);
     border-radius: 15px;
     p {
       margin: 15px;
-      font-size: 32px;
+      font-size: 28px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #ffffff;
       line-height: 1.3;
     }
   }
+  }
+
 }
 </style>
