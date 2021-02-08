@@ -38,7 +38,7 @@
         <p>阿弥陀佛，请施主左右滑动十八罗汉图，选择罗汉菩并点击“阿弥陀佛”作为数罗汉的起始点</p>
       </div>
     </div>
-    <BgcMusic></BgcMusic>
+    <!-- <BgcMusic></BgcMusic> -->
   </div>
 </template>
 

@@ -35,13 +35,13 @@
 
       <div class="text">
         <div class="title">
-          <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p>
-          <!-- <p v-if="isExist==1">
+          <!-- <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p> -->
+          <p v-if="isExist==1">
             {{tip}}
           </p>
           <p v-else>
              {{infoData.arhat.describe}}
-          </p> -->
+          </p>
 
 
       </div>
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <BgcMusic></BgcMusic>
+    <!-- <BgcMusic></BgcMusic> -->
   </div>
   </div>
 </template>

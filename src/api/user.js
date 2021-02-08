@@ -42,6 +42,24 @@ export function getUserInfo(data) {
     hideloading: true
   })
 }
+//获取跳转
+export function getuserShare(params){
+  return request({
+    url: api.userShare,
+    method: 'get',
+    params,
+    hideloading: true
+  })
+}
+//获取罗汉信息
+export function getLohanListData(data) {
+  return request({
+    url: api.getLohanListData,
+    method: 'post',
+    data,
+    hideloading: true
+  })
+}
 
 export function getPleaseLohan(data) {
   return request({

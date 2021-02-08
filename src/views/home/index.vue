@@ -43,7 +43,7 @@
         </div>
       </div>
       <!-- 音乐 -->
-      <BgcMusic></BgcMusic>
+      <!-- <BgcMusic></BgcMusic> -->
       <!-- 分享 -->
       <div class="mask" v-show="showMask" @click="showMask = false">
         <div class="point">

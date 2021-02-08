@@ -1,6 +1,8 @@
 const api = {
   Login: '/user/login',
   UserInfo: '/vote/api/v1/android/getUserInfo',//用户信息
+  userShare:'/vote/api/v1/android/userShare',//用户分享
+  getLohanListData:'/vote/api/v1/android/getLohanListData',//获取罗汉信息
   Authorization: '/vote/api/v1/android/authorization',//授权
   UserName: '/user/name',
   PleaseLohan: '/vote/api/v1/android/pleaseLohan',//请本尊

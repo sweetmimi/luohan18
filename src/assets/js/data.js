@@ -1,26 +1,5 @@
 export const mydata = {
 
-    tabs: [{
-        label: "Home",
-        link: "home",
-    },
-    {
-        label: "Deskripsi Produk",
-        link: "product",
-    },
-    {
-        label: "Tentang Kami",
-        link: "about",
-    },
-    {
-        label: "Event",
-        link: "event",
-    },
-    {
-        label: "Bantuan",
-        link: "help",
-    },
-    ],
     lohanList: [
       {
         icon: require("../images/luohan/1.png"),
@@ -96,62 +75,4 @@ export const mydata = {
       },
 
     ],
-
-      productdata1: [{
-            id: 1,
-            title: "Pinjaman Pribadi",
-            rp: "1.500.000",
-            midl: {
-              name: "Jangka Waktu Pinjaman",
-              money: "28 hari",
-            },
-            ul: [{
-                li: 1,
-                name: "Nominal Pinjaman",
-                key: "RP 1.500.000",
-              },
-              {
-                li: 2,
-                name: "Dana Diterima ",
-                key: "RP 1.284.247",
-              },
-              {
-                li: 3,
-                name: "Biaya Harian (%)",
-                key: " 0,6%",
-              },
-            ],
-          },
-          {
-            id: 2,
-            title: "Pinjaman Usaha",
-            rp: "3.000.000",
-            midl: {
-              name: "Jangka Waktu Pinjaman",
-              money: "60 hari",
-            },
-            ul: [{
-                li: 1,
-                name: "Nominal Pinjaman",
-                key: "RP 3.000.000",
-              },
-              {
-                li: 2,
-                name: "Dana Diterima ",
-                key: "RP 2.205.882",
-              },
-              {
-                li: 3,
-                name: "Biaya Harian (%)",
-                key: " 0,6%",
-              },
-            ],
-          },
-        ],
-
-
-
-
-
-
 }

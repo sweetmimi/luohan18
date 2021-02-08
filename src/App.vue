@@ -60,10 +60,10 @@ export default {
         this.getWechatConfig()
       }
     },
-   async getWechatConfig() {
+    getWechatConfig() {
       let url = location.href
       // 我们后代开发人员的接口，不是微信那边的
-     await getWxSDKConfig({
+      getWxSDKConfig({
         url: url
       }).then(res => {
         if(res.state==200){
@@ -112,7 +112,7 @@ export default {
             imgUrl: UserInfo.arhatUrl // 分享图标
           }
          }else{
-            url = `http://luohan.wuhanhsj.com/h5/step1?friendId=${UserInfo.id}`
+            url = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${UserInfo.id}`
             shareInfo = {
             title: '拜罗汉,得保佑', // 分享标题
             desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述

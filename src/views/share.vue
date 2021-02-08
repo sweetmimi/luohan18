@@ -43,7 +43,7 @@
         </div>
       </div>
       <!-- 音乐 -->
-      <BgcMusic></BgcMusic>
+      <!-- <BgcMusic></BgcMusic> -->
       <!-- 分享 -->
       <div class="mask" v-show="showMask" @click="showMask = false">
         <div class="point">
@@ -160,13 +160,14 @@ export default {
 
       let friendId ="";
       let arhatId="";
-      if(this.$sessionStorage.get('userinfo')){
+      if(this.$route.query.friendId){
+         friendId = this.$route.query.friendId
+          arhatId = this.$route.query.arhatId
+       
+      }else{
         let userinfo = this.$sessionStorage.get('userinfo')
          friendId = userinfo.id
          arhatId = userinfo.yidamArhatId
-      }else{
-          friendId = this.$route.query.friendId
-          arhatId = this.$route.query.arhatId
       }
       // 如果新用户 关注公众号
       getbyArhat({

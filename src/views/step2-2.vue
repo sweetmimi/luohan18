@@ -22,42 +22,43 @@
         <div class="check">
           <img src="@/assets/images/check.png" alt="" width="100%" />
         </div>
-        <div class="icon">
+        <!-- <div class="icon">
           <img src="@/assets/images/rate.png" alt="" width="100%" />
-        </div>
+        </div> -->
         <div class="bottom">
           <div class=" jump_btn" v-show="showpleaseLohan" @click="emtuofo_click">
             <div class="btn_text btn">阿弥陀佛</div>
              <div class="text">
-              <p >阿弥陀佛，请施主左右滑动十八罗汉图，选择罗汉菩并点击“阿弥陀佛”作为数罗汉的起始点</p>
+               <p v-if="ableclick==1"> 阿弥陀佛,请施主点击“阿弥陀佛”按钮,选择一位罗汉为起始点</p>
+               <p v-else>阿弥陀佛,施主,十八罗汉出场中 </p>
             </div>
           </div>
           <div class=" jump_btn" v-show="!showpleaseLohan" @click="qingbenzun_click">
             <div class="btn_text btn">请本尊罗汉</div>
             <div class="text">
-              <p >阿弥陀佛，施主已选择罗汉为数罗汉起始点，请男施主往左划，女施主往右划，划到自己虚岁对应的数字所指的罗汉，选择罗汉作为年本尊罗汉</p>
+              <p >阿弥陀佛，施主已选择{{startLuohan}}为起始点，请男施主往左划，女施主往右划，划到自己虚岁对应的数字所指的罗汉，选择罗汉作为年本尊罗汉</p>
             </div>
           </div>
         </div>
 
       </v-touch>
     </div>
-    <BgcMusic ref="child"></BgcMusic>
+    <!-- <BgcMusic ref="child"></BgcMusic> -->
   </div>
 </template>
 
 <script>
 import BgcMusic from '@/components/BgcMusic'
-import { mydata } from '../assets/js/data.js'
-import { getPleaseLohan } from '@/api/user.js'
+import { getPleaseLohan ,getLohanListData} from '@/api/user.js'
 export default {
-  name: 'mydata.lohanList',
+  name: 'lohanList',
   components: {
     BgcMusic
   },
 
   data() {
     return {
+      startLuohan:"",//起始罗汉
       showage:false,//默认不展示年龄
       ableclick:0,//0可点击阿弥陀佛 1否
       artid:1,//罗汉id
@@ -70,7 +71,7 @@ export default {
       showCnt: 0,
       center_x: 195, //罗汉圆心x坐标
       center_y: 190, //罗汉圆心y坐标
-      cyc_rad: 152, //罗汉圆半径
+      cyc_rad: 155, //罗汉圆半径
       touched: false,
       luohan_width: 30,
       luohan_height: 40,
@@ -83,20 +84,21 @@ export default {
         openid: ''
       },
       showpleaseLohan: true,
-      mydata: mydata,
+      arhatList: [],
       gif: '',
       imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
 
-  async created() {
-    this.stard_s = this.stard
+  created() {
+    
   },
 
   computed: {},
 
   mounted() {
-    this.load()
+    this._getLohanListData()
+    this.stard_s = this.stard
     // this.$refs.child.open();
     // this.$nextTick(() => {
     //   window.addEventListener('load', this.load.bind(this))
@@ -124,18 +126,55 @@ export default {
     //console.log("destroyed");
   },
   methods: {
+    //滑动音效兼容
+    palymusic(){
+
+   var oAudio = document.getElementById('mymusic')
+    if (window.WeixinJSBridge) {
+      WeixinJSBridge.invoke(
+        'getNetworkType',
+        {},
+        function (e) {
+          oAudio.play()
+        },
+        false
+      )
+    } else {
+      document.addEventListener(
+        'WeixinJSBridgeReady',
+        function () {
+          WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+            oAudio.play()
+          })
+        },
+        false
+      )
+    }
+    oAudio.play()
+    },
+    //获取罗汉list
+    _getLohanListData(){
+      getLohanListData({}).then(res=>{
+        this.arhatList = res.data.arhatList;
+        this.load()
+        // console.log(this.arhatList)
+      })
+    },
     onSwipeLeft() {
-      var oAudio = document.getElementById('mymusic')
-      oAudio.play();
-      this.runLuohan(-1, 1)
+      if(this.ableclick==1){
+         this.palymusic()
+         this.runLuohan(-1, 1)
+      }
+     
 
       // this.$toast('向左滑动')
     },
     onSwipeRight() {
-      var oAudio = document.getElementById('mymusic')
-      oAudio.play();
-      // clearInterval(this.roundter)//清除定时器
-      this.runLuohan(1, 1)
+       if(this.ableclick==1){
+             this.palymusic()
+            this.runLuohan(1, 1)
+       }
+   
 
       // this.$toast('向右滑动')
     },
@@ -148,6 +187,7 @@ export default {
       myctx.strokeStyle = 'rgba(255,0,0,0.3)'
       // myctx.drawImage(beauty, 0, 0, this.luohan_width, this.luohan_height)
       var luohan = {
+        arhatName:beauty.arhatName,
         artid:beauty.artid,
         img: beauty,
         index: this.luohans.length,
@@ -203,9 +243,15 @@ export default {
               if (imgScale < 0.5) {
                 imgScale = 0.5
               }
-              val.width = _this.luohan_width * imgScale
-              val.height = _this.luohan_height * imgScale
+     
+             if(270 == val.angle){
+                 val.width = _this.luohan_width * imgScale +30
+                val.height = _this.luohan_height * imgScale +40
+              }else{
+                 val.width = _this.luohan_width * imgScale
+                val.height = _this.luohan_height * imgScale
 
+           }
               //圆心的坐标为（a,b)。则圆上每个点的X坐标=a + Math.cos(2*Math.PI / 360) * r ；Y坐标=b + Math.sin(2*Math.PI / 360) * r ；
               myctx.drawImage(
                 val.img,
@@ -229,7 +275,7 @@ export default {
                  myctx.fillStyle = '#fff'
                 myctx.fillText(
                   _this.show_user_age,
-              _this.center_x - val.width / 2+15 ,
+              _this.center_x - val.width / 2+20 ,
               _this.center_y + _this.cyc_rad - val.height / 2
                   )
               }
@@ -238,7 +284,7 @@ export default {
 
             //播放背景音乐
           },
-          600 * i,
+          500 * i,
           dir
         )
       }
@@ -255,12 +301,15 @@ export default {
       this.luohan_status = 1
 
       console.log(this.artid)
+      let _this = this;
       this.luohans.forEach(function (val, index, lhs) {
         if (270 == val.angle) {
           val.isStart = true
           val.age = 1
+          _this.startLuohan = val.arhatName
+          _this.$toast.success(`施主已选择${val.arhatName}为起始点`)
         }
-
+       
 
       })
       }else{
@@ -282,10 +331,11 @@ export default {
     },
     load() {
       let _this = this
-      mydata.lohanList.forEach((item, index) => {
+      _this.arhatList.forEach((item, index) => {
         var beauty = new Image()
-        beauty.src = item.icon //"./static/img/1.b382b24a.png";//"http://images.cnblogs.com/cnblogs_com/html5test/359114/r_test.jpg";
+        beauty.src = item.arhatPic //"./static/img/1.b382b24a.png";//"http://images.cnblogs.com/cnblogs_com/html5test/359114/r_test.jpg";
         beauty.artid = item.id//罗汉
+        beauty.arhatName = item.arhatName//罗汉名称
         if (beauty.complete) {
           _this.drawLuohan(beauty)
         } else {
@@ -327,10 +377,16 @@ export default {
             if (imgScale < 0.5) {
               imgScale = 0.5
             }
-            val.width = _this.luohan_width * imgScale
-            val.height = _this.luohan_height * imgScale
             _this.showCnt++
             val.visible = true
+             if(270 == val.angle){
+                 val.width = _this.luohan_width * imgScale +30
+                val.height = _this.luohan_height * imgScale +40
+              }else{
+                 val.width = _this.luohan_width * imgScale
+                val.height = _this.luohan_height * imgScale
+
+           }
             myctx.drawImage(val.img, val.px - val.width / 2, val.py - val.height / 2, val.width, val.height)
             return
           }
@@ -341,8 +397,14 @@ export default {
           if (imgScale < 0.5) {
             imgScale = 0.5
           }
-          val.width = _this.luohan_width * imgScale
-          val.height = _this.luohan_height * imgScale
+            if(270 == val.angle){
+                 val.width = _this.luohan_width * imgScale +30
+                val.height = _this.luohan_height * imgScale +40
+              }else{
+                 val.width = _this.luohan_width * imgScale
+                val.height = _this.luohan_height * imgScale
+
+           }
           //圆心的坐标为（a,b)。则圆上每个点的X坐标=a + Math.cos(2*Math.PI / 360) * r ；Y坐标=b + Math.sin(2*Math.PI / 360) * r ；
           myctx.drawImage(
             val.img,
@@ -445,78 +507,7 @@ export default {
         width: 100%;
       }
     }
-    .div1 {
-      bottom: 0;
-      left: 50%;
-    }
-    .div2 {
-      bottom: 20px;
-      left: 230px;
-    }
-    .div3 {
-      bottom: 95px;
-      left: 140px;
-    }
-    .div4 {
-      bottom: 160px;
-      left: 60px;
-    }
-    .div5 {
-      bottom: 300px;
-      left: 20px;
-    }
-    .div6 {
-      bottom: 435px;
-      left: 40px;
-    }
-    .div7 {
-      bottom: 522px;
-      left: 100px;
-    }
-    .div8 {
-      bottom: 580px;
-      left: 190px;
-    }
-    .div9 {
-      top: 00px;
-      left: 280px;
-    }
-    .div10 {
-      top: 0px;
-      right: 260px;
-    }
-    .div11 {
-      top: 30px;
-      right: 160px;
-    }
-    .div12 {
-      top: 80px;
-      right: 60px;
-    }
-    .div13 {
-      top: 170px;
-      right: 20px;
-    }
-    .div14 {
-      top: 280px;
-      right: -20px;
-    }
-    .div15 {
-      top: 385px;
-      right: 0px;
-    }
-    .div16 {
-      top: 482px;
-      right: 30px;
-    }
-    .div17 {
-      top: 580px;
-      right: 100px;
-    }
-    .div18 {
-      bottom: 20px;
-      right: 180px;
-    }
+  
   }
   .agebox {
     text-align: center;
@@ -542,7 +533,7 @@ export default {
   .check {
     position: absolute;
     height: 60px;
-    top: 780px;
+    top: 820px;
     margin: 0 auto;
     width: 90px;
     left: 0;
