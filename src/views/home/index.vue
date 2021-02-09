@@ -39,7 +39,7 @@
           <span class="btn_text"> 拜罗汉 </span>
         </div>
         <div class="btn gren_btn" @click="share">
-          <span class="btn_text"> 分享给好友 </span>
+          <span class="btn_text"> 邀请好友 </span>
         </div>
       </div>
       <!-- 音乐 -->
@@ -136,15 +136,23 @@ export default {
     closeMasklh() {
       this.Masklh = false
       if (this.issubscribe != 1) {
-        this.attentionmodel = true
+        // this.attentionmodel = true
+         this.attentionmodel = false
+        window.location.href =
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
       }
     },
 
     //关注
     goattention() {
       this.attentionmodel = false
-      window.location.href =
+      this.$toast("关注公众号,积累福泽!")
+      setTimeout(function(){ 
+          window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
+
+       }, 1000);
+
     },
     share() {
       this.showMask = true
@@ -200,8 +208,8 @@ export default {
     .point {
       right: 62px;
       top: 21px;
-      width: 414px;
-      height: 368px;
+      width: 380px;
+      height: 340px;
       position: absolute;
       img {
         width: 100%;
@@ -210,12 +218,12 @@ export default {
     }
     .text {
       position: absolute;
-      top: 405px;
+      top: 400px;
       height: 112px;
       padding: 20px;
       img {
-        width: 112px;
-        height: 112px;
+        width: 100px;
+        height: 100px;
         float: left;
         vertical-align: middle;
         margin-left: 40px;
@@ -223,7 +231,7 @@ export default {
       }
       span {
         vertical-align: middle;
-        font-size: 32px;
+        font-size: 30px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: bold;
         color: #ffffff;
@@ -242,10 +250,10 @@ export default {
     .main {
       position: fixed;
       z-index: 1002;
-      left: 125px;
-      top: 270px;
-      width: 499px;
-      height: 776px;
+      left: 15%;
+      top: 10%;
+      width: 70%;
+    
 
       background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
       border-radius: 21px;
@@ -268,21 +276,20 @@ export default {
           right: 0;
           margin: 0 auto;
           position: absolute;
-          font-size: 36px;
+          font-size: 32px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: bold;
           color: #ffffff;
         }
       }
       .img {
-        width: 403px;
-        height: 526px;
-        margin: 79px auto 0px;
+        width: 380px;
+        // height: 480px;
+        margin: 50px auto 0px;
       }
       .text {
-        position: absolute;
         width: 325px;
-        margin: 0 auto;
+        margin: 10px auto;
         left: 0;
         right: 0;
 
@@ -294,7 +301,7 @@ export default {
           font-weight: bold;
           color: #b88858;
           line-height: 45px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
         }
         .del {
           text-align: left;
@@ -330,7 +337,7 @@ export default {
   }
   .top_bg {
     width: 750px;
-    height: 650px;
+    height: 800px;
     position: fixed;
     img {
       width: 100%;
@@ -354,7 +361,7 @@ export default {
     box-sizing: border-box;
     padding: 10px 20px;
 
-    top: 280px;
+    bottom: 60px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -364,10 +371,8 @@ export default {
     background: #ffffff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .title {
-      height: 143px;
-      width: 80%;
-      margin-left: 10%;
-
+      height: 140px;
+      width: 100%;
       text-align: center;
       display: flex;
       justify-content: center;
@@ -375,7 +380,7 @@ export default {
       .text {
         .name {
           vertical-align: middle;
-          font-size: 32px;
+          font-size: 28px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: 600;
           color: #4e5455;
@@ -383,14 +388,14 @@ export default {
         }
       }
       img {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         vertical-align: middle;
         margin-right: 20px;
       }
     }
     .lhName {
-      margin: 22px auto;
+      margin: 15px auto;
       text-align: center;
       img {
         width: 32px;
@@ -400,7 +405,7 @@ export default {
       }
       .name {
         vertical-align: middle;
-        font-size: 36px;
+        font-size: 30px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: 600;
         color: #4e5455;
@@ -418,7 +423,7 @@ export default {
     .detl {
       letter-spacing: 1px;
       padding: 10px 15px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       font-size: 28px;
       font-family: PingFang-SC-Medium, PingFang-SC;
       font-weight: 500;
@@ -426,7 +431,7 @@ export default {
       line-height: 45px;
     }
     .yaoqin {
-      margin: 20px 35px;
+      margin: 15px 35px;
 
       img {
         float: left;

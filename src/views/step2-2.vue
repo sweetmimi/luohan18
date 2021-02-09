@@ -160,21 +160,24 @@ export default {
       })
     },
     onSwipeLeft() {
-      if (this.ableclick == 1) {
-        this.palymusic()
-        this.runLuohan(-1, 1)
+      if (!this.changeRunInterval ) {
+        this.$toast('请等待罗汉出场')
       } else {
-        // this.$toast("请点击'阿弥陀佛',选择起始罗汉")
+          clearInterval(this.roundter)
+          this.palymusic()
+           this.runLuohan(-1, 1)
       }
 
       // this.$toast('向左滑动')
     },
     onSwipeRight() {
-      if (this.ableclick == 1) {
-        this.palymusic()
-        this.runLuohan(1, 1)
+      if (!this.changeRunInterval ) {
+        this.$toast('请等待罗汉出场')
       } else {
-        // this.$toast("请点击'阿弥陀佛',选择起始罗汉")
+          clearInterval(this.roundter)
+          this.palymusic()
+           this.runLuohan(1, 1)
+       
       }
 
       // this.$toast('向右滑动')
@@ -307,7 +310,7 @@ export default {
       this.show_user_age = 1
 
       if (this.changeRunInterval) {
-        clearInterval(this.autoRotateLuohanInterval)
+        clearInterval(this.autoRotateLuohan)
 
         this.showpleaseLohan = false
         this.luohan_status = 1
@@ -323,12 +326,12 @@ export default {
           }
         })
       } else {
-        // this.$toast('请等待罗汉出场')
+        this.$toast('请等待罗汉出场')
       }
     },
     //请本尊按钮
     qingbenzun_click(e) {
-      clearInterval(this.autoRotateLuohanInterval)
+      clearInterval(this.autoRotateLuohan)
       this.luohan_status = 2
       var artid = 1
       if (this.show_user_age <= 18) {
@@ -430,7 +433,7 @@ export default {
       //确认最后一个罗汉出场后，改变旋转周期
       if (_this.cntadd == 18 && _this.autoRotateLuohanInterval != null && !_this.changeRunInterval) {
         clearInterval(_this.autoRotateLuohanInterval)
-        setInterval(_this.autoRotateLuohan, 10)
+       this.roundter =setInterval(_this.autoRotateLuohan, 10)
         _this.changeRunInterval = true
       }
     },
@@ -526,7 +529,7 @@ export default {
     background: rgba(0, 0, 0, 0.65);
     border-radius: 15px;
     border: 1px solid #979797;
-
+    z-index: 999;
     div {
       margin-top: 20px;
       line-height: 56px;
@@ -566,8 +569,8 @@ export default {
     position: absolute;
     margin: 20px auto;
     width: 80%;
-    height: 280px;
-    bottom: 30px;
+    height: 270px;
+    bottom: 10px;
     left: 0;
     z-index: 99;
     right: 0;
