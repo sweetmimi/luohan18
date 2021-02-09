@@ -97,18 +97,20 @@ export default {
     }
   },
   async created() {
-    this.initData()
+
   },
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.initData()
+  },
 
   methods: {
     initData() {
       let userinfo = this.$sessionStorage.get('userinfo')
       getluohanData({
-        friendId: userinfo.id,
-        arhatId: userinfo.yidamArhatId
+        friendId: this.$route.query.friendId || userinfo.id,
+        arhatId: this.$route.query.arhatId || userinfo.yidamArhatId
       })
         .then(res => {
           this.infoData = res.data
@@ -120,8 +122,8 @@ export default {
       let userinfo = this.$sessionStorage.get('userinfo')
       // 如果新用户 关注公众号
       getbyArhat({
-        friendId: userinfo.id,
-        arhatId: userinfo.yidamArhatId
+        friendId: this.$route.query.friendId || userinfo.id,
+        arhatId: this.$route.query.arhatId || userinfo.yidamArhatId
       }).then(res => {
         if (res.state == 200) {
           //没有罗汉关注

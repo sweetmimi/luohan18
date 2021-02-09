@@ -54,7 +54,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.state && res.state !== 200 ) {
       // 登录超时,重新登录
-      Toast(res.msg || 'error');
+      // Toast(res.msg || 'error');
       return Promise.reject(res || 'error')
     }
     else {

@@ -19,10 +19,10 @@ export default {
     }
   },
   created() {
-
+     this.getUser()
   },
   mounted() {
-    this.getUser()
+
     // this.checkUserAuth();
 
   },
@@ -104,15 +104,15 @@ export default {
           let UserInfo = this.$sessionStorage.get('userinfo')
           let shareInfo ={}
           if(UserInfo.arhatName){
-            url = `http://luohan.wuhanhsj.com/h5/#/share?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+            url = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
             shareInfo = {
             title: '拜罗汉,得保佑', // 分享标题
-            desc: `新年数罗汉,看一年的运势和重点! --我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
+            desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
             link: url,//分享url
             imgUrl: UserInfo.arhatUrl // 分享图标
           }
          }else{
-            url = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${UserInfo.id}`
+             url = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
             shareInfo = {
             title: '拜罗汉,得保佑', // 分享标题
             desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述

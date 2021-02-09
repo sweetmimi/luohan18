@@ -20,7 +20,7 @@ export default {
     return {
       tabbars: [
         {
-          title: '拜佛',
+          title: '拜罗汉',
           to: {
             name: 'Home'
           },

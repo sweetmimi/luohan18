@@ -105,16 +105,7 @@ export default {
         .then(res => {
           if (res.data) {
             this.$sessionStorage.set('userinfo', res.data)
-            let userinfo = res.data
-            if (userinfo.yidamArhatId) {
-              if (userinfo.id == this.$route.query.friendId) {
-                window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-              } else {
-                this.initData()
-              }
-            } else {
-              this.initData()
-            }
+             this.initData()
           }
         })
         .catch(error => {
@@ -163,7 +154,7 @@ export default {
       if(this.$route.query.friendId){
          friendId = this.$route.query.friendId
           arhatId = this.$route.query.arhatId
-       
+
       }else{
         let userinfo = this.$sessionStorage.get('userinfo')
          friendId = userinfo.id
