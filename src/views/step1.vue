@@ -44,6 +44,7 @@ export default {
   computed: {},
 
   mounted() {
+    this.getCode()
     this.i = 1
     var that = this
     this.ter = setInterval(function () {
@@ -65,7 +66,7 @@ export default {
     //console.log("destroyed");
   },
   methods: {
-  
+
     chImg() {
       this.gif = require(`@/assets/images/homeGif/${this.imgs[this.i]}.png`)
       this.i++

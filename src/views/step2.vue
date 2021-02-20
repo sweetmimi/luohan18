@@ -7,18 +7,18 @@
       </div>
       <div class="rulai"></div>
         <div class="swiper">
-        <swiper
+        <!-- <swiper
             :slides-per-view="3"
             :space-between="50"
             @swiper="onSwiper"
             @slideChange="onSlideChange"
         >
-            <swiper-slide v-for="(item,index) in mydata.lohanList" :key="index">
-                <img :src="item.icon" alt="">
+            <swiper-slide v-for="(item,index) in arhatList" :key="index">
+                <img :src="item.arhatPic" alt="">
             </swiper-slide>
-           
-            
-        </swiper>
+
+
+        </swiper> -->
         </div>
       <div class="check">
         <img src="@/assets/images/check.png" alt="" width="100%">
@@ -44,11 +44,11 @@
 
 <script>
 import $ from 'jquery'
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Swiper, SwiperSlide } from 'swiper';
 import 'swiper/swiper.scss';
 import BgcMusic from '@/components/BgcMusic'
-import { mydata } from '../assets/js/data.js'
-import {  getPleaseLohan } from '@/api/user.js'
+
+import {  getPleaseLohan,getLohanListData } from '@/api/user.js'
 export default {
   name: 'mydata.lohanList',
   components: {
@@ -59,6 +59,7 @@ export default {
 
   data() {
     return {
+      arhatList:"",
        circle_w: 375, //圆盘的宽
       circle_h: 375, //圆盘的高
       box_w: 80, //圆盘上覆盖的小圆点宽
@@ -73,20 +74,21 @@ export default {
         openid: ''
       },
       showpleaseLohan: true,
-      mydata: mydata,
+
       gif: '',
       imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
 
   async created() {
+    this._getLohanListData()
     this.stard_s = this.stard;
   },
 
   computed: {},
 
   mounted() {
-    
+
      this.init();
     this.Turn(this.activeIndex);
     this.i = 1
@@ -119,6 +121,14 @@ export default {
     //console.log("destroyed");
   },
   methods: {
+        //获取罗汉list
+    _getLohanListData() {
+      getLohanListData({}).then(res => {
+        this.arhatList = res.data.arhatList
+        this.load()
+        // console.log(this.arhatList)
+      })
+    },
         handleMouseDown (e) {
       clearInterval(this.UDLMactionTimer);
       this.mouseIsDown = true;
@@ -163,7 +173,7 @@ export default {
           if (res.state == 200) {
             this.$sessionStorage.set('oldArhatTip', res.data.tip)
             this.$router.replace({
-              path: '/step3',
+              path: '/step22',
               query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
             })
           }
@@ -185,7 +195,7 @@ export default {
     Turn(index,arhatId) {
       this.arhatId=arhatId;
        clearInterval(this.rateTer);
-      
+
       let _this = this;
       let bx = document.querySelectorAll(".box");
       _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;

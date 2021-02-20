@@ -16,22 +16,31 @@ export const constantRouterMap = [
       keepAlive: false
     },
   },
-  {
-    path: '/step3',
-    component: () => import('@/views/step3.vue'),
-    meta: {
-      title: '本尊罗汉',
-      keepAlive: false
-    },
-  },
+
   {
     path: '/step2',
-    component: () => import('@/views/step2-2.vue'),
+    component: () => import('@/views/step2-1.vue'),
     meta: {
       title: '罗汉堂',
        keepAlive: false
     },
   },
+   {
+     path: '/step22',
+     component: () => import('@/views/step2-2.vue'),
+     meta: {
+       title: '罗汉堂',
+       keepAlive: false
+     },
+   },
+   {
+     path: '/step3',
+     component: () => import('@/views/step3.vue'),
+     meta: {
+       title: '本尊罗汉',
+       keepAlive: false
+     },
+   },
   {
     path: '/share',
     component: () => import('@/views/share.vue'),

@@ -6,98 +6,41 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
+
       <div class="height jieruwang flexbox center">
-        <div class="height jieruwang flexbox center">
-          <div
-            class="jrwLeft center"
-            id="div1"
-            ref="bigcircle"
-            :style="{
-              transform: `rotate(${turnRotate}deg)`,
-              height: 350 + 'px'
-            }"
-            @mouseover="stop"
-            @mouseout="start()"
-          >
-            <div
-              v-for="(item, idx) in mydata.lohanList"
-              :key="item + idx"
-              @mousedown.prevent
-              @mouseup.prevent
-              @mousemove.prevent
-              :class="['city', 'city' + idx, city == item ? 'active' : '']"
-              :style="computedCardPosStyle(idx - 1)"
-            >
-              <img :src="item.icon" alt="" style="width: 30px; height: 50px" />
-            </div>
-            <div class="block center" :style="{ transform: `rotate(${-turnRotate}deg)` }">
-              <div class="middle center">
-                <!-- <p>{{city}}-信息概览</p >
-                    <div class='block center leftTitle'>
-                        <div class='small center'>
-                            <div class=' center' ref='svg'>
-                                <svg :width='width' :height='height'>
-                                        <a  v-for='(tag,idx) in tags' :key='idx+"only"'>
-                                            <text :x='tag.x' :y='tag.y'  :font-size='14 * (600/(600-tag.z))' :fill-opacity='((400+tag.z)/600)' stroke='#559ae7' stroke-width="1" fill='#559ae7'>{{tag.text}}</text>
-                                        </a>
-                                    </svg>
-                            </div>
-                        </div>
-                    </div> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="overall">
-    <div class="circle-box">
-      <div class="circle" :style="`width:${circle_w}px;height:${circle_h}px`">
         <div
-          class="origin"
-          :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${stard}deg);`"
+          class="jrwLeft center"
+          id="div1"
+          ref="bigcircle"
+          :style="{
+            transform: `rotate(${turnRotate}deg)`,
+            height: clientWidth + 'px'
+          }"
         >
           <div
-            :style="`width:${box_w}px;height:${box_h}px;transform: rotate(${-stard}deg);`"
-            class="img-box"
-            v-for="(i,index) in mydata.lohanList"
-            :key="index"
-            @click="Turn(index,i.text)"
+            v-for="(item, idx) in arhatList"
+            :key="item + idx"
+            :class="['city', 'city' + idx, city == item ? 'active' : '']"
+            :style="computedCardPosStyle(idx - 1)"
           >
-            <div class="box">
-              <img :src="i.icon" alt="" width="100%">
-              <div class="content">{{index+1}}</div>
-            </div>
+            <img :src="item.arhatPic" alt="" width="40" />
           </div>
         </div>
       </div>
-    </div>
-  </div> -->
-      <div class="check">
-        <img src="@/assets/images/check.png" alt="" width="100%" />
-      </div>
-      <div class="icon">
-        <img src="@/assets/images/rate.png" alt="" width="100%" />
-      </div>
+
       <div class="bottom">
-        <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
+        <div class="btn jump_btn" @click="PleaseLohan">
           <span class="btn_text">阿弥陀佛</span>
         </div>
-        <div class="btn jump_btn" v-else @click="PleaseLohan">
-          <span class="btn_text">请本尊罗汉</span>
-        </div>
-      </div>
-      <div class="text">
-        <p>阿弥陀佛，请施主左右滑动十八罗汉图，选择罗汉菩并点击“阿弥陀佛”作为数罗汉的起始点</p>
       </div>
     </div>
-    <BgcMusic></BgcMusic>
   </div>
 </template>
 
 <script>
 import BgcMusic from '@/components/BgcMusic'
-import { mydata } from '../assets/js/data.js'
-import { getPleaseLohan } from '@/api/user.js'
+
+import { getPleaseLohan, getLohanListData } from '@/api/user.js'
 import $ from 'jquery'
 export default {
   name: 'mydata.lohanList',
@@ -107,35 +50,15 @@ export default {
 
   data() {
     return {
-      cityList: [
-        '全省',
-        '郑州',
-        '开封',
-        '洛阳',
-        '平顶山',
-        '安阳',
-        '鹤壁',
-        '新乡',
-        '焦作',
-        '濮阳',
-        '许昌',
-        '漯河',
-        '三门峡',
-        '南阳',
-        '商丘',
-        '信阳',
-        '周口',
-        '驻马店',
-        '济源'
-      ],
-      timer: null,
+      arhatList: '',
+ timer: null,
       a0: 0,
       a1: 0,
       circleTimer: null,
-      clientWidth: 500,
-      smallcircle: 120,
+      clientWidth: 300,
+      smallcircle: 100,
       msg: {},
-      city: '全省',
+      city: "require('../../src/assets/luohan/1.png'),",
       startX: 0,
       endX: 0,
       UDLMactionTimer: null,
@@ -146,36 +69,26 @@ export default {
       containerScale: 1,
       // 配置
       timeGap: 20,
-      turnRotateProportion: 500,
-      reduceSpeed: 0.7,
+      turnRotateProportion: 300,
+      reduceSpeed: 1.5,
       turntableR: 200,
-      cardCount: 19,
-      pause: '',
-      wxwpause: '',
-      zqpause: '',
-      clickType: '',
-
-      //  circle_w: 350, //圆盘的宽
-      // circle_h: 350, //圆盘的高
-      // box_w: 80, //圆盘上覆盖的小圆点宽
-      // box_h: 80, //圆盘上覆盖的小圆点高
-      // PI:360, //分布角度，默认为360deg
-      // stard: 0, //起始角度
-      // stard_s: null, //用来默认储存第一个初始值
-      // boxNum: 18, //圆盘上覆盖的小圆点个数
-      // activeIndex: 1, //默认下标
-      // arhatId:"",
+      cardCount: 18,
+      pause: "",
+      wxwpause: "",
+      zqpause: "",
+      clickType: "",
       userinfo: {
         openid: ''
       },
       showpleaseLohan: true,
-      mydata: mydata,
+
       gif: '',
       imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
 
   async created() {
+    this._getLohanListData()
     this.stard_s = this.stard
   },
 
@@ -197,20 +110,7 @@ export default {
     window.removeEventListener('resize', this.responseContainerScale.bind(this))
   },
   mounted() {
-    this.$nextTick(() => {
-      this.start()
-      let container_dom = this.$refs.bigcircle
-      container_dom.addEventListener('mousedown', this.handleMouseDown.bind(this))
-      container_dom.addEventListener('mouseup', this.handleMouseUp.bind(this))
-      container_dom.addEventListener('mouseleave', this.handleMouseUp.bind(this))
-      container_dom.addEventListener('mousemove', this.handleMouseMove.bind(this))
-      container_dom.addEventListener('touchstart', this.handleMouseDown.bind(this))
-      container_dom.addEventListener('touchend', this.handleMouseUp.bind(this))
-      container_dom.addEventListener('touchcancel', this.handleMouseUp.bind(this))
-      container_dom.addEventListener('touchmove', this.handleMouseMove.bind(this))
-      window.addEventListener('resize', this.responseContainerScale.bind(this))
-      window.addEventListener('load', this.responseContainerScale.bind(this))
-    })
+
 
     this.init()
     this.Turn(this.activeIndex)
@@ -223,13 +123,6 @@ export default {
       that.chImg()
     }, 300)
     this.inde = 1
-    // this.rateTer = setInterval(function () {
-    //    that.inde++
-    //    if(that.inde==18){
-    //      that.inde==1
-    //    }
-    //   that.automatic(that.inde)
-    // }, 1000)
   },
   beforeDestroy() {
     //清除定时器
@@ -244,6 +137,14 @@ export default {
     //console.log("destroyed");
   },
   methods: {
+    //获取罗汉list
+    _getLohanListData() {
+      getLohanListData({}).then(res => {
+        this.arhatList = res.data.arhatList
+        this.start()
+        // console.log(this.arhatList)
+      })
+    },
     chImg() {
       this.gif = require(`@/assets/images/cardGif/${this.imgs[this.i]}.png`)
       this.i++
@@ -255,16 +156,9 @@ export default {
 
     // 亲本尊
     PleaseLohan() {
-      getPleaseLohan({
-        arhatId: this.arhatId
-      }).then(res => {
-        if (res.state == 200) {
-          this.$sessionStorage.set('oldArhatTip', res.data.tip)
-          this.$router.replace({
-            path: '/step3',
-            query: { arhatId: this.arhatId, isExist: res.data.isExist, oldArhatId: res.data.oldArhatId }
-          })
-        }
+      this.$router.replace({
+        path: '/step22',
+        query: {}
       })
     },
     //轮播方法
@@ -345,15 +239,15 @@ export default {
         var obj = {
           classname: 'jrwLeft',
           circlename: 'city',
-          da: 18.9, //图片间隔角度
+          da: 20, //图片间隔角度
           a0: that.a0, //已旋转角度,
           w: w - 12,
-          centerx: w - 12,
+          centerx: w - 16,
           centery: w - 12
         }
         that.posimgs1(obj)
         that.a0++
-      }, 200)
+      }, 50)
       that.circleTimer = timer
       that.$once('hook:beforeDestroy', () => {
         clearInterval(this.circleTimer)
@@ -513,7 +407,7 @@ export default {
 
   //start//
   .jieruwang {
-    width: 99%;
+    width: 100%;
     height: 100%;
     overflow: hidden;
   }
@@ -658,7 +552,7 @@ export default {
   .rulai {
     position: fixed;
     z-index: 200;
-    width: 450px;
+    width: 300px;
     left: 0px;
     right: 0;
     margin: 0 auto;
@@ -679,97 +573,7 @@ export default {
       transform: rotate(360deg);
     }
   }
-  .luohan {
-    position: relative;
-    left: 0;
-    right: 0;
-    top: 60px;
-    margin: 0 auto;
-    width: 700px;
-    height: 700px;
-    // border: 1px dashed #f4f4f4;
-    border-radius: 350px;
-    li {
-      width: 60px;
-      position: absolute;
-      transform: translateX(-20px);
-      img {
-        width: 100%;
-      }
-    }
-    .div1 {
-      bottom: 0;
-      left: 50%;
-    }
-    .div2 {
-      bottom: 20px;
-      left: 230px;
-    }
-    .div3 {
-      bottom: 95px;
-      left: 140px;
-    }
-    .div4 {
-      bottom: 160px;
-      left: 60px;
-    }
-    .div5 {
-      bottom: 300px;
-      left: 20px;
-    }
-    .div6 {
-      bottom: 435px;
-      left: 40px;
-    }
-    .div7 {
-      bottom: 522px;
-      left: 100px;
-    }
-    .div8 {
-      bottom: 580px;
-      left: 190px;
-    }
-    .div9 {
-      top: 00px;
-      left: 280px;
-    }
-    .div10 {
-      top: 0px;
-      right: 260px;
-    }
-    .div11 {
-      top: 30px;
-      right: 160px;
-    }
-    .div12 {
-      top: 80px;
-      right: 60px;
-    }
-    .div13 {
-      top: 170px;
-      right: 20px;
-    }
-    .div14 {
-      top: 280px;
-      right: -20px;
-    }
-    .div15 {
-      top: 385px;
-      right: 0px;
-    }
-    .div16 {
-      top: 482px;
-      right: 30px;
-    }
-    .div17 {
-      top: 580px;
-      right: 100px;
-    }
-    .div18 {
-      bottom: 20px;
-      right: 180px;
-    }
-  }
+
   .check {
     position: absolute;
     width: 120px;
@@ -797,7 +601,7 @@ export default {
     margin: 20px auto;
     width: 80%;
     height: 80px;
-    bottom: 250px;
+    bottom: 150px;
     left: 0;
     z-index: 99;
     right: 0;
