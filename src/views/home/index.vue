@@ -171,15 +171,23 @@ export default {
     closeMasklh() {
       this.Masklh = false
       if (this.issubscribe != 1) {
-        this.attentionmodel = true
+        // this.attentionmodel = true
+         this.attentionmodel = false
+        window.location.href =
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
       }
     },
 
     //关注
     goattention() {
       this.attentionmodel = false
-      window.location.href =
+      this.$toast("关注公众号,积累福泽!")
+      setTimeout(function(){
+          window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
+
+       }, 1000);
+
     },
     share() {
       this.showMask = true
@@ -235,8 +243,8 @@ export default {
     .point {
       right: 62px;
       top: 21px;
-      width: 414px;
-      height: 368px;
+      width: 380px;
+      height: 340px;
       position: absolute;
       img {
         width: 100%;
@@ -245,12 +253,12 @@ export default {
     }
     .text {
       position: absolute;
-      top: 405px;
+      top: 400px;
       height: 112px;
       padding: 20px;
       img {
-        width: 112px;
-        height: 112px;
+        width: 100px;
+        height: 100px;
         float: left;
         vertical-align: middle;
         margin-left: 40px;
@@ -258,7 +266,7 @@ export default {
       }
       span {
         vertical-align: middle;
-        font-size: 32px;
+        font-size: 30px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: bold;
         color: #ffffff;
@@ -303,21 +311,20 @@ export default {
           right: 0;
           margin: 0 auto;
           position: absolute;
-          font-size: 36px;
+          font-size: 32px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: bold;
           color: #ffffff;
         }
       }
       .img {
-        width: 403px;
-        height: 526px;
-        margin: 79px auto 0px;
+        width: 380px;
+        // height: 480px;
+        margin: 50px auto 0px;
       }
       .text {
-        position: absolute;
         width: 325px;
-        margin: 0 auto;
+        margin: 10px auto;
         left: 0;
         right: 0;
 
@@ -329,7 +336,7 @@ export default {
           font-weight: bold;
           color: #b88858;
           line-height: 45px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
         }
         .del {
           text-align: left;
@@ -365,7 +372,7 @@ export default {
   }
   .top_bg {
     width: 750px;
-    height: 650px;
+    height: 800px;
     position: fixed;
     img {
       width: 100%;

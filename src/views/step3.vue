@@ -191,7 +191,8 @@ export default {
   box-sizing: border-box;
   position: relative;
   .card {
-    position: absolute;
+    position: relative;
+    height: 100%;
     top: 30px;
     right: 30px;
     left: 30px;
@@ -396,6 +397,7 @@ line-height: 33px;
     }
     .bottomBtn {
       position: absolute;
+      height: 100px;
       bottom: 10px;
       width: 578px;
       left: 0;

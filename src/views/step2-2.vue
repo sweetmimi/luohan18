@@ -276,8 +276,8 @@ export default {
     position: absolute;
     margin: 20px auto;
     width: 80%;
-    height: 280px;
-    bottom: 30px;
+    height: 270px;
+    bottom: 10px;
     left: 0;
     z-index: 99;
     right: 0;
