@@ -14,7 +14,7 @@
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
             <div class="lhName">·{{ infoData.arhat.arhatName }}</div>
-            <div class="biaoqian">本尊罗汉</div>
+             <div class="biaoqian">{{nowYear}}年本尊罗汉</div>
           </div>
         </div>
       </div>
@@ -31,8 +31,8 @@
         <div class="dv2">
           <i class="iconfont icon-star"></i>
           <span
-            >已连续拜罗汉
-            <span class="gold">{{ infoData.continuous }}天 </span>
+            >已总共来拜今年本尊罗汉
+            <span class="gold">{{ infoData.continuous }}</span>次
           </span>
         </div>
       </div>
@@ -52,7 +52,15 @@
         </div>
       </div>
       <div class="line" style="width: 70%"></div>
-      <div class="title">好友互动</div>
+      <div class="title">
+        <div class="left">
+          好友互动
+        </div>
+        <div class="right">
+          共有{{infoData.friendInfo.friendCount}}位好友,拜过{{infoData.friendInfo.friendByArhat}}次
+        </div>
+
+        </div>
       <div class="cardlist" v-if="infoData.friendList.length > 0">
         <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
         <div
@@ -81,8 +89,9 @@
               </div>
             </div>
           </div>
+
         </div>
-        <div class="line"></div>
+
         <!-- </van-pull-refresh> -->
       </div>
       <div class="friends" v-else>
@@ -120,6 +129,10 @@ export default {
     }
   },
   computed: {
+    nowYear(){
+      var date = new Date();
+      return date .getFullYear();
+    },
     ...mapGetters(['userName'])
   },
   mounted() {
@@ -268,6 +281,8 @@ export default {
     }
   }
   .card {
+    overflow: hidden;
+     padding:20px ;
     position: absolute;
     top: 30px;
     right: 30px;
@@ -303,7 +318,7 @@ export default {
           text-align: left;
           font-size: 36px;
           font-weight: bold;
-          margin: 5px 8px;
+          margin: 0px 8px 15px;
         }
         .bottom {
           img {
@@ -313,7 +328,7 @@ export default {
           }
           .lhName {
             display: inline-block;
-            font-size: 36px;
+            font-size: 32px;
             height: 50px;
             font-weight: bold;
             margin-right: 5px;
@@ -322,10 +337,10 @@ export default {
           }
           .biaoqian {
             display: inline-block;
-            font-size: 24px;
+            font-size: 20px;
             color: #fff;
-            padding: 2px 10px;
-            width: 130px;
+            padding: 4px 0;
+            width: 200px;
             background: #4e5455;
             border-radius: 19px;
             vertical-align: middle;
@@ -366,12 +381,21 @@ export default {
       }
     }
     .title {
-      width: 510px;
+      box-sizing: border-box;
+      width: 80%;
       height: 50px;
-      margin: 35px auto 25px;
-      font-size: 28px;
+      margin: 35px 10% 25px;
+      font-size: 26px;
       font-weight: bold;
       color: #303f7b;
+      .left{
+        display: inline-flex;
+        float: left;
+      }
+       .right{
+        display: inline-flex;
+        float: right;
+      }
     }
     .dayLine {
       width: 60%;
@@ -388,7 +412,7 @@ export default {
       .dv2 {
         font-size: 24px;
         text-align: center;
-        width: 205px;
+        width: 350px;
         height: 40px;
         line-height: 20px;
 
@@ -402,12 +426,12 @@ export default {
     }
     .sing {
       position: relative;
-      margin: 52px 41px 70px;
+
       width: 590px;
       height: 88px;
       left: 0;
       right: 0;
-      margin: 52px auto 70px;
+      margin: 52px auto 50px;
       list-style: none;
       .turnright {
         position: absolute;
@@ -482,24 +506,28 @@ export default {
 
     .cardlist {
       bottom: 20px;
+
       position: relative;
-      height: 210px;
+      height: 286px;
       overflow-y: scroll;
       overflow-x: hidden;
       width: 600px;
       margin: 0 auto;
       .list {
-        margin: 20px 0;
-        box-sizing: border-box;
+         padding-bottom: 20px;
+        margin: 20px 0 0;
 
+        border-bottom: 1px solid #ccc;
         // position: absolute;
         width: 100%;
         height: 103px;
+        display: flex;
+        justify-content:center;
         .left {
-          position: absolute;
-          float: left;
+
+
           width: 80px;
-          height: 100%;
+          height: 100px;
           border-radius: 52px;
           margin-right: 10px;
           img {
@@ -510,9 +538,10 @@ export default {
           }
         }
         .right {
+          width: calc(100% - 80px);
+          //  width: 600px;
           box-sizing: border-box;
-          float: left;
-          margin-left: 90px;
+
 
           height: 100%;
           .top {
@@ -533,11 +562,12 @@ export default {
             .myfriend {
               text-align: center;
               float: right;
+              margin-right: 20px;
               width: 202px;
               height: 37px;
               background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
               border-radius: 19px;
-
+              padding: 2px  0;
               color: #4e5455;
               font-size: 24px;
 
@@ -568,6 +598,7 @@ export default {
               }
             }
             .time {
+               margin-right: 20px;
                line-height: 40px;
               float: right;
             }

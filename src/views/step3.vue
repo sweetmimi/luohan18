@@ -14,7 +14,7 @@
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
             <div class="lhName">·{{infoData.arhat.arhatName}}</div>
-            <div class="biaoqian">本尊罗汉</div>
+            <div class="biaoqian">{{nowYear}}本尊罗汉</div>
           </div>
         </div>
       </div>
@@ -35,12 +35,27 @@
 
       <div class="text">
         <div class="title">
+           <div class="luohandet">
+          <ul>
+             <li>
+              <div class="left">您今年的本尊罗汉是: </div>
+              <div class="right">{{infoData.arhat.arhatName}}</div>
+            </li>
+            <li>
+              <div class="left">{{infoData.arhat.arhatName}}的寓意是: </div>
+              <div class="right">{{ infoData.arhat.implication }}</div>
+            </li>
+
+
+          </ul>
+
+        </div>
           <!-- <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p> -->
           <p v-if="isExist==1">
             {{tip}}
           </p>
           <p v-else>
-             {{infoData.arhat.describe}}
+           点击罗汉图像拜拜您的本尊罗汉，护佑您一年好运。点击关注公众号可以看到您今年特别关注和运势寄语！
           </p>
 
 
@@ -77,6 +92,10 @@ export default {
     }
   },
   computed: {
+     nowYear(){
+      var date = new Date();
+      return date .getFullYear();
+    },
     ...mapGetters(['userName'])
   },
   created() {
@@ -108,6 +127,7 @@ export default {
             // this.arhatId=this.oldArhatId;
             this.infoData = res.data;
              this.infoData.arhat.describe = res.data.tip;
+             this.topage()
           }
         })}
     },
@@ -115,7 +135,7 @@ export default {
     topage() {
       this.$router.replace({
         path: '/my',
-        
+
       })
     },
     //x下拉刷新
@@ -223,10 +243,11 @@ export default {
           }
           .biaoqian {
             display: inline-block;
-            font-size: 24px;
+            text-align: center;
+            font-size: 20px;
             color: #fff;
-            padding: 2px 10px;
-            width: 130px;
+            padding: 4px ;
+            width: 200px;
             background: #4e5455;
             border-radius: 19px;
             vertical-align: middle;
@@ -319,7 +340,9 @@ export default {
           font-family: PingFang-SC-Medium, PingFang-SC;
           font-weight: 500;
           color: #b88858;
+
         }
+
         .del {
           text-align: left;
           width: 325px;
@@ -332,11 +355,44 @@ export default {
       }
     }
     .title {
-      width: 510px;
-      margin: 35px auto 25px;
+      width: 80%;
+      margin: 0 auto;
       font-size: 28px;
       font-weight: bold;
       color: #B88858;
+      p{
+         font-size: 24px;
+
+color: rgba(0, 0, 0, 0.35);
+line-height: 33px;
+      }
+          .luohandet{
+      color: #666666;
+       padding: 20px 15px;
+        margin-bottom: 0px;
+      font-size: 28px;
+      ul{
+        li{
+
+       font-weight: 500;
+          margin: 10px 0;
+          div{
+            display: inline-flex;
+
+          }
+          .left{
+        width: 70%;
+
+      }
+      .right{
+        width: 30%;
+
+           color: #b88858;
+      }
+        }
+      }
+
+    }
     }
     .bottomBtn {
       position: absolute;

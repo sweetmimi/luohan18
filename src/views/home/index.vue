@@ -5,42 +5,68 @@
       <van-loading type="spinner" class="lod" />
     </div>
     <div class="main" v-else>
-      <div class="top_bg">
-        <img :src="infoData.arhat.arhatBackgroundPic" alt="" />
-      </div>
-      <div class="lh18">
-        <img src="@/assets/images/lh18.png" alt="" />
-      </div>
       <div class="card">
-        <div class="title">
-          <div class="text">
-            <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
-            <span class="name"> {{ infoData.userInfo.nickName }}· 牛年本尊罗汉</span>
+        <div class="header">
+          <div class="headerleft">
+            <img :src="infoData.arhat.arhatPic" alt="" width="100%">
           </div>
-        </div>
-        <div class="line" style="width: 90%"></div>
-        <div class="lhName">
+          <div class="headerright">
+              <div class="text">
+            <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
+            <span class="name"> {{ infoData.userInfo.nickName }}</span>
+
+          </div>
+           <div class="line" style="width: 100%"></div>
+            <div class="lhName">
           <img src="@/assets/images/fo.png" alt="" width="100%" />
           <span class="name">· {{ infoData.arhat.arhatName }}</span>
+          <div class="biaoqian">{{nowYear}}年本尊罗汉</div>
         </div>
-        <p class="blueTitle">【{{ infoData.arhat.arhatName }}】{{ infoData.arhat.descName }}</p>
+          </div>
+
+        </div>
+
+
+
         <div class="detl">
           <p>
             {{ infoData.arhat.describe }}
           </p>
         </div>
         <div class="line" style="width: 90%"></div>
-        <div class="yaoqin" @click="showMask = true">
-          <img src="@/assets/images/handel.png" alt="" width="100%" />
-          <span class="text" v-if="!friendId"> 邀请好友互拜对方的本尊罗汉，给自己和朋友都带来好运！</span>
-          <span class="text" v-else> 拜好友的本尊罗汉，庇佑好友及家人一年健康好运！</span>
+        <div class="luohandet">
+          <ul>
+            <li>
+              <div class="left">本尊罗汉寓意: </div>
+              <div class="right">{{ infoData.arhat.implication }}</div>
+            </li>
+              <li>
+              <div class="left">您今年特别关注的是: </div>
+              <div class="right">{{ infoData.arhat.special }}</div>
+            </li>
+              <li>
+              <div class="left">您的罗汉寄语是: </div>
+              <div class="right">{{ infoData.arhat.message }}</div>
+            </li>
+          </ul>
+          <div class="line" style="width: 90%"></div>
         </div>
-        <div class="btn yl_btn" @click="byArhat">
+        <div class="yaoqin" @click="showMask = true">
+          <div class="left">
+             <img src="@/assets/images/handel.png" alt="" width="100%" />
+          </div>
+        <div class="right">
+            <span class="text" v-if="!friendId"> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
+          <span class="text" v-else> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
+        </div>
+
+        </div>
+        <!-- <div class="btn yl_btn" @click="byArhat">
           <span class="btn_text"> 拜罗汉 </span>
         </div>
         <div class="btn gren_btn" @click="share">
           <span class="btn_text"> 分享给好友 </span>
-        </div>
+        </div> -->
       </div>
       <!-- 音乐 -->
       <!-- <BgcMusic></BgcMusic> -->
@@ -99,22 +125,29 @@ export default {
   async created() {
 
   },
-  computed: {},
+  computed: {
+    nowYear(){
+      var date = new Date();
+      return date .getFullYear();
+    }
+  },
 
   mounted() {
     this.initData()
+
   },
 
   methods: {
     initData() {
       let userinfo = this.$sessionStorage.get('userinfo')
       getluohanData({
-        friendId: this.$route.query.friendId || userinfo.id,
-        arhatId: this.$route.query.arhatId || userinfo.yidamArhatId
+        friendId:  userinfo.id || this.$route.query.friendId ,
+        arhatId: userinfo.yidamArhatId ||this.$route.query.arhatId
       })
         .then(res => {
           this.infoData = res.data
           console.log(res.data)
+          this.byArhat()
         })
         .catch(() => {})
     },
@@ -128,8 +161,10 @@ export default {
         if (res.state == 200) {
           //没有罗汉关注
           this.issubscribe = res.data.subscribe
-
-          this.Masklh = true
+           if (this.issubscribe != 1) {
+            this.goattention()
+          }
+          // this.Masklh = true
         }
       })
     },
@@ -245,7 +280,7 @@ export default {
       left: 125px;
       top: 270px;
       width: 499px;
-      height: 776px;
+      height: 100%;
 
       background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
       border-radius: 21px;
@@ -350,48 +385,53 @@ export default {
     }
   }
   .card {
-    position: fixed;
-    box-sizing: border-box;
-    padding: 10px 20px;
+     overflow: hidden;
+    position: absolute;
+    padding:20px ;
+    top: 30px;
+    right: 30px;
+    left: 30px;
+    bottom: 120px;
+    background: #fff;
+     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
+    .header {
+      margin-bottom: 30px;
 
-    top: 280px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    z-index: 100;
-    width: 690px;
-    height: 920px;
-    background: #ffffff;
-    box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
-    .title {
-      height: 143px;
-      width: 80%;
-      margin-left: 10%;
-
+      height: 300px;
+      width: 100%;
       text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
-      .text {
+      .headerleft{
+        width: 240px;
+        height: 100%;
+      }
+      .headerright{
+        text-align: left;
+        overflow: hidden;
+        width: 455px;
+        height: 100%;
+     .text {
+       margin: 40px 10px;
         .name {
-          vertical-align: middle;
+          vertical-align: left;
           font-size: 32px;
           font-family: PingFang-SC-Bold, PingFang-SC;
           font-weight: 600;
           color: #4e5455;
           line-height: 1.2;
         }
-      }
-      img {
+         img {
         width: 80px;
         height: 80px;
         vertical-align: middle;
         margin-right: 20px;
       }
-    }
-    .lhName {
-      margin: 22px auto;
-      text-align: center;
+      }
+          .lhName {
+      margin: 20px 0;
+      text-align: left;
       img {
         width: 32px;
         height: 47px;
@@ -400,13 +440,29 @@ export default {
       }
       .name {
         vertical-align: middle;
-        font-size: 36px;
+        font-size: 32px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         font-weight: 600;
         color: #4e5455;
         line-height: 1.2;
       }
+      .biaoqian{
+        margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            color: #fff;
+            padding: 4px ;
+            width: 200px;
+            background: #4e5455;
+            border-radius: 19px;
+            vertical-align: middle;
+      }
     }
+
+      }
+
+    }
+
     .blueTitle {
       text-align: left;
       font-size: 28px;
@@ -417,32 +473,66 @@ export default {
     }
     .detl {
       letter-spacing: 1px;
-      padding: 10px 15px;
+      padding: 20px 15px;
       margin-bottom: 20px;
       font-size: 28px;
       font-family: PingFang-SC-Medium, PingFang-SC;
       font-weight: 500;
       color: #666666;
-      line-height: 45px;
+      line-height: 1.2;
+    }
+    .luohandet{
+      color: #666666;
+       padding: 20px 15px;
+        margin-bottom: 20px;
+      font-size: 28px;
+      ul{
+        li{
+
+font-weight: 500;
+          margin: 10px 0;
+          div{
+            display: inline-flex;
+
+          }
+          .left{
+        width: 300px;
+
+      }
+      .right{
+         width: 300px;
+           color: #b88858;
+      }
+        }
+      }
+
     }
     .yaoqin {
-      margin: 20px 35px;
+      margin: 20px 50px;
+      .left{
+        height: 200px;
+        width: 40px;
+         float: left;
+         img {
 
-      img {
-        float: left;
         width: 28px;
         height: 49px;
         vertical-align: middle;
         margin-top: 20px;
         margin-right: 20px;
       }
-      .text {
+      }
+      .right{
+        .text {
+
         vertical-align: middle;
         font-size: 28px;
         font-family: PingFang-SC-Bold, PingFang-SC;
         color: #b88858;
         line-height: 40px;
       }
+      }
+
     }
     .yl_btn {
       width: 420px;
@@ -471,27 +561,27 @@ export default {
     }
   }
 
-  // .card:before {
-  //   content: '';
-  //   display: block;
-  //   position: absolute;
-  //   left: -25px;
-  //   top: 240px;
-  //   background: #f8f8f8;
-  //   border-radius: 50%;
-  //   width: 50px;
-  //   height: 50px;
-  // }
-  // .card:after {
-  //   content: '';
-  //   display: block;
-  //   position: absolute;
-  //   right: -25px;
-  //   top: 240px;
-  //   background: #f8f8f8;
-  //   border-radius: 50%;
-  //   width: 50px;
-  //   height: 50px;
-  // }
+  .card:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -25px;
+    top: 130px;
+    background: #f8f8f8;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  .card:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: -25px;
+    top: 130px;
+    background: #f8f8f8;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
 }
 </style>

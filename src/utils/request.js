@@ -26,7 +26,7 @@ service.interceptors.request.use(
 
     else {
       //调试
-      // config.data.openid='orMjE6PC_xe0ACAom8SuOrl7s7bQ'
+      // config.data.openid = 'oH7OV5mcMPyWCtEe5sgetjct4ZN4'
 
     }
     // 不传递默认开启loading

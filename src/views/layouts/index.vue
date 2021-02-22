@@ -20,7 +20,7 @@ export default {
     return {
       tabbars: [
         {
-          title: '拜罗汉',
+          title: '本尊罗汉',
           to: {
             name: 'Home'
           },
@@ -28,7 +28,7 @@ export default {
           icon1:require("@/assets/images/tab/home2.png"),
         },
         {
-          title: '互动',
+          title: '好友互动',
           to: {
             name: 'About'
           },

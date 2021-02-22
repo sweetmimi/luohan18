@@ -8,18 +8,24 @@
           ref="mySwiper"
           :options="swiperOptions"
           @swiper="onSwiper"
-          @slidePrevTransitionEnd="slidePrev"
-          @slideNextTransitionEnd="slideNext"
+          @touchStart="touchStart"
+          @touchEnd="touchEnd"
+          @slidePrevTransitionStart="slidePrevStart"
+          @slidePrevTransitionEnd="slidePrevEnd"
+          @slideNextTransitionStart="slideNextStart"
+          @slideNextTransitionEnd="slideNextEnd"
           @click="gg"
           @slideChange="onSlideChange"
+          @slideChangeTransitionStart ="SlideChangeStart"
+          @slideChangeTransitionEnd="SlideChangeEnd"
         >
-          <swiper-slide v-for="item in arhatList" :key="item.id"
+          <swiper-slide :id="item.id" v-for="item in arhatList" :key="item.id"
             ><img :src="item.arhatPic" alt="" width="100%"
           /></swiper-slide>
         </swiper>
         <!-- <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div> -->
-         <div class="check">
+        <div class="check">
           <img src="@/assets/images/check.png" alt="" width="100%" />
         </div>
         <div class="age" v-show="!showpleaseLohan">
@@ -65,16 +71,17 @@ export default {
   data() {
     return {
       age: 0,
-      activeIndex:0,
+      activeIndex: 0,
       showpleaseLohan: true,
       arhatList: [],
       swiperOptions: {
+        slidesPerGroup: 1,
         slidesPerView: 3.8,
         grabCursor: true,
         spaceBetween: 10,
         centeredSlides: true,
         autoplay: {
-          delay: 2500,
+          delay: 2000,
           disableOnInteraction: false
         },
         loop: true,
@@ -123,16 +130,18 @@ export default {
     },
     //请本尊按钮
     qingbenzun_click(e) {
-      var artid =0
-      if(this.activeIndex>18){
-        artid = this.activeIndex%18
-      }else{
-        artid = this.activeIndex
-      }
+      var artid = 0
+      var active = 'swiper-slide-active'
+      this.swiper.slides.forEach((item, index) => {
+        if (item.className.includes(active)) {
+          artid = item.id
+          console.log(artid)
+        }
+      })
 
       this.PleaseLohan(artid)
     },
-        // 请本尊
+    // 请本尊
     PleaseLohan(id) {
       this.arhatId = id
       getPleaseLohan({
@@ -148,19 +157,65 @@ export default {
       })
     },
     onSwiper(swiper) {
-      console.log(swiper)
+      // console.log(swiper)
     },
-    slidePrev() {
-      console.log('left')
-      this.age--
+    touchStart(swiper, event) {
+      this.beforeActiveIndex = swiper.activeIndex
+      // console.log('滑动前',swiper.activeIndex)
+    //   console.log(event)
+    //  console.log(swiper.activeIndex)
     },
-    slideNext(swiper) {
-      this.age++
-      console.log(this.swiper)
-      console.log('right')
+    touchEnd(swiper, event) {
+      //  console.log(swiper.activeIndex)
+      // console.log('end',event)
+    },
+    slidePrevStart() {},
+    //左滑
+    slidePrevEnd() {
+      // this.age--
+      // console.log(this.activeIndex)
+      // console.log('left')
+      // console.log(this.swiper)
+    },
+    slideNextStart(swiper) {
+
+      // console.log(this.swiper.activeIndex)
+    },
+    //右滑
+    slideNextEnd(swiper) {
+      // this.age++
+
+
+      // console.log(this.swiper)
+      // console.log(this.swiper.activeIndex)
+      // console.log('right')
     },
     onSlideChange(swiper) {
-      this.activeIndex = swiper.activeIndex
+      // console.log(swiper.activeIndex)
+      // this.activeIndex = swiper.activeIndex
+    },
+    SlideChangeStart(swiper){
+
+    },
+    SlideChangeEnd(swiper){
+       this.afterActiveIndex = swiper.activeIndex
+
+      var step = Number( this.beforeActiveIndex-this.afterActiveIndex);
+
+      console.log('step',step)
+      if(step>8){
+        console.log("8")
+        this.age-=1
+      }else if(step<-8){
+        this.age+=1
+      }else{
+        console.log("8")
+        this.age+=step
+      }
+
+
+
+      //  console.log('滑动后',swiper.activeIndex)
     },
     gg() {
       console.log('click')
@@ -170,7 +225,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .lhContner {
-  overflow:hidden;
+  overflow: hidden;
   position: relative;
   width: 100%;
   height: 100%;
@@ -178,23 +233,22 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   .swiper {
-
     height: 400px;
     width: 100%;
     // margin-top: 30%;
     position: absolute;
     top: 30%;
-    .swiper-container{
-      overflow:visible
+    .swiper-container {
+      overflow: visible;
     }
     .swiper-slide-active {
       transform: scale(1.5);
     }
-    .check{
+    .check {
       position: absolute;
-      width:70px;
+      width: 70px;
       height: 44px;
-       left: 0;
+      left: 0;
       right: 0;
       margin: 80px auto 30px;
     }
