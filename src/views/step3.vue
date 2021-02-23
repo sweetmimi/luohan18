@@ -60,12 +60,12 @@
 
 
       </div>
-      <div class="bottomBtn" v-if="isExist==1">
+
+    </div>
+       <div class="bottomBtn" v-if="isExist==1">
         <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
         <div class="okBtn btn" @click="isreplace('1')">确定</div>
       </div>
-    </div>
-
     <!-- <BgcMusic></BgcMusic> -->
   </div>
   </div>
@@ -187,16 +187,20 @@ export default {
 <style lang="scss" scoped>
 .step3-container {
   /* 你的命名空间 */
-  height: calc(100vh - 50px);
+  height: calc(100vh - 20px);
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
   .card {
-    position: relative;
+    box-sizing: border-box;
+    position: absolute;
+    overflow-y: scroll;
     height: 100%;
     top: 30px;
     right: 30px;
     left: 30px;
-    bottom: 50px;
+    bottom: 20px;
+
     background: #fff;
     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .header {
@@ -261,7 +265,7 @@ export default {
       left: 0;
       right: 0;
       margin: 0 auto;
-      margin-top: 50px;
+      margin-top: 40px;
       width: 499px;
       height: 560px;
 
@@ -369,7 +373,7 @@ line-height: 33px;
       }
           .luohandet{
       color: #666666;
-       padding: 20px 15px;
+       padding: 15px 15px;
         margin-bottom: 0px;
       font-size: 28px;
       ul{
@@ -396,13 +400,13 @@ line-height: 33px;
     }
     }
     .bottomBtn {
-      position: absolute;
+
       height: 100px;
       bottom: 10px;
       width: 578px;
       left: 0;
       right: 0;
-      margin: 0 auto;
+      margin: 10px auto;
       display: flex;
       .btn {
         display: inline-block;

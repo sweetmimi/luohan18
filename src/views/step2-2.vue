@@ -191,14 +191,7 @@ export default {
       // console.log('right')
     },
     onSlideChange(swiper) {
-      // console.log(swiper.activeIndex)
-      // this.activeIndex = swiper.activeIndex
-    },
-    SlideChangeStart(swiper){
-
-    },
-    SlideChangeEnd(swiper){
-       this.afterActiveIndex = swiper.activeIndex
+      this.afterActiveIndex = swiper.activeIndex
 
       var step = Number( this.beforeActiveIndex-this.afterActiveIndex);
 
@@ -212,6 +205,14 @@ export default {
         console.log("8")
         this.age+=step
       }
+      // console.log(swiper.activeIndex)
+      // this.activeIndex = swiper.activeIndex
+    },
+    SlideChangeStart(swiper){
+
+    },
+    SlideChangeEnd(swiper){
+
 
 
 

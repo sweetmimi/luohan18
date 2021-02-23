@@ -280,7 +280,7 @@ export default {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     .main {
-      position: absolute;
+      position: relative;
       z-index: 1002;
       left: 125px;
       top: 270px;
@@ -390,15 +390,15 @@ export default {
     }
   }
   .card {
-     overflow: hidden;
+    
     position: absolute;
-    padding:20px ;
+    height: 98%;
     top: 30px;
     right: 30px;
     left: 30px;
-    bottom: 120px;
+    bottom: 50px;
     background: #fff;
-     box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
+    box-shadow: 1px 3px 10px 1px rgba(164, 164, 164, 0.22);
     .header {
       margin-bottom: 30px;
 
