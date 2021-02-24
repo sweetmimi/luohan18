@@ -162,12 +162,21 @@ export default {
     comeback() {
       let UserInfo = this.$sessionStorage.get('userinfo')
       //  this.$toast('yidamArhatId',UserInfo.yidamArhatId);
-      if (UserInfo.yidamArhatId) {
-        window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-      } else {
-        let friendId = this.$route.query.friendId
-        window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
+      if (this.issubscribe != 1) {
+           this.$toast('关注公众号不迷路')
+           setTimeout(() => {
+             this.goattention()
+           }, 1000);
+
+      }else{
+            if (UserInfo.yidamArhatId) {
+            window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+          } else {
+            let friendId = this.$route.query.friendId
+            window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
+          }
       }
+
     },
         //关注
     goattention() {
@@ -176,15 +185,21 @@ export default {
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
     initData() {
-      if (this.$route.query.friendId && this.$route.query.arhatId) {
+      let userinfo = this.$sessionStorage.get('userinfo')
+      if(userinfo.yidamArhatId == null){
+        window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1`
+      }else{
+         if (this.$route.query.friendId && this.$route.query.arhatId) {
         this._getluohanData(this.$route.query.friendId, this.$route.query.arhatId)
       } else {
-        let userinfo = this.$sessionStorage.get('userinfo')
+
         let friendId = userinfo.id
         let arhatId = userinfo.yidamArhatId
         this._getluohanData(friendId, arhatId)
 
       }
+      }
+
     },
     _getluohanData(friendId, arhatId) {
       getluohanData({
@@ -218,9 +233,7 @@ export default {
       }).then(res => {
         if (res.state == 200) {
            this.issubscribe = res.data.subscribe
-           if (this.issubscribe != 1) {
-            this.goattention()
-          }
+
           // this.Masklh = true
         }
       })
@@ -390,7 +403,7 @@ export default {
     }
   }
   .card {
-    
+
     position: absolute;
     height: 98%;
     top: 30px;

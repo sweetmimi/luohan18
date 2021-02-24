@@ -139,17 +139,20 @@ export default {
 
   methods: {
     initData() {
-      let userinfo = this.$sessionStorage.get('userinfo')
-      getluohanData({
-        friendId:  userinfo.id || this.$route.query.friendId ,
-        arhatId: userinfo.yidamArhatId ||this.$route.query.arhatId
-      })
-        .then(res => {
-          this.infoData = res.data
-          console.log(res.data)
-          this.byArhat()
-        })
-        .catch(() => {})
+      setTimeout(() => {
+          let userinfo = this.$sessionStorage.get('userinfo')
+          getluohanData({
+            friendId:  userinfo.id || this.$route.query.friendId ,
+            arhatId: userinfo.yidamArhatId ||this.$route.query.arhatId
+          })
+            .then(res => {
+              this.infoData = res.data
+              console.log(res.data)
+              this.byArhat()
+            })
+            .catch(() => {})
+      }, 400);
+
     },
     byArhat() {
       let userinfo = this.$sessionStorage.get('userinfo')

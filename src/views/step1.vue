@@ -80,7 +80,8 @@ export default {
     },
     //点击按钮倒计时
     getCode() {
-      const TIME_COUNT = 5
+      setTimeout(() => {
+      const TIME_COUNT = 3
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
@@ -97,6 +98,9 @@ export default {
           }
         }, 1000)
       }
+      }, 2000);
+
+
     },
 
   }

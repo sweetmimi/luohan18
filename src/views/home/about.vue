@@ -189,6 +189,7 @@ export default {
     },
     // 请求数据案例
     initData() {
+      setTimeout(() => {
       gethome({})
         .then(res => {
           if (res.state == 200) {
@@ -197,6 +198,7 @@ export default {
           }
         })
         .catch(() => {})
+        }, 500);
     },
     cutArry(data) {
        this.newArr =[]

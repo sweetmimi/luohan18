@@ -41,7 +41,7 @@ export default {
       getUserInfo({})
         .then(res => {
             this.$sessionStorage.set('userinfo', res.data)
-            this.getWechatConfig();
+            this.getWechatConfig(res.data);
         })
         .catch(error => {
           let _this = this
@@ -60,8 +60,9 @@ export default {
         this.getWechatConfig()
       }
     },
-    getWechatConfig() {
+    getWechatConfig(UserInfo) {
       let url = location.href
+      // let UserInfo = UserInfo
       // 我们后代开发人员的接口，不是微信那边的
       getWxSDKConfig({
         url: url
@@ -101,7 +102,6 @@ export default {
         });
         wx.ready((res) => {
           let url =""
-          let UserInfo = this.$sessionStorage.get('userinfo')
           let shareInfo ={}
           if(UserInfo.arhatName){
             url = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
