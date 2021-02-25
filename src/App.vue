@@ -18,6 +18,7 @@ export default {
       limit: env == 'production' ? 5 : 0
     }
   },
+  
   created() {
      this.getUser()
   },
@@ -61,7 +62,7 @@ export default {
       }
     },
     getWechatConfig(UserInfo) {
-      let url = location.href
+      let url = location.href.split("#")[0];
       // let UserInfo = UserInfo
       // 我们后代开发人员的接口，不是微信那边的
       getWxSDKConfig({
@@ -99,6 +100,10 @@ export default {
           success: function (res) {
             // alert("checkJsApi:success1111111111111");
           },
+          fail: function () {
+             this.$toast('wxsdk失败')
+              
+            },
         });
         wx.ready((res) => {
           let url =""
@@ -124,7 +129,17 @@ export default {
           wx.onMenuShareQZone(shareInfo)
           wx.updateTimelineShareData(shareInfo)
           wx.updateAppMessageShareData(shareInfo)
-        })}
+        })
+        wx.error(function (res) {
+          console.log(JSON.stringify(res))
+           this.$toast(JSON.stringify(res))
+          // config信息验证失败会执行error函数，如签名过期导致验证失败，
+          // 具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，
+          // 对于SPA可以在这里更新签名。
+          // alert(res)
+          // alert(JSON.stringify(res))
+          // alert('分享失败4444444444444')
+        });}
       })
     },
     hasClass(obj, cls) {

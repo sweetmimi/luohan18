@@ -148,7 +148,7 @@ export default {
         .then(res => {
           if (res.data) {
             this.$sessionStorage.set('userinfo', res.data)
-             this.initData()
+             this.initData(res.data)
           }
         })
         .catch(error => {
@@ -184,9 +184,9 @@ export default {
       window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
-    initData() {
-      let userinfo = this.$sessionStorage.get('userinfo')
-      if(userinfo.yidamArhatId == null){
+    initData(userinfo) {
+      
+      if(userinfo.yidamArhatId == null && this.$route.query.wx ==1){
         window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1`
       }else{
          if (this.$route.query.friendId && this.$route.query.arhatId) {
