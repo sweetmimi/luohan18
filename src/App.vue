@@ -18,7 +18,7 @@ export default {
       limit: env == 'production' ? 5 : 0
     }
   },
-  
+
   created() {
      this.getUser()
   },
@@ -27,6 +27,11 @@ export default {
     // this.checkUserAuth();
 
   },
+  watch: {
+    $route(to, from) {
+    let data = this.$sessionStorage.get("userinfo")
+        this.getWechatConfig(data) //设置微信分享朋友圈
+    }},
   methods: {
     //授权(如果没有用户信息就授权)
     shouquan() {
@@ -102,36 +107,49 @@ export default {
           },
           fail: function () {
              this.$toast('wxsdk失败')
-              
+
             },
         });
         wx.ready((res) => {
-          let url =""
           let shareInfo ={}
+          let shareZone ={}
+          let urlStr = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
           if(UserInfo.arhatName){
-            url = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
             shareInfo = {
             title: '拜罗汉,得保佑', // 分享标题
             desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
-            link: url,//分享url
+            link: urlStr,//分享url
+            imgUrl: UserInfo.arhatUrl // 分享图标
+          }
+          //朋友圈
+          shareZone ={
+             title: '新年数罗汉，看一年的运势和重点！', // 分享标题
+            desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
+            link: urlStr,//分享url
             imgUrl: UserInfo.arhatUrl // 分享图标
           }
          }else{
-             url = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
             shareInfo = {
             title: '拜罗汉,得保佑', // 分享标题
             desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
-            link: url,//分享url
+            link: urlStr,//分享url
             imgUrl: UserInfo.headUrl // 分享图标
            }
+            //朋友圈
+          shareZone ={
+            title: '新年数罗汉，看一年的运势和重点！', // 分享标题
+            desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
+            link: urlStr,//分享url
+            imgUrl: UserInfo.headUrl // 分享图标
+          }
          }
-          wx.onMenuShareWeibo(shareInfo)
-          wx.onMenuShareQZone(shareInfo)
-          wx.updateTimelineShareData(shareInfo)
+          wx.onMenuShareWeibo(shareZone)
+          wx.onMenuShareQZone(shareZone)
+          wx.updateTimelineShareData(shareZone)
           wx.updateAppMessageShareData(shareInfo)
         })
         wx.error(function (res) {
-          console.log(JSON.stringify(res))
+          console.log("wxerror",JSON.stringify(res))
            this.$toast(JSON.stringify(res))
           // config信息验证失败会执行error函数，如签名过期导致验证失败，
           // 具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，

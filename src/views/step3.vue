@@ -2,7 +2,7 @@
 <template>
   <div class="step3-container">
     <div class="pageLoading" v-if="!infoData">
-      <van-loading type="spinner" class="lod"/>
+      <van-loading type="spinner" class="lod" />
     </div>
     <div class="card" v-else>
       <div class="header">
@@ -10,18 +10,18 @@
           <img :src="infoData.userInfo.headUrl" alt="" />
         </div>
         <div class="right">
-          <div class="top">{{infoData.userInfo.nickName}}</div>
+          <div class="top">{{ infoData.userInfo.nickName }}</div>
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
-            <div class="lhName">·{{infoData.arhat.arhatName}}</div>
-            <div class="biaoqian">{{nowYear}}本尊罗汉</div>
+            <div class="lhName">·{{ infoData.arhat.arhatName }}</div>
+            <div class="biaoqian">{{ nowYear }}本尊罗汉</div>
           </div>
         </div>
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="main">
         <div class="header">
-          <span>{{infoData.arhat.arhatName}}</span>
+          <span>{{ infoData.arhat.arhatName }}</span>
         </div>
 
         <div class="img" @click="topage()">
@@ -35,46 +35,38 @@
 
       <div class="text">
         <div class="title">
-           <div class="luohandet">
-          <ul>
-             <li>
-              <div class="left">您今年的本尊罗汉是: </div>
-              <div class="right">{{infoData.arhat.arhatName}}</div>
-            </li>
-            <li>
-              <div class="left">{{infoData.arhat.arhatName}}的寓意是: </div>
-              <div class="right">{{ infoData.arhat.implication }}</div>
-            </li>
-
-
-          </ul>
-
-        </div>
+          <div class="luohandet">
+            <ul>
+              <li>
+                <div class="left">您今年的本尊罗汉是:</div>
+                <div class="right">{{ infoData.arhat.arhatName }}</div>
+              </li>
+              <li>
+                <div class="left">{{ infoData.arhat.arhatName }}的寓意是:</div>
+                <div class="right">{{ infoData.arhat.implication }}</div>
+              </li>
+            </ul>
+          </div>
           <!-- <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p> -->
-          <p v-if="isExist==1">
-            {{tip}}
+          <p v-if="isExist == 1">
+            {{ tip }}
           </p>
-          <p v-else>
-           点击罗汉图像拜拜您的本尊罗汉，护佑您一年好运。点击关注公众号可以看到您今年特别关注和运势寄语！
-          </p>
-
-
+          <p v-else>点击罗汉图像拜拜您的本尊罗汉，护佑您一年好运。点击关注公众号可以看到您今年特别关注和运势寄语！</p>
+        </div>
       </div>
-
-    </div>
-       <div class="bottomBtn" v-if="isExist==1">
+      <div class="bottomBtn" v-if="isExist == 1">
         <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
         <div class="okBtn btn" @click="isreplace('1')">确定</div>
       </div>
-    <!-- <BgcMusic></BgcMusic> -->
-  </div>
+      <!-- <BgcMusic></BgcMusic> -->
+    </div>
   </div>
 </template>
 
 <script>
 import BgcMusic from '@/components/BgcMusic'
 // 请求接口
-import { getPleaseLohan,getluohanData } from '@/api/user.js'
+import { getPleaseLohan, getluohanData } from '@/api/user.js'
 import { mapGetters } from 'vuex'
 export default {
   components: {
@@ -82,9 +74,9 @@ export default {
   },
   data() {
     return {
-      tip:"",
-      infoData:"",
-      isExist:'',//是否有本尊
+      tip: '',
+      infoData: '',
+      isExist: '', //是否有本尊
       list: [],
       loading: false,
       finished: false,
@@ -92,51 +84,71 @@ export default {
     }
   },
   computed: {
-     nowYear(){
-      var date = new Date();
-      return date .getFullYear();
+    nowYear() {
+      var date = new Date()
+      return date.getFullYear()
     },
     ...mapGetters(['userName'])
   },
   created() {
+    this.oldArhatId = this.$route.query.oldArhatId
+    this.arhatId = this.$route.query.arhatId
 
-     this.oldArhatId=this.$route.query.oldArhatId;
-     this.arhatId=this.$route.query.arhatId;
-
-     this.isExist=this.$route.query.isExist;
-     this.tip = this.$sessionStorage.get('oldArhatTip')
+    this.isExist = this.$route.query.isExist
+    this.tip = this.$sessionStorage.get('oldArhatTip')
 
     this.initData()
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-    isreplace(type){
+    isreplace(type) {
       //如果type =1 替换罗汉
 
-      this.isExist=0;
-      if(type==1){
-       getPleaseLohan({
-          arhatId:this.arhatId,
-          replace:1,
+      this.isExist = 0
+      if (type == 1) {
+        getPleaseLohan({
+          arhatId: this.arhatId,
+          replace: 1
         }).then(res => {
           if (res.state == 200) {
             this.$sessionStorage.set('userinfo', res.data.userInfo)
-            this.$sessionStorage.set('oldArhatTip', res.data.tip);
+            this.$sessionStorage.set('oldArhatTip', res.data.tip)
             // this.arhatId=this.oldArhatId;
-            this.infoData = res.data;
-             this.infoData.arhat.describe = res.data.tip;
-             this.topage()
+            this.infoData = res.data
+            this.infoData.arhat.describe = res.data.tip
+            this.topage()
           }
-        })}
+        })
+      }
     },
 
     topage() {
-      this.$router.replace({
-        path: '/my',
+      if (this.issubscribe != 1) {
+           this.$toast({
+             message:'关注公众号不迷路',
+             position: 'top',
+           })
+           setTimeout(() => {
+             this.goattention()
+           }, 1500);
 
+      }else{
+         this.$router.replace({
+          path: '/my'
       })
+      }
+
+    },
+    goattention() {
+      var date = new Date
+      var motg = date.getMonth();
+      if(motg > 5){
+        return
+      }else{
+      // this.attentionmodel = false
+      window.location.href =
+        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
+    }
     },
     //x下拉刷新
     onLoad() {
@@ -168,11 +180,13 @@ export default {
     // 请求数据案例
     initData() {
       getluohanData({
-        arhatId :this.oldArhatId?this.oldArhatId:this.arhatId
+        arhatId: this.oldArhatId ? this.oldArhatId : this.arhatId
       })
         .then(res => {
-          this.infoData = res.data;
-           this.$sessionStorage.set('userinfo', res.data.userInfo)
+
+          this.infoData = res.data
+          this.$sessionStorage.set('userinfo', res.data.userInfo)
+          this.issubscribe = res.data.subscribe
           console.log(res.data)
         })
         .catch(() => {})
@@ -251,7 +265,7 @@ export default {
             text-align: center;
             font-size: 20px;
             color: #fff;
-            padding: 4px ;
+            padding: 4px;
             width: 200px;
             background: #4e5455;
             border-radius: 19px;
@@ -345,7 +359,6 @@ export default {
           font-family: PingFang-SC-Medium, PingFang-SC;
           font-weight: 500;
           color: #b88858;
-
         }
 
         .del {
@@ -364,43 +377,38 @@ export default {
       margin: 0 auto;
       font-size: 28px;
       font-weight: bold;
-      color: #B88858;
-      p{
-         font-size: 24px;
+      color: #b88858;
+      p {
+        font-size: 24px;
 
-color: rgba(0, 0, 0, 0.35);
-line-height: 33px;
+        color: rgba(0, 0, 0, 0.35);
+        line-height: 33px;
       }
-          .luohandet{
-      color: #666666;
-       padding: 15px 15px;
+      .luohandet {
+        color: #666666;
+        padding: 15px 15px;
         margin-bottom: 0px;
-      font-size: 28px;
-      ul{
-        li{
+        font-size: 28px;
+        ul {
+          li {
+            font-weight: 500;
+            margin: 10px 0;
+            div {
+              display: inline-flex;
+            }
+            .left {
+              width: 70%;
+            }
+            .right {
+              width: 30%;
 
-       font-weight: 500;
-          margin: 10px 0;
-          div{
-            display: inline-flex;
-
+              color: #b88858;
+            }
           }
-          .left{
-        width: 70%;
-
-      }
-      .right{
-        width: 30%;
-
-           color: #b88858;
-      }
         }
       }
-
-    }
     }
     .bottomBtn {
-
       height: 100px;
       bottom: 10px;
       width: 578px;

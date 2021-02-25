@@ -6,7 +6,7 @@
         <img :src="gif" width="100%" />
       </div>
       <div class="rulai"></div>
-        <div class="swiper">
+      <div class="swiper">
         <!-- <swiper
             :slides-per-view="3"
             :space-between="50"
@@ -19,13 +19,13 @@
 
 
         </swiper> -->
-        </div>
+      </div>
       <div class="check">
-        <img src="@/assets/images/check.png" alt="" width="100%">
+        <img src="@/assets/images/check.png" alt="" width="100%" />
       </div>
       <div class="icon">
-          <img src="@/assets/images/rate.png" alt="" width="100%" />
-        </div>
+        <img src="@/assets/images/rate.png" alt="" width="100%" />
+      </div>
       <div class="bottom">
         <div class="btn jump_btn" v-if="showpleaseLohan" @click="showBtn">
           <span class="btn_text">阿弥陀佛</span>
@@ -44,32 +44,32 @@
 
 <script>
 import $ from 'jquery'
-import { Swiper, SwiperSlide } from 'swiper';
-import 'swiper/swiper.scss';
+import { Swiper, SwiperSlide } from 'swiper'
+import 'swiper/swiper.scss'
 import BgcMusic from '@/components/BgcMusic'
 
-import {  getPleaseLohan,getLohanListData } from '@/api/user.js'
+import { getPleaseLohan, getLohanListData } from '@/api/user.js'
 export default {
   name: 'mydata.lohanList',
   components: {
-       Swiper,
-      SwiperSlide,
+    Swiper,
+    SwiperSlide,
     BgcMusic
   },
 
   data() {
     return {
-      arhatList:"",
-       circle_w: 375, //圆盘的宽
+      arhatList: '',
+      circle_w: 375, //圆盘的宽
       circle_h: 375, //圆盘的高
       box_w: 80, //圆盘上覆盖的小圆点宽
       box_h: 80, //圆盘上覆盖的小圆点高
-      PI:360, //分布角度，默认为360deg
+      PI: 360, //分布角度，默认为360deg
       stard: 0, //起始角度
       stard_s: null, //用来默认储存第一个初始值
       boxNum: 18, //圆盘上覆盖的小圆点个数
       activeIndex: 1, //默认下标
-      arhatId:"",
+      arhatId: '',
       userinfo: {
         openid: ''
       },
@@ -82,15 +82,14 @@ export default {
 
   async created() {
     this._getLohanListData()
-    this.stard_s = this.stard;
+    this.stard_s = this.stard
   },
 
   computed: {},
 
   mounted() {
-
-     this.init();
-    this.Turn(this.activeIndex);
+    this.init()
+    this.Turn(this.activeIndex)
     this.i = 1
     var that = this
     this.ter = setInterval(function () {
@@ -99,29 +98,29 @@ export default {
       }
       that.chImg()
     }, 300)
-     that.inde =1
+    that.inde = 1
     this.rateTer = setInterval(function () {
-       that.inde++
-       if(that.inde==18){
-         that.inde=1
-       }
+      that.inde++
+      if (that.inde == 18) {
+        that.inde = 1
+      }
       that.automatic(that.inde)
     }, 5000)
   },
   beforeDestroy() {
     //清除定时器
-    clearInterval(this.ter);
-    clearInterval(this.rateTer);
+    clearInterval(this.ter)
+    clearInterval(this.rateTer)
     // console.log("beforeDestroy");
   },
   destroyed() {
     //清除定时器
-    clearInterval(this.ter);
-    clearInterval(this.rateTer);
+    clearInterval(this.ter)
+    clearInterval(this.rateTer)
     //console.log("destroyed");
   },
   methods: {
-        //获取罗汉list
+    //获取罗汉list
     _getLohanListData() {
       getLohanListData({}).then(res => {
         this.arhatList = res.data.arhatList
@@ -129,31 +128,31 @@ export default {
         // console.log(this.arhatList)
       })
     },
-        handleMouseDown (e) {
-      clearInterval(this.UDLMactionTimer);
-      this.mouseIsDown = true;
-      this.startX = e.clientX || e.touches[0].clientX;
-      this.endX = e.clientX || e.touches[0].clientX;
+    handleMouseDown(e) {
+      clearInterval(this.UDLMactionTimer)
+      this.mouseIsDown = true
+      this.startX = e.clientX || e.touches[0].clientX
+      this.endX = e.clientX || e.touches[0].clientX
     },
-    handleMouseUp () {
-      this.mouseIsDown = false;
-      clearInterval(this.timer);
-      this.timer = null;
-      this.startX = 0;
-      this.endX = 0;
-      if (this.lastSpeed) this.UDLMaction();
+    handleMouseUp() {
+      this.mouseIsDown = false
+      clearInterval(this.timer)
+      this.timer = null
+      this.startX = 0
+      this.endX = 0
+      if (this.lastSpeed) this.UDLMaction()
     },
-    handleMouseMove (e) {
-      this.endX = e.clientX || e.touches[0].clientX;
-      if (!this.mouseIsDown) return;
+    handleMouseMove(e) {
+      this.endX = e.clientX || e.touches[0].clientX
+      if (!this.mouseIsDown) return
       if (!this.timer) {
         this.timer = setInterval(() => {
-          let moveGap = this.endX - this.startX;
-          this.lastSpeed = moveGap / this.timeGap;
-          this.xGap += moveGap;
-          this.direction = moveGap > 0 ? 1 : -1;
-          this.startX = this.endX;
-        }, this.timeGap);
+          let moveGap = this.endX - this.startX
+          this.lastSpeed = moveGap / this.timeGap
+          this.xGap += moveGap
+          this.direction = moveGap > 0 ? 1 : -1
+          this.startX = this.endX
+        }, this.timeGap)
       }
     },
     chImg() {
@@ -161,62 +160,61 @@ export default {
       this.i++
     },
     showBtn() {
-      clearInterval(this.rateTer);
+      clearInterval(this.rateTer)
       this.showpleaseLohan = false
     },
 
     // 亲本尊
     PleaseLohan() {
-        getPleaseLohan({
-          arhatId:this.arhatId,
-        }).then(res => {
-          if (res.state == 200) {
-            this.$sessionStorage.set('oldArhatTip', res.data.tip)
-            this.$router.replace({
-              path: '/step22',
-              query: { arhatId: this.arhatId ,isExist:res.data.isExist,oldArhatId:res.data.oldArhatId }
-            })
-          }
-        })
-
+      getPleaseLohan({
+        arhatId: this.arhatId
+      }).then(res => {
+        if (res.state == 200) {
+          this.$sessionStorage.set('oldArhatTip', res.data.tip)
+          this.$router.push({
+            path: '/step22',
+            query: { arhatId: this.arhatId, isExist: res.data.isExist, oldArhatId: res.data.oldArhatId }
+          })
+        }
+      })
     },
-        //初始化小圆点，根据计算使其分布到对应位置
+    //初始化小圆点，根据计算使其分布到对应位置
     init() {
-      let box = document.querySelectorAll(".img-box");
-      let avd = this.PI / box.length; //每一个 img-box 对应的角度
-      let ahd = (avd * Math.PI) / 180; //每一个 img-box 对应的弧度
-      let radius = this.circle_w / 2; //圆的半径
+      let box = document.querySelectorAll('.img-box')
+      let avd = this.PI / box.length //每一个 img-box 对应的角度
+      let ahd = (avd * Math.PI) / 180 //每一个 img-box 对应的弧度
+      let radius = this.circle_w / 2 //圆的半径
       for (let i = 0; i < box.length; i++) {
-        box[i].style.left = Math.sin(ahd * i) * radius + "px";
-        box[i].style.top = Math.cos(ahd * i) * radius + "px";
+        box[i].style.left = Math.sin(ahd * i) * radius + 'px'
+        box[i].style.top = Math.cos(ahd * i) * radius + 'px'
       }
     },
     //点击相对应小圆点，圆盘进行相对应角度的转动
-    Turn(index,arhatId) {
-      this.arhatId=arhatId;
-       clearInterval(this.rateTer);
+    Turn(index, arhatId) {
+      this.arhatId = arhatId
+      clearInterval(this.rateTer)
 
-      let _this = this;
-      let bx = document.querySelectorAll(".box");
-      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
+      let _this = this
+      let bx = document.querySelectorAll('.box')
+      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s
       for (let i = 0; i < bx.length; i++) {
         if (i == index) {
-          bx[i].classList.add("box-active");
+          bx[i].classList.add('box-active')
         } else {
-          bx[i].classList.remove("box-active");
+          bx[i].classList.remove('box-active')
         }
       }
     },
-    automatic(index){
-      this.arhatId=index;
-      let _this = this;
-      let bx = document.querySelectorAll(".box");
-      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s;
+    automatic(index) {
+      this.arhatId = index
+      let _this = this
+      let bx = document.querySelectorAll('.box')
+      _this.stard = index * (_this.PI / _this.boxNum) + _this.stard_s
       for (let i = 0; i < bx.length; i++) {
         if (i == index) {
-          bx[i].classList.add("box-active");
+          bx[i].classList.add('box-active')
         } else {
-          bx[i].classList.remove("box-active");
+          bx[i].classList.remove('box-active')
         }
       }
     },
@@ -245,7 +243,7 @@ export default {
   background-repeat: no-repeat;
   //ccs
   .overall {
-   position: relative;
+    position: relative;
     left: 0;
     right: 0;
     top: 60px;
@@ -255,86 +253,85 @@ export default {
     // border: 1px dashed #f4f4f4;
     border-radius: 350px;
 
-.circle-box {
-  position: absolute;//注释--------------------------此处显示全圆
-  // overflow: hidden;//注释----------------------此处显示全圆
-   right: 0;//注释---------------------此处显示全圆
-   left: 0;
-   margin: 0 auto;
-  .circle {
-
-    transform: scale(0.9);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-sizing: border-box;
-    // border: 1px solid #4d4c4c;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // margin-left: 50%; //注释----------------此处显示全圆
-    .origin {
-      position: relative;
-      transition: 0.5s; //控制圆盘的的旋转速率
-      .img-box {
-        user-select: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: none !important;
-        pointer-events: none;
-        .box {
-          pointer-events: all !important;
-          width: 100%;
-          height: 100%;
-          transition: 0.3s;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          left: 0;
-          top: 0;
-          // border-radius: 50%;
-          transform: scale(0.3);
-          cursor: pointer;
-          color: white;
-          font-size: 40px;
-          // background: black;
-          // overflow: hidden;
-          &:hover {
-            transform: scale(0.3);
-          }
-          &:hover .content {
-            opacity: 1;
-          }
-          .content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-          }
-        }
-        .box-active {
-          transition-delay: 0.3s;
-          transform: scale(1) !important;
-          .content {
-            opacity: 1;
+    .circle-box {
+      position: absolute; //注释--------------------------此处显示全圆
+      // overflow: hidden;//注释----------------------此处显示全圆
+      right: 0; //注释---------------------此处显示全圆
+      left: 0;
+      margin: 0 auto;
+      .circle {
+        transform: scale(0.9);
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        box-sizing: border-box;
+        // border: 1px solid #4d4c4c;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // margin-left: 50%; //注释----------------此处显示全圆
+        .origin {
+          position: relative;
+          transition: 0.5s; //控制圆盘的的旋转速率
+          .img-box {
+            user-select: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: none !important;
+            pointer-events: none;
+            .box {
+              pointer-events: all !important;
+              width: 100%;
+              height: 100%;
+              transition: 0.3s;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: absolute;
+              left: 0;
+              top: 0;
+              // border-radius: 50%;
+              transform: scale(0.3);
+              cursor: pointer;
+              color: white;
+              font-size: 40px;
+              // background: black;
+              // overflow: hidden;
+              &:hover {
+                transform: scale(0.3);
+              }
+              &:hover .content {
+                opacity: 1;
+              }
+              .content {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+              }
+            }
+            .box-active {
+              transition-delay: 0.3s;
+              transform: scale(1) !important;
+              .content {
+                opacity: 1;
+              }
+            }
           }
         }
       }
     }
-  }
-}
-    }  //end
+  } //end
   .rulai {
     position: fixed;
     z-index: 200;
     width: 450px;
     left: 0px;
-    right:0;
+    right: 0;
     margin: 0 auto;
     top: 255px;
     height: 500px;
@@ -342,17 +339,17 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
   }
-  .rotate{
+  .rotate {
     animation: myRotate 18s linear infinite;
   }
   @keyframes myRotate {
-  0% {
-    transform: rotate(0deg)
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
-  100% {
-    transform: rotate(360deg)
-  }
-}
   .luohan {
     position: relative;
     left: 0;
@@ -407,7 +404,7 @@ export default {
       top: 00px;
       left: 280px;
     }
-     .div10 {
+    .div10 {
       top: 0px;
       right: 260px;
     }
@@ -444,24 +441,23 @@ export default {
       right: 180px;
     }
   }
-  .check{
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      bottom: 420px;
-      margin: 0 auto;
-      width: 90px;
-      left: 0;
-      right: 0;
+  .check {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    bottom: 420px;
+    margin: 0 auto;
+    width: 90px;
+    left: 0;
+    right: 0;
   }
   .icon {
     position: absolute;
     bottom: 360px;
-      margin: 0 auto;
-      width: 90px;
-      left: 0;
-      right: 0;
-
+    margin: 0 auto;
+    width: 90px;
+    left: 0;
+    right: 0;
   }
   .gif {
     width: 100%;
@@ -472,7 +468,7 @@ export default {
     margin: 20px auto;
     width: 80%;
     height: 80px;
-   bottom: 250px;
+    bottom: 250px;
     left: 0;
     z-index: 99;
     right: 0;

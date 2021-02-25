@@ -7,7 +7,7 @@
       </div>
       <div class="rulai"></div>
       <!-- 音乐 -->
-      <BgcMusic></BgcMusic>
+      <!-- <BgcMusic></BgcMusic> -->
       <!-- 按钮 -->
       <div class="btn home_btn" @click="getCode">
         <span class="btn_text" v-if="show"> 请施主静心拜佛再进入罗汉堂</span>
@@ -34,7 +34,7 @@ export default {
       checked: true, // 默认开始音乐播放
       src: require('../assets/images/music.png'), // 注意图片资源的加载方式
       mymove: true, // 控制音乐控制按钮样式
-       gif: '',
+      gif: '',
       imgs: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     }
   },
@@ -57,16 +57,15 @@ export default {
   },
   beforeDestroy() {
     //清除定时器
-    clearInterval(this.ter);
+    clearInterval(this.ter)
     // console.log("beforeDestroy");
   },
   destroyed() {
     //清除定时器
-    clearInterval(this.ter);
+    clearInterval(this.ter)
     //console.log("destroyed");
   },
   methods: {
-
     chImg() {
       this.gif = require(`@/assets/images/homeGif/${this.imgs[this.i]}.png`)
       this.i++
@@ -81,28 +80,25 @@ export default {
     //点击按钮倒计时
     getCode() {
       setTimeout(() => {
-      const TIME_COUNT = 3
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 1 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            clearInterval(this.timer)
-            this.timer = null
-            this.$router.replace({
-              path: 'step2',
-              // query: { appid: '123456' }
-            })
-          }
-        }, 1000)
-      }
-      }, 2000);
-
-
-    },
-
+        const TIME_COUNT = 3
+        if (!this.timer) {
+          this.count = TIME_COUNT
+          this.show = false
+          this.timer = setInterval(() => {
+            if (this.count > 1 && this.count <= TIME_COUNT) {
+              this.count--
+            } else {
+              clearInterval(this.timer)
+              this.timer = null
+              this.$router.push({
+                path: 'step2'
+                // query: { appid: '123456' }
+              })
+            }
+          }, 1000)
+        }
+      }, 2000)
+    }
   }
 }
 </script>
@@ -116,12 +112,12 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   .gif {
-     position: absolute;
-     left: -80px;
+    position: absolute;
+    left: -80px;
     width: 106%;
     height: 1200px;
-    img{
-      width:106%;
+    img {
+      width: 106%;
       height: 100%;
     }
   }
@@ -137,7 +133,7 @@ export default {
     height: 70%;
     margin: 0 auto;
     background-image: url('~@/assets/images/rulai.png');
-    background-size: 100% ;
+    background-size: 100%;
     background-repeat: no-repeat;
   }
   .home_btn {

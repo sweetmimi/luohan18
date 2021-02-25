@@ -162,20 +162,14 @@ export default {
     comeback() {
       let UserInfo = this.$sessionStorage.get('userinfo')
       //  this.$toast('yidamArhatId',UserInfo.yidamArhatId);
-      if (this.issubscribe != 1) {
-           this.$toast('关注公众号不迷路')
-           setTimeout(() => {
-             this.goattention()
-           }, 1000);
 
-      }else{
             if (UserInfo.yidamArhatId) {
             window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
           } else {
             let friendId = this.$route.query.friendId
             window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
           }
-      }
+      
 
     },
         //关注
@@ -185,7 +179,7 @@ export default {
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
     initData(userinfo) {
-      
+
       if(userinfo.yidamArhatId == null && this.$route.query.wx ==1){
         window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1`
       }else{

@@ -15,7 +15,6 @@ export default {
 
   async created() {
     // this.getUser()
- 
   },
 
   computed: {},
@@ -24,7 +23,7 @@ export default {
 
   methods: {
     getuserShareapi() {
-      const params = {openid:'orMjE6PC_xe0ACAom8SuOrl7s7bQ' }
+      const params = { openid: 'orMjE6PC_xe0ACAom8SuOrl7s7bQ' }
       getuserShare(params).then()
     },
     getUser() {
@@ -44,10 +43,10 @@ export default {
       var step = 1
       switch (step) {
         case 1:
-          this.$router.replace({ path: 'step1' })
+          this.$router.push({ path: 'step1' })
           break
         case 2:
-          this.$router.replace({ path: 'step2' })
+          this.$router.push({ path: 'step2' })
           break
       }
     }

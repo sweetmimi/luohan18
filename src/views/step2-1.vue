@@ -33,6 +33,7 @@
           <span class="btn_text">阿弥陀佛</span>
         </div>
       </div>
+      <BgcMusic></BgcMusic>
     </div>
   </div>
 </template>
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       arhatList: '',
- timer: null,
+      timer: null,
       a0: 0,
       a1: 0,
       circleTimer: null,
@@ -73,10 +74,10 @@ export default {
       reduceSpeed: 1.5,
       turntableR: 200,
       cardCount: 18,
-      pause: "",
-      wxwpause: "",
-      zqpause: "",
-      clickType: "",
+      pause: '',
+      wxwpause: '',
+      zqpause: '',
+      clickType: '',
       userinfo: {
         openid: ''
       },
@@ -110,8 +111,6 @@ export default {
     window.removeEventListener('resize', this.responseContainerScale.bind(this))
   },
   mounted() {
-
-
     this.init()
     this.Turn(this.activeIndex)
     this.i = 1
@@ -156,7 +155,7 @@ export default {
 
     // 亲本尊
     PleaseLohan() {
-      this.$router.replace({
+      this.$router.push({
         path: '/step22',
         query: {}
       })

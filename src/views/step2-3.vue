@@ -447,7 +447,7 @@ export default {
       }).then(res => {
         if (res.state == 200) {
           this.$sessionStorage.set('oldArhatTip', res.data.tip)
-          this.$router.replace({
+          this.$router.push({
             path: '/step3',
             query: { arhatId: this.arhatId, isExist: res.data.isExist, oldArhatId: res.data.oldArhatId }
           })

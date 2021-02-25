@@ -16,7 +16,7 @@
           @slideNextTransitionEnd="slideNextEnd"
           @click="gg"
           @slideChange="onSlideChange"
-          @slideChangeTransitionStart ="SlideChangeStart"
+          @slideChangeTransitionStart="SlideChangeStart"
           @slideChangeTransitionEnd="SlideChangeEnd"
         >
           <swiper-slide :id="item.id" v-for="item in arhatList" :key="item.id"
@@ -51,11 +51,13 @@
           </div>
         </div>
       </div>
+      <BgcMusic></BgcMusic>
     </div>
   </div>
 </template>
 
 <script>
+import BgcMusic from '@/components/BgcMusic'
 import { getPleaseLohan, getLohanListData } from '@/api/user.js'
 import 'swiper/swiper-bundle.min.css'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
@@ -65,7 +67,8 @@ export default {
   name: '',
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    BgcMusic
   },
 
   data() {
@@ -149,7 +152,7 @@ export default {
       }).then(res => {
         if (res.state == 200) {
           this.$sessionStorage.set('oldArhatTip', res.data.tip)
-          this.$router.replace({
+          this.$router.push({
             path: '/step3',
             query: { arhatId: this.arhatId, isExist: res.data.isExist, oldArhatId: res.data.oldArhatId }
           })
@@ -162,8 +165,8 @@ export default {
     touchStart(swiper, event) {
       this.beforeActiveIndex = swiper.activeIndex
       // console.log('滑动前',swiper.activeIndex)
-    //   console.log(event)
-    //  console.log(swiper.activeIndex)
+      //   console.log(event)
+      //  console.log(swiper.activeIndex)
     },
     touchEnd(swiper, event) {
       //  console.log(swiper.activeIndex)
@@ -178,14 +181,11 @@ export default {
       // console.log(this.swiper)
     },
     slideNextStart(swiper) {
-
       // console.log(this.swiper.activeIndex)
     },
     //右滑
     slideNextEnd(swiper) {
       // this.age++
-
-
       // console.log(this.swiper)
       // console.log(this.swiper.activeIndex)
       // console.log('right')
@@ -193,29 +193,23 @@ export default {
     onSlideChange(swiper) {
       this.afterActiveIndex = swiper.activeIndex
 
-      var step = Number( this.beforeActiveIndex-this.afterActiveIndex);
+      var step = Number(this.beforeActiveIndex - this.afterActiveIndex)
 
-      console.log('step',step)
-      if(step>8){
-        console.log("8")
-        this.age-=1
-      }else if(step<-8){
-        this.age+=1
-      }else{
-        console.log("8")
-        this.age+=step
+      console.log('step', step)
+      if (step > 8) {
+        console.log('8')
+        this.age -= 1
+      } else if (step < -8) {
+        this.age += 1
+      } else {
+        console.log('8')
+        this.age += step
       }
       // console.log(swiper.activeIndex)
       // this.activeIndex = swiper.activeIndex
     },
-    SlideChangeStart(swiper){
-
-    },
-    SlideChangeEnd(swiper){
-
-
-
-
+    SlideChangeStart(swiper) {},
+    SlideChangeEnd(swiper) {
       //  console.log('滑动后',swiper.activeIndex)
     },
     gg() {
