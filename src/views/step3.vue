@@ -142,7 +142,7 @@ export default {
     goattention() {
       var date = new Date
       var motg = date.getMonth();
-      if(motg > 5){
+      if(motg > 4){
         return
       }else{
       // this.attentionmodel = false

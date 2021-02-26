@@ -62,10 +62,12 @@
 
         </div>
         <div class="btn yl_btn" @click="comeback">
-          <span class="btn_text">
-              返回
+          <span class="btn_text" v-if="UserInfo.yidamArhatId" >
+              去拜罗汉
           </span>
-         
+         <span class="btn_text" v-else >
+              去数罗汉
+          </span>
         </div>
         <!-- <div class="btn yl_btn" @click="byArhat">
           <span class="btn_text"> 拜罗汉 </span>
@@ -120,6 +122,7 @@ export default {
   },
   data() {
     return {
+      UserInfo : this.$sessionStorage.get('userinfo'),
       friendId: '',
       arhatId: '',
       infoData: '',
@@ -169,7 +172,7 @@ export default {
             let friendId = this.$route.query.friendId
             window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
           }
-      
+
 
     },
         //关注
@@ -376,7 +379,7 @@ export default {
     }
   }
   .top_bg {
-    width: 750px;
+    width: 100%;
     height: 600px;
     position: relative;
     img {

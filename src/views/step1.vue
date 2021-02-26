@@ -106,7 +106,7 @@ export default {
 .homePage {
   z-index: 100;
   position: relative;
-  width: 750px;
+  width: 100%;
   height: 100%;
   background-image: url('../assets/images/rulai_bgc.png');
   background-size: cover;

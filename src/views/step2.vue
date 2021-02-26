@@ -60,8 +60,8 @@ export default {
   data() {
     return {
       arhatList: '',
-      circle_w: 375, //圆盘的宽
-      circle_h: 375, //圆盘的高
+      circle_w: window.screen.width, //圆盘的宽
+      circle_h: window.screen.width, //圆盘的高
       box_w: 80, //圆盘上覆盖的小圆点宽
       box_h: 80, //圆盘上覆盖的小圆点高
       PI: 360, //分布角度，默认为360deg

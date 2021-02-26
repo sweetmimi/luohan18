@@ -412,8 +412,8 @@ export default {
   }
   .jrwLeft {
     position: relative;
-    width: 750px;
-    height: 750px;
+    width: 100%;
+   
     border-radius: 50%;
     min-width: 400px;
     min-height: 400px;

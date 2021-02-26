@@ -41,13 +41,13 @@
         <div class="jump_btn" v-show="showpleaseLohan" @click="emtuofo_click">
           <div class="btn_text btn">阿弥陀佛</div>
           <div class="text">
-            <p>请施主随意滑动屏幕后,点击 "阿弥陀佛" 将当前罗汉作为数罗汉的起始点</p>
+            <p>随意划动,再点"阿弥陀佛"</p>
           </div>
         </div>
         <div class="jump_btn" v-show="!showpleaseLohan" @click="qingbenzun_click">
           <div class="btn_text btn">请本尊罗汉</div>
           <div class="text">
-            <p>请施主按照"男左女右的方式划动,数到自己年龄的虚岁数字,点击"请本尊罗汉"</p>
+            <p>男左女右,划到自己年龄虚岁的数字,再点"请本尊罗汉" </p>
           </div>
         </div>
       </div>
@@ -295,29 +295,20 @@ export default {
         color: #ffffff;
         line-height: 80px;
       }
-    }
-    .text {
-      position: absolute;
-      text-align: center;
-      margin: 0 auto;
-      top: 130px;
-      line-height: 2;
-      left: 0;
-      z-index: 200;
-      right: 0;
-      width: 100%;
-
-      background: rgba(187, 187, 187, 0.25);
-      border-radius: 15px;
-      p {
-        margin: 15px;
-        font-size: 28px;
+      .text{
+         text-align: center;
+         margin: 10px;
+         width: 100%;
+        
+         background: rgba(187, 187, 187, 0.25);
+         border-radius: 15px;
+        font-size: 32px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         color: #ffffff;
-        line-height: 1.3;
       }
     }
+
   }
 }
 </style>

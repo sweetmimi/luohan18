@@ -374,7 +374,7 @@ export default {
     }
   }
   .top_bg {
-    width: 750px;
+    width: 100%;
     height: 800px;
     position: fixed;
     img {
