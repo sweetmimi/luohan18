@@ -62,7 +62,7 @@
 
         </div>
         <div class="btn yl_btn" @click="comeback">
-          <span class="btn_text" v-if="UserInfo.yidamArhatId" >
+          <span class="btn_text" v-if="infoData.userInfo.yidamArhatId" >
               去拜罗汉
           </span>
          <span class="btn_text" v-else >
@@ -122,7 +122,7 @@ export default {
   },
   data() {
     return {
-      UserInfo : this.$sessionStorage.get('userinfo'),
+      
       friendId: '',
       arhatId: '',
       infoData: '',
@@ -181,8 +181,7 @@ export default {
       window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
-    initData(userinfo) {
-
+    initData(userinfo) {      
       if(userinfo.yidamArhatId == null && this.$route.query.wx ==1){
         window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1`
       }else{
