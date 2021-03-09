@@ -57,8 +57,16 @@
       <!-- <div class="bottomBtn" v-if="isExist == 1">
         <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
         <div class="okBtn btn" @click="isreplace('1')">确定</div>
-      </div> -->
-      <!-- <BgcMusic></BgcMusic> -->
+      </div>
+
+      <BgcMusic></BgcMusic> -->
+    </div>
+    <div class="codeModel" v-show="showcode">
+      <div class="img">
+        <p>慧生觉</p>
+        <img src="@/assets/images/vcode.jpg" alt="" width="100%" />
+      </div>
+      <p>长按二维码识别-关注微信公众号</p>
     </div>
   </div>
 </template>
@@ -78,6 +86,7 @@ export default {
       infoData: '',
       isExist: '', //是否有本尊
       list: [],
+      showcode:false,
       loading: false,
       finished: false,
       refreshing: false
@@ -143,13 +152,21 @@ export default {
     goattention() {
       var date = new Date
       var motg = date.getMonth();
-      if(motg > 4){
+      var wechatInfo = navigator.userAgent.match(/MicroMessenger\/([\d\.]+)/i)
+      console.log(wechatInfo[1])
+      // this.$toast({
+      //        message:wechatInfo[1],
+      //      })
+    if( !wechatInfo ) {
+        alert("请在微信打开此页面") ;
         return
-      }else{
-      // this.attentionmodel = false
-      window.location.href =
+    } else if ( wechatInfo[1] < "7.5" ) {
+         window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
+    }else{
+      this.showcode = true
     }
+
     },
 
     // 请求数据
@@ -180,6 +197,29 @@ export default {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  .codeModel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #c58925;
+    font-size: 36px;
+    background: rgba(0, 0, 0, 1);
+    p {
+      margin: 30px;
+    }
+    .img {
+      p {
+        font-weight: 800;
+        font-size: 48px;
+      }
+      width: 60%;
+      margin: 25% auto 0;
+    }
+  }
   .card {
     box-sizing: border-box;
     position: absolute;
