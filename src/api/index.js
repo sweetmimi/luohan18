@@ -10,6 +10,7 @@ const api = {
   byArhat:'/vote/api/v1/android/byArhat',//白罗汉
   home:'/vote/api/v1/android/home',//互动
   wxsdk: '/vote/api/v1/android/getWxSDKConfig', //微信sdk配置
+  share: '/vote/api/v1/android/isShare',//分享成功回调
 }
 
 export default api

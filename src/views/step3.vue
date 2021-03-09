@@ -4,7 +4,7 @@
     <div class="pageLoading" v-if="!infoData">
       <van-loading type="spinner" class="lod" />
     </div>
-    <div class="card" v-else>
+    <div class="card" v-else @click="showMask = true">
       <div class="header">
         <div class="left">
           <img :src="infoData.userInfo.headUrl" alt="" />
@@ -24,13 +24,13 @@
           <span>{{ infoData.arhat.arhatName }}</span>
         </div>
 
-        <div class="img" @click="topage()">
+        <div class="img" >
           <img :src="infoData.arhat.arhatBackgroundPic" alt="" width="100%" />
         </div>
-        <div class="minhandel" @click="topage()">
+        <!-- <div class="minhandel" @click="topage()">
           <img src="@/assets/images/minhandel.png" alt="" />
           <div class="div">点击罗汉</div>
-        </div>
+        </div> -->
       </div>
 
       <div class="text">
@@ -51,7 +51,7 @@
           <!-- <p v-if="isExist == 1">
             {{ tip }}
           </p> -->
-          <p class="tips">分享到朋友圈，可以看到您几年的 <span>特别关注</span> 和 <span>运势寄语</span> 。</p>
+          <p class="tips" ><span>分享到朋友圈 </span>，可以看到您今年的 <span>特别关注</span> 和 <span>运势寄语</span> 。</p>
         </div>
       </div>
       <!-- <div class="bottomBtn" v-if="isExist == 1">
@@ -68,6 +68,16 @@
       </div>
       <p>长按二维码识别-关注微信公众号</p>
     </div>
+
+     <div class="mask" v-show="showMask" @click="showMask = false">
+        <div class="point">
+          <img src="@/assets/images/share.png" alt="" />
+        </div>
+        <div class="text">
+          <img src="@/assets/images/share_rulai.png" alt="" />
+          <span>点击右上角分享到您的朋友或朋友圈 与您的朋友一起拜罗汉，分享好运</span>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -86,6 +96,7 @@ export default {
       infoData: '',
       isExist: '', //是否有本尊
       list: [],
+      showMask:false,
       showcode:false,
       loading: false,
       finished: false,
@@ -133,20 +144,23 @@ export default {
     },
 
     topage() {
-      if (this.issubscribe != 1) {
-           this.$toast({
-             message:'关注公众号不迷路',
-             position: 'top',
-           })
-           setTimeout(() => {
-             this.goattention()
-           }, 1500);
-
-      }else{
-         this.$router.replace({
+       this.$router.replace({
           path: '/my'
       })
-      }
+      // if (this.issubscribe != 1) {
+      //      this.$toast({
+      //        message:'关注公众号不迷路',
+      //        position: 'top',
+      //      })
+      //      setTimeout(() => {
+      //        this.goattention()
+      //      }, 1500);
+
+      // }else{
+      //    this.$router.replace({
+      //     path: '/my'
+      // })
+      // }
 
     },
     goattention() {
@@ -157,15 +171,15 @@ export default {
       // this.$toast({
       //        message:wechatInfo[1],
       //      })
-    if( !wechatInfo ) {
-        alert("请在微信打开此页面") ;
-        return
-    } else if ( wechatInfo[1] < "7.5" ) {
-         window.location.href =
-        'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
-    }else{
-      this.showcode = true
-    }
+    // if( !wechatInfo ) {
+    //     alert("请在微信打开此页面") ;
+    //     return
+    // } else if ( wechatInfo[1] < "7.5" ) {
+    //      window.location.href =
+    //     'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
+    // }else{
+    //   this.showcode = true
+    // }
 
     },
 
@@ -177,10 +191,9 @@ export default {
         .then(res => {
           this.infoData = res.data
           this.$sessionStorage.set('userinfo', res.data.userInfo)
-          this.issubscribe = res.data.subscribe;
           //如果分享成功直接替换本尊
-          if (res.data.isShare==1 && isExist == 1) {
-            this.isreplace("1")
+          if (res.data.userInfo.isShare==1) {
+           this.topage()
           }
           console.log(res.data)
         })
@@ -197,6 +210,46 @@ export default {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+    .mask {
+    position: fixed;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    .point {
+      right: 62px;
+      top: 21px;
+      width: 414px;
+      height: 368px;
+      position: absolute;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text {
+      position: absolute;
+      top: 405px;
+      height: 112px;
+      padding: 20px;
+      img {
+        width: 112px;
+        height: 112px;
+        float: left;
+        vertical-align: middle;
+        margin-left: 40px;
+        margin-right: 27px;
+      }
+      span {
+        vertical-align: middle;
+        font-size: 32px;
+        font-family: PingFang-SC-Bold, PingFang-SC;
+        font-weight: bold;
+        color: #ffffff;
+        line-height: 1.6;
+      }
+    }
+  }
   .codeModel {
     position: fixed;
     top: 0;
@@ -296,7 +349,7 @@ export default {
       margin: 0 auto;
       margin-top: 40px;
       width: 499px;
-      height: 560px;
+      height: 600px;
 
       background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
       border-radius: 21px;
@@ -327,8 +380,8 @@ export default {
 
       .img {
         position: relative;
-        width: 380px;
-        height: 440px;
+        width: 420px;
+
         top: 60px;
         margin: 0 auto;
       }
@@ -421,6 +474,7 @@ export default {
         font-size: 24px;
         color: rgba(0, 0, 0, 0.35);
         line-height: 33px;
+        margin: 20px 10px;
         span{
           font-size: 30px;
           color: #b88858;

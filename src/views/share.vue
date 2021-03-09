@@ -4,29 +4,25 @@
     <div class="pageLoading" v-if="!infoData">
       <van-loading type="spinner" class="lod" />
     </div>
-       <div class="main" v-else>
+    <div class="main" v-else>
       <div class="card">
         <div class="header">
           <div class="headerleft">
-            <img :src="infoData.arhat.arhatPic" alt="" width="100%">
+            <img :src="infoData.arhat.arhatPic" alt="" width="100%" />
           </div>
           <div class="headerright">
-              <div class="text">
-            <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
-            <span class="name"> {{ infoData.userInfo.nickName }}</span>
-
-          </div>
-           <div class="line" style="width: 100%"></div>
+            <div class="text">
+              <img :src="infoData.userInfo.headUrl" alt="" width="100%" />
+              <span class="name"> {{ infoData.userInfo.nickName }}</span>
+            </div>
+            <div class="line" style="width: 100%"></div>
             <div class="lhName">
-          <img src="@/assets/images/fo.png" alt="" width="100%" />
-          <span class="name">· {{ infoData.arhat.arhatName }}</span>
-          <div class="biaoqian">{{nowYear}}年本尊罗汉</div>
-        </div>
+              <img src="@/assets/images/fo.png" alt="" width="100%" />
+              <span class="name">· {{ infoData.arhat.arhatName }}</span>
+              <div class="biaoqian">{{ nowYear }}年本尊罗汉</div>
+            </div>
           </div>
-
         </div>
-
-
 
         <div class="detl">
           <p>
@@ -37,15 +33,15 @@
         <div class="luohandet">
           <ul>
             <li>
-              <div class="left">本尊罗汉寓意: </div>
+              <div class="left">本尊罗汉寓意:</div>
               <div class="right">{{ infoData.arhat.implication }}</div>
             </li>
-              <li>
-              <div class="left">您今年特别关注的是: </div>
+            <li>
+              <div class="left">您今年特别关注的是:</div>
               <div class="right">{{ infoData.arhat.special }}</div>
             </li>
-              <li>
-              <div class="left">您的罗汉寄语是: </div>
+            <li>
+              <div class="left">您的罗汉寄语是:</div>
               <div class="right">{{ infoData.arhat.message }}</div>
             </li>
           </ul>
@@ -53,22 +49,16 @@
         </div>
         <div class="yaoqin" @click="showMask = true">
           <div class="left">
-             <img src="@/assets/images/handel.png" alt="" width="100%" />
+            <img src="@/assets/images/handel.png" alt="" width="100%" />
           </div>
-        <div class="right">
-            <span class="text" v-if="!friendId"> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
-          <span class="text" v-else> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
+          <div class="right">
+            <span class="text"> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！</span>
+          </div>
         </div>
-
+        <div class="btn yl_btn" @click="comeback">
+          <span class="btn_text" v-if="infoData.userInfo.yidamArhatId"> 去拜罗汉 </span>
+                   <span class="btn_text" v-else> 去数罗汉 </span>
         </div>
-        <div class="btn yl_btn" @click="comeback">
-          <span class="btn_text" v-if="infoData.userInfo.yidamArhatId" >
-              去拜罗汉
-          </span>
-         <span class="btn_text" v-else >
-              去数罗汉
-          </span>
-        </div>
         <!-- <div class="btn yl_btn" @click="byArhat">
           <span class="btn_text"> 拜罗汉 </span>
         </div>
@@ -122,20 +112,19 @@ export default {
   },
   data() {
     return {
-      
       friendId: '',
       arhatId: '',
       infoData: '',
-      attentionmodel:false,
+      attentionmodel: false,
       showMask: false,
       Masklh: false
     }
   },
   async created() {},
   computed: {
-        nowYear(){
-      var date = new Date();
-      return date .getFullYear();
+    nowYear() {
+      var date = new Date()
+      return date.getFullYear()
     }
   },
 
@@ -151,7 +140,7 @@ export default {
         .then(res => {
           if (res.data) {
             this.$sessionStorage.set('userinfo', res.data)
-             this.initData(res.data)
+            this.initData(res.data)
           }
         })
         .catch(error => {
@@ -166,36 +155,31 @@ export default {
       let UserInfo = this.$sessionStorage.get('userinfo')
       //  this.$toast('yidamArhatId',UserInfo.yidamArhatId);
 
-            if (UserInfo.yidamArhatId) {
-            window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
-          } else {
-            let friendId = this.$route.query.friendId
-            window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
-          }
-
-
+      if (UserInfo.yidamArhatId) {
+        window.location.href = `http://luohan.wuhanhsj.com/h5/#/home?friendId=${UserInfo.id}&arhatId=${UserInfo.yidamArhatId}`
+      } else {
+        let friendId = this.$route.query.friendId
+        window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1?friendId=${friendId}`
+      }
     },
-        //关注
+    //关注
     goattention() {
       this.attentionmodel = false
       window.location.href =
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     },
-    initData(userinfo) {      
-      if(userinfo.yidamArhatId == null && this.$route.query.wx ==1){
+    initData(userinfo) {
+      if (userinfo.yidamArhatId == null && this.$route.query.wx == 1) {
         window.location.href = `http://luohan.wuhanhsj.com/h5/#/step1`
-      }else{
-         if (this.$route.query.friendId && this.$route.query.arhatId) {
-        this._getluohanData(this.$route.query.friendId, this.$route.query.arhatId)
       } else {
-
-        let friendId = userinfo.id
-        let arhatId = userinfo.yidamArhatId
-        this._getluohanData(friendId, arhatId)
-
+        if (this.$route.query.friendId && this.$route.query.arhatId) {
+          this._getluohanData(this.$route.query.friendId, this.$route.query.arhatId)
+        } else {
+          let friendId = userinfo.id
+          let arhatId = userinfo.yidamArhatId
+          this._getluohanData(friendId, arhatId)
+        }
       }
-      }
-
     },
     _getluohanData(friendId, arhatId) {
       getluohanData({
@@ -210,17 +194,15 @@ export default {
         .catch(() => {})
     },
     byArhat() {
-
-      let friendId ="";
-      let arhatId="";
-      if(this.$route.query.friendId){
-         friendId = this.$route.query.friendId
-          arhatId = this.$route.query.arhatId
-
-      }else{
+      let friendId = ''
+      let arhatId = ''
+      if (this.$route.query.friendId) {
+        friendId = this.$route.query.friendId
+        arhatId = this.$route.query.arhatId
+      } else {
         let userinfo = this.$sessionStorage.get('userinfo')
-         friendId = userinfo.id
-         arhatId = userinfo.yidamArhatId
+        friendId = userinfo.id
+        arhatId = userinfo.yidamArhatId
       }
       // 如果新用户 关注公众号
       getbyArhat({
@@ -228,13 +210,12 @@ export default {
         arhatId: arhatId
       }).then(res => {
         if (res.state == 200) {
-           this.issubscribe = res.data.subscribe
+          this.issubscribe = res.data.subscribe
 
           // this.Masklh = true
         }
       })
-    },
-
+    }
   }
 }
 </script>
@@ -245,7 +226,7 @@ export default {
     z-index: 1001;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     .point {
       right: 62px;
       top: 21px;
@@ -287,7 +268,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     .main {
       position: relative;
       z-index: 1002;
@@ -399,7 +380,6 @@ export default {
     }
   }
   .card {
-
     position: absolute;
     height: 98%;
     top: 30px;
@@ -417,64 +397,62 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      .headerleft{
+      .headerleft {
         width: 240px;
         height: 100%;
       }
-      .headerright{
+      .headerright {
         text-align: left;
         overflow: hidden;
         width: 455px;
         height: 100%;
-     .text {
-       margin: 40px 10px;
-        .name {
-          vertical-align: left;
-          font-size: 32px;
-          font-family: PingFang-SC-Bold, PingFang-SC;
-          font-weight: 600;
-          color: #4e5455;
-          line-height: 1.2;
+        .text {
+          margin: 40px 10px;
+          .name {
+            vertical-align: left;
+            font-size: 32px;
+            font-family: PingFang-SC-Bold, PingFang-SC;
+            font-weight: 600;
+            color: #4e5455;
+            line-height: 1.2;
+          }
+          img {
+            width: 80px;
+            height: 80px;
+            vertical-align: middle;
+            margin-right: 20px;
+          }
         }
-         img {
-        width: 80px;
-        height: 80px;
-        vertical-align: middle;
-        margin-right: 20px;
-      }
-      }
-          .lhName {
-      margin: 20px 0;
-      text-align: left;
-      img {
-        width: 32px;
-        height: 47px;
-        vertical-align: middle;
-        margin-right: 20px;
-      }
-      .name {
-        vertical-align: middle;
-        font-size: 32px;
-        font-family: PingFang-SC-Bold, PingFang-SC;
-        font-weight: 600;
-        color: #4e5455;
-        line-height: 1.2;
-      }
-      .biaoqian{
-        margin-top: 20px;
+        .lhName {
+          margin: 20px 0;
+          text-align: left;
+          img {
+            width: 32px;
+            height: 47px;
+            vertical-align: middle;
+            margin-right: 20px;
+          }
+          .name {
+            vertical-align: middle;
+            font-size: 32px;
+            font-family: PingFang-SC-Bold, PingFang-SC;
+            font-weight: 600;
+            color: #4e5455;
+            line-height: 1.2;
+          }
+          .biaoqian {
+            margin-top: 20px;
             text-align: center;
             font-size: 20px;
             color: #fff;
-            padding: 4px ;
+            padding: 4px;
             width: 200px;
             background: #4e5455;
             border-radius: 19px;
             vertical-align: middle;
+          }
+        }
       }
-    }
-
-      }
-
     }
 
     .blueTitle {
@@ -495,58 +473,51 @@ export default {
       color: #666666;
       line-height: 1.2;
     }
-    .luohandet{
+    .luohandet {
       color: #666666;
-       padding: 20px 15px;
-        margin-bottom: 20px;
+      padding: 20px 15px;
+      margin-bottom: 20px;
       font-size: 28px;
-      ul{
-        li{
-
-font-weight: 500;
+      ul {
+        li {
+          font-weight: 500;
           margin: 10px 0;
-          div{
+          div {
             display: inline-flex;
-
           }
-          .left{
-        width: 300px;
-
-      }
-      .right{
-         width: 300px;
-           color: #b88858;
-      }
+          .left {
+            width: 300px;
+          }
+          .right {
+            width: 300px;
+            color: #b88858;
+          }
         }
       }
-
     }
     .yaoqin {
       margin: 20px 50px;
-      .left{
+      .left {
         height: 200px;
         width: 40px;
-         float: left;
-         img {
-
-        width: 28px;
-        height: 49px;
-        vertical-align: middle;
-        margin-top: 20px;
-        margin-right: 20px;
+        float: left;
+        img {
+          width: 28px;
+          height: 49px;
+          vertical-align: middle;
+          margin-top: 20px;
+          margin-right: 20px;
+        }
       }
-      }
-      .right{
+      .right {
         .text {
-
-        vertical-align: middle;
-        font-size: 28px;
-        font-family: PingFang-SC-Bold, PingFang-SC;
-        color: #b88858;
-        line-height: 40px;
+          vertical-align: middle;
+          font-size: 28px;
+          font-family: PingFang-SC-Bold, PingFang-SC;
+          color: #b88858;
+          line-height: 40px;
+        }
       }
-      }
-
     }
     .yl_btn {
       width: 420px;
@@ -561,8 +532,7 @@ font-weight: 500;
       }
     }
     .gren_btn {
-
-     text-align: center;
+      text-align: center;
       background: #03c160;
       height: 80px;
       border-radius: 44px;

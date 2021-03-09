@@ -5,208 +5,275 @@
   </div>
 </template>
 <script>
-import { env } from '@/config'
-import { getUserInfo, getWxSDKConfig } from '@/api/user'
-import wx from 'weixin-js-sdk'
-// import util from './utils/wx'
-export default {
-  name: 'App',
-  data() {
-    return {
-      lastClickTime: 0,
-      count: 0,
-      limit: env == 'production' ? 5 : 0
-    }
-  },
-
-  created() {
-     this.getUser()
-  },
-  mounted() {
-
-    // this.checkUserAuth();
-
-  },
-  watch: {
-    $route(to, from) {
-    let data = this.$sessionStorage.get("userinfo")
-        this.getWechatConfig(data) //设置微信分享朋友圈
-    }},
-  methods: {
-    //授权(如果没有用户信息就授权)
-    shouquan() {
-      if(!this.$sessionStorage.get('userinfo')){
-
-        let url = encodeURIComponent(location.href)
-       window.location.href=`http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
-
+  import {
+    env
+  } from '@/config'
+  import {
+    getUserInfo,
+    getWxSDKConfig,
+    getShare
+  } from '@/api/user'
+  import wx from 'weixin-js-sdk'
+  // import util from './utils/wx'
+  export default {
+    name: 'App',
+    data() {
+      return {
+        lastClickTime: 0,
+        count: 0,
+        limit: env == 'production' ? 5 : 0
       }
+    },
+
+    created() {
+      this.getUser()
+    },
+    mounted() {
+
+      // this.checkUserAuth();
 
     },
-    getUser() {
-      getUserInfo({})
-        .then(res => {
+    watch: {
+      $route(to, from) {
+        let data = this.$sessionStorage.get("userinfo")
+        this.getWechatConfig(data) //设置微信分享朋友圈
+      }
+    },
+    methods: {
+      //授权(如果没有用户信息就授权)
+      shouquan() {
+        if (!this.$sessionStorage.get('userinfo')) {
+
+          let url = encodeURIComponent(location.href)
+          window.location.href = `http://luohan.wuhanhsj.com/vote/api/v1/android/authorization?from=${url}`
+
+        }
+
+      },
+      getUser() {
+        getUserInfo({})
+          .then(res => {
             this.$sessionStorage.set('userinfo', res.data)
             this.getWechatConfig(res.data);
-        })
-        .catch(error => {
-          let _this = this
+          })
+          .catch(error => {
+            let _this = this
+            setTimeout(() => {
+              env == 'production' ? _this.shouquan() : this.$toast('调试环境')
+            }, 1000);
+          })
+      },
+      // 通过判断cookie中是否有 openId 检查用户是否授权过
+      checkUserAuth() {
+        let openId = this.$cookie.get('openId')
+        if (!openId) {
+          // 通过修改地址栏发出get请求到后端
+          window.location.href = API.wechatRedirect
+        } else {
+          this.getWechatConfig()
+        }
+      },
+      //成功分享
+      getShareSuccess() {
+        getShare({}).then(res => {
+          this.$toast({
+            type: 'success',
+            message: '分享成功',
+          })
           setTimeout(() => {
-            env == 'production'?_this.shouquan():this.$toast('调试环境')
+            window.location.reload()
           }, 1000);
         })
-    },
-    // 通过判断cookie中是否有 openId 检查用户是否授权过
-    checkUserAuth() {
-      let openId = this.$cookie.get('openId')
-      if (!openId) {
-        // 通过修改地址栏发出get请求到后端
-        window.location.href = API.wechatRedirect
-      } else {
-        this.getWechatConfig()
-      }
-    },
-    getWechatConfig(UserInfo) {
-      let url = location.href.split("#")[0];
-      // let UserInfo = UserInfo
-      // 我们后代开发人员的接口，不是微信那边的
-      getWxSDKConfig({
-        url: url
-      }).then(res => {
-        if(res.state==200){
-        let data = res.data
-        wx.config({
-          // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
-          // 若要查看传入的参数，可以在pc端打开，参数信息会通过log打
-          // 出，仅在pc端时才会打印。
-          debug: false,
-          appId: data.appId, // 必填，公众号的唯一标识
-          timestamp: data.timestamp, // 必填，生成签名的时间戳
-          nonceStr: data.nonceStr, // 必填，生成签名的随机串
-          signature: data.signature, // 必填，签名
-          jsApiList: [
-            // 必填，需要使用的JS接口列表
+      },
+      getWechatConfig(UserInfo) {
+        let _this = this
+        let url = location.href.split("#")[0];
+        // let UserInfo = UserInfo
+        // 我们后代开发人员的接口，不是微信那边的
+        getWxSDKConfig({
+          url: url
+        }).then(res => {
+          if (res.state == 200) {
+            let data = res.data
+            wx.config({
+              // 开启调试模式,调用的所有 api 的返回值会在客户端alert出来，
+              // 若要查看传入的参数，可以在pc端打开，参数信息会通过log打
+              // 出，仅在pc端时才会打印。
+              debug: false,
+              appId: data.appId, // 必填，公众号的唯一标识
+              timestamp: data.timestamp, // 必填，生成签名的时间戳
+              nonceStr: data.nonceStr, // 必填，生成签名的随机串
+              signature: data.signature, // 必填，签名
+              jsApiList: [
+                // 必填，需要使用的JS接口列表
+                // 'updateTimelineShareData',
+                // 'updateAppMessageShareData',
+                'onMenuShareAppMessage',
+                'onMenuShareTimeline',
+
+              ]
+            })
+            wx.checkJsApi({
+              jsApiList: [
+                // 'updateTimelineShareData',
+                // 'updateAppMessageShareData',
+                'onMenuShareAppMessage',
+                'onMenuShareTimeline',
+              ],
+              success: function (res) {
+
+              },
+              fail: function () {
+
+              },
+            });
+            wx.ready((res) => {
+              let shareInfo = {}
+              let shareZone = {}
+              let urlStr = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
+              if (UserInfo.arhatName) {
+                shareInfo = {
+                  title: '拜罗汉,得保佑', // 分享标题
+                  desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
+                  link: urlStr, //分享url
+                  imgUrl: UserInfo.arhatUrl, // 分享图标
+                  success: function () {
+                    // 用户点击了分享后执行的回调函数
+                    _this.getShareSuccess()
+                  },
+                  cancel: function (res) {
+                    this.$toast({
+                      type: 'fail',
+                      message: '已取消分享',
+                    })
+                  },
+                }
+                //朋友圈
+                shareZone = {
+                  title: '新年数罗汉，看一年的运势和重点！', // 分享标题
+                  desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
+                  link: urlStr, //分享url
+                  imgUrl: UserInfo.arhatUrl, // 分享图标
+                  success: function () {
+                    // 用户点击了分享后执行的回调函数
+                    _this.getShareSuccess()
+                  },
+                  cancel: function (res) {
+                    this.$toast({
+                      type: 'fail',
+                      message: '已取消分享',
+                    })
+                  },
+                }
 
 
-            "onMenuShareWeibo",
-            "onMenuShareQZone",
-            "updateTimelineShareData",
-            "updateAppMessageShareData"
-          ]
+              } else {
+                shareInfo = {
+                  title: '拜罗汉,得保佑', // 分享标题
+                  desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
+                  link: urlStr, //分享url
+                  imgUrl: UserInfo.headUrl, // 分享图标
+                  success: function () {
+                    // 用户点击了分享后执行的回调函数
+                    _this.getShareSuccess()
+                  },
+                  cancel: function (res) {
+                    this.$toast({
+                      type: 'fail',
+                      message: '已取消分享',
+                    })
+                  },
+                }
+                //朋友圈
+                shareZone = {
+                  title: '新年数罗汉，看一年的运势和重点！', // 分享标题
+                  desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
+                  link: urlStr, //分享url
+                  imgUrl: UserInfo.headUrl, // 分享图标
+                  success: function () {
+                    // 用户点击了分享后执行的回调函数
+                    _this.getShareSuccess()
+                  },
+                  cancel: function (res) {
+                    this.$toast({
+                      type: 'fail',
+                      message: '已取消分享',
+                    })
+                  },
+                }
+
+              }
+              // wx.onMenuShareWeibo(shareZone)
+              // wx.onMenuShareQZone(shareZone)
+              // wx.updateTimelineShareData(shareZone)
+              // wx.updateAppMessageShareData(shareInfo)
+              wx.onMenuShareAppMessage(shareInfo);
+              wx.onMenuShareTimeline(shareZone)
+            })
+            wx.error(function (res) {
+              console.log("wxerror", JSON.stringify(res))
+              this.$toast(JSON.stringify(res))
+              // config信息验证失败会执行error函数，如签名过期导致验证失败，
+              // 具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，
+              // 对于SPA可以在这里更新签名。
+              // alert(res)
+              // alert(JSON.stringify(res))
+              // alert('分享失败4444444444444')
+            });
+
+          }
         })
-        wx.checkJsApi({
-          jsApiList: [
-            // 必填，需要使用的JS接口列表
-            "onMenuShareWeibo",
-            "onMenuShareQZone",
-            "updateTimelineShareData",
-            "updateAppMessageShareData"
-          ],
-          success: function (res) {
-            // alert("checkJsApi:success1111111111111");
-          },
-          fail: function () {
-             this.$toast('wxsdk失败')
+      },
+      hasClass(obj, cls) {
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
+      },
+      addClass(obj, cls) {
+        if (!this.hasClass(obj, cls)) obj.className += ' ' + cls
+      },
+      toggleClass(obj, cls) {
+        if (this.hasClass(obj, cls)) {
+          this.removeClass(obj, cls)
+        } else {
+          this.addClass(obj, cls)
+        }
+      },
+      removeClass(obj, cls) {
+        if (this.hasClass(obj, cls)) {
+          var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
+          obj.className = obj.className.replace(reg, ' ')
+        }
+      },
+      toggleVc() {
+        const nowTime = new Date().getTime();
+        if (nowTime - this.lastClickTime < 3000) {
+          this.count++;
+        } else {
+          this.count = 0;
+        }
+        this.lastClickTime = nowTime;
+        if (this.count >= this.limit) {
+          let vconDom = document.getElementById('__vconsole');
+          this.toggleClass(vconDom, 'show')
+          this.count = 0;
 
-            },
-        });
-        wx.ready((res) => {
-          let shareInfo ={}
-          let shareZone ={}
-          let urlStr = `http://luohan.wuhanhsj.com/vote/api/v1/android/userShare?friendId=${UserInfo.id}`
-          if(UserInfo.arhatName){
-            shareInfo = {
-            title: '拜罗汉,得保佑', // 分享标题
-            desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
-            link: urlStr,//分享url
-            imgUrl: UserInfo.arhatUrl // 分享图标
-          }
-          //朋友圈
-          shareZone ={
-             title: '新年数罗汉，看一年的运势和重点！', // 分享标题
-            desc: `新年数罗汉,看一年的运势和重点! 我今年的本尊罗汉是${UserInfo.arhatName}`, // 分享描述
-            link: urlStr,//分享url
-            imgUrl: UserInfo.arhatUrl // 分享图标
-          }
-         }else{
-            shareInfo = {
-            title: '拜罗汉,得保佑', // 分享标题
-            desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
-            link: urlStr,//分享url
-            imgUrl: UserInfo.headUrl // 分享图标
-           }
-            //朋友圈
-          shareZone ={
-            title: '新年数罗汉，看一年的运势和重点！', // 分享标题
-            desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
-            link: urlStr,//分享url
-            imgUrl: UserInfo.headUrl // 分享图标
-          }
-         }
-          wx.onMenuShareWeibo(shareZone)
-          wx.onMenuShareQZone(shareZone)
-          wx.updateTimelineShareData(shareZone)
-          wx.updateAppMessageShareData(shareInfo)
-        })
-        wx.error(function (res) {
-          console.log("wxerror",JSON.stringify(res))
-           this.$toast(JSON.stringify(res))
-          // config信息验证失败会执行error函数，如签名过期导致验证失败，
-          // 具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，
-          // 对于SPA可以在这里更新签名。
-          // alert(res)
-          // alert(JSON.stringify(res))
-          // alert('分享失败4444444444444')
-        });}
-      })
-    },
-    hasClass(obj, cls) {
-      return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'))
-    },
-    addClass(obj, cls) {
-      if (!this.hasClass(obj, cls)) obj.className += ' ' + cls
-    },
-    toggleClass(obj, cls) {
-      if (this.hasClass(obj, cls)) {
-        this.removeClass(obj, cls)
-      } else {
-        this.addClass(obj, cls)
+        }
       }
-    },
-    removeClass(obj, cls) {
-      if (this.hasClass(obj, cls)) {
-        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
-        obj.className = obj.className.replace(reg, ' ')
-      }
-    },
-    toggleVc(){
-            const nowTime = new Date().getTime();
-            if(nowTime - this.lastClickTime < 3000){
-              this.count ++;
-            } else {
-              this.count = 0;
-            }
-            this.lastClickTime = nowTime;
-            if(this.count >= this.limit) {
-              let vconDom = document.getElementById('__vconsole');
-              this.toggleClass(vconDom,'show')
-              this.count = 0;
-
-            }
-          }
+    }
   }
-}
+
 </script>
 <style lang="scss">
-.vc-tigger {
-  position: fixed;
-  z-index: 9999;
-  width: 160px;
-  height: 80px;
-  right: 20px;
-  bottom: 20px;
-}
-.show {
-  display: block !important;
-}
+  .vc-tigger {
+    position: fixed;
+    z-index: 9999;
+    width: 160px;
+    height: 80px;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .show {
+    display: block !important;
+  }
+
 </style>

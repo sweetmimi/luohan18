@@ -14,7 +14,7 @@
           <div class="bottom">
             <img src="@/assets/images/fo.png" alt="" width="100%" />
             <div class="lhName">·{{ infoData.arhat.arhatName }}</div>
-             <div class="biaoqian">{{nowYear}}年本尊罗汉</div>
+            <div class="biaoqian">{{ nowYear }}年本尊罗汉</div>
           </div>
         </div>
       </div>
@@ -31,8 +31,8 @@
         <div class="dv2">
           <i class="iconfont icon-star"></i>
           <span
-            >已总共来拜今年本尊罗汉
-            <span class="gold">{{ infoData.continuous }}</span>次
+            >已总共来拜今年本尊罗汉 <span class="gold">{{ infoData.continuous }}</span
+            >次
           </span>
         </div>
       </div>
@@ -53,14 +53,11 @@
       </div>
       <div class="line" style="width: 70%"></div>
       <div class="title">
-        <div class="left">
-          好友互动
-        </div>
+        <div class="left">好友互动</div>
         <div class="right">
-          共有{{infoData.friendInfo.friendCount}}位好友,拜过{{infoData.friendInfo.friendByArhat}}次
+          共有{{ infoData.friendInfo.friendCount }}位好友,拜过{{ infoData.friendInfo.friendByArhat }}次
         </div>
-
-        </div>
+      </div>
       <div class="cardlist" v-if="infoData.friendList.length > 0">
         <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh"> -->
         <div
@@ -89,7 +86,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <!-- </van-pull-refresh> -->
@@ -97,9 +93,8 @@
       <div class="friends" v-else>
         <p style="text-align: center">暂无好友,快去邀请好友一起拜罗汉.</p>
       </div>
-
     </div>
-      <div class="mask" v-show="showMask" @click="showMask = false">
+    <div class="mask" v-show="showMask" @click="showMask = false">
       <div class="point">
         <img src="@/assets/images/share.png" alt="" />
       </div>
@@ -122,16 +117,16 @@ export default {
       list: [],
       newcutnum: 0,
       newArr: [],
-      showMask:false,
+      showMask: false,
       loading: false,
       finished: false,
       refreshing: false
     }
   },
   computed: {
-    nowYear(){
-      var date = new Date();
-      return date .getFullYear();
+    nowYear() {
+      var date = new Date()
+      return date.getFullYear()
     },
     ...mapGetters(['userName'])
   },
@@ -190,18 +185,18 @@ export default {
     // 请求数据案例
     initData() {
       setTimeout(() => {
-      gethome({})
-        .then(res => {
-          if (res.state == 200) {
-            this.infoData = res.data
-            this.cutArry(res.data.checkinList)
-          }
-        })
-        .catch(() => {})
-        }, 500);
+        gethome({})
+          .then(res => {
+            if (res.state == 200) {
+              this.infoData = res.data
+              this.cutArry(res.data.checkinList)
+            }
+          })
+          .catch(() => {})
+      }, 500)
     },
     cutArry(data) {
-       this.newArr =[]
+      this.newArr = []
       let arry = data.reverse()
       let arrLength = arry.length // 数组长度
       let num = 7 // 每页显示 7 条
@@ -210,11 +205,11 @@ export default {
       for (let i = 0; i < arrLength; i++) {
         if (i % num === 0 && i !== 0) {
           // 可以被 7 整除
-          this.newArr.push(arry.slice(index,i).reverse())
+          this.newArr.push(arry.slice(index, i).reverse())
           index = i
         }
         if (i + 1 === arrLength) {
-          this.newArr.push(arry.slice(index,i+1 ).reverse())
+          this.newArr.push(arry.slice(index, i + 1).reverse())
         }
       }
       console.log(index + 1)
@@ -242,12 +237,12 @@ export default {
   height: calc(100vh - 50px);
   box-sizing: border-box;
   position: relative;
-    .mask {
+  .mask {
     position: fixed;
     z-index: 1001;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     .point {
       right: 62px;
       top: 21px;
@@ -284,7 +279,7 @@ export default {
   }
   .card {
     overflow: hidden;
-     padding:20px ;
+    padding: 20px;
     position: absolute;
     top: 30px;
     right: 30px;
@@ -390,11 +385,11 @@ export default {
       font-size: 26px;
       font-weight: bold;
       color: #303f7b;
-      .left{
+      .left {
         display: inline-flex;
         float: left;
       }
-       .right{
+      .right {
         display: inline-flex;
         float: right;
       }
@@ -462,16 +457,15 @@ export default {
         overflow: hidden;
         height: 90px;
         position: absolute;
-        display:flex;
+        display: flex;
 
-　　flex-direction:column;
+        　　flex-direction: column;
 
-　　justify-content:center;
-         left: 0;
-      right: 0;
+        　　justify-content: center;
+        left: 0;
+        right: 0;
         margin: 0 60px;
         li {
-
           margin: 0 auto;
           display: inline;
           float: left;
@@ -516,7 +510,7 @@ export default {
       width: 600px;
       margin: 0 auto;
       .list {
-         padding-bottom: 20px;
+        padding-bottom: 20px;
         margin: 20px 0 0;
 
         border-bottom: 1px solid #ccc;
@@ -524,10 +518,8 @@ export default {
         width: 100%;
         height: 103px;
         display: flex;
-        justify-content:center;
+        justify-content: center;
         .left {
-
-
           width: 80px;
           height: 100px;
           border-radius: 52px;
@@ -543,7 +535,6 @@ export default {
           width: calc(100% - 80px);
           //  width: 600px;
           box-sizing: border-box;
-
 
           height: 100%;
           .top {
@@ -569,7 +560,7 @@ export default {
               height: 37px;
               background: linear-gradient(90deg, #fbe09b 0%, #e7bf7b 100%);
               border-radius: 19px;
-              padding: 2px  0;
+              padding: 2px 0;
               color: #4e5455;
               font-size: 24px;
 
@@ -600,8 +591,8 @@ export default {
               }
             }
             .time {
-               margin-right: 20px;
-               line-height: 40px;
+              margin-right: 20px;
+              line-height: 40px;
               float: right;
             }
           }

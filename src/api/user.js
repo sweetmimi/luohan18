@@ -107,3 +107,15 @@ export function gethome(data) {
     hideloading: true
   })
 }
+
+
+//分享成功
+
+export function getShare(data) {
+  return request({
+    url: api.share,
+    method: 'post',
+    data,
+    hideloading: true
+  })
+}
