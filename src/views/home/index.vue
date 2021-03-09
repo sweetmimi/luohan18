@@ -56,8 +56,8 @@
              <img src="@/assets/images/handel.png" alt="" width="100%" />
           </div>
         <div class="right">
-            <span class="text" v-if="!friendId"> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
-          <span class="text" v-else> 点击右上角分享按钮，邀请好友互拜对方的本尊罗汉，为彼此增添好运！点击底部“好友互动”按钮可查看自己及好友的拜访记录~</span>
+            <span class="text"> 长按扫描二维码关注公众号，可以随时拜拜您和好友的罗汉，为彼此增添好运！点击底部“好友互动”按钮，可查看自己及好友的拜访记录。</span>
+
         </div>
 
         </div>

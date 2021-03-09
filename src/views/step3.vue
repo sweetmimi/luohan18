@@ -48,16 +48,16 @@
             </ul>
           </div>
           <!-- <p>点击罗汉关注公众号收藏您的本尊罗汉，您以后可以从公众号“我的本尊罗汉”页面拜您的本尊罗汉，护佑您一年的运势</p> -->
-          <p v-if="isExist == 1">
+          <!-- <p v-if="isExist == 1">
             {{ tip }}
-          </p>
-          <p v-else>点击罗汉图像拜拜您的本尊罗汉，护佑您一年好运。点击关注公众号可以看到您今年特别关注和运势寄语！</p>
+          </p> -->
+          <p class="tips">分享到朋友圈，可以看到您几年的 <span>特别关注</span> 和 <span>运势寄语</span> 。</p>
         </div>
       </div>
-      <div class="bottomBtn" v-if="isExist == 1">
+      <!-- <div class="bottomBtn" v-if="isExist == 1">
         <div class="cancelBtn btn" @click="isreplace('0')">取消</div>
         <div class="okBtn btn" @click="isreplace('1')">确定</div>
-      </div>
+      </div> -->
       <!-- <BgcMusic></BgcMusic> -->
     </div>
   </div>
@@ -97,7 +97,8 @@ export default {
     this.isExist = this.$route.query.isExist
     this.tip = this.$sessionStorage.get('oldArhatTip')
 
-    this.initData()
+    this.initData();
+
   },
   mounted() {},
   methods: {
@@ -150,51 +151,25 @@ export default {
         'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzg2ODU3MDM5OQ==&scene=110#wechat_redirect'
     }
     },
-    //x下拉刷新
-    onLoad() {
-      setTimeout(() => {
-        if (this.refreshing) {
-          this.list = []
-          this.refreshing = false
-        }
 
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        this.loading = false
-
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 1000)
-    },
-    onRefresh() {
-      // 清空列表数据
-      this.finished = false
-
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true
-      this.onLoad()
-    },
-    // 请求数据案例
+    // 请求数据
     initData() {
       getluohanData({
         arhatId: this.oldArhatId ? this.oldArhatId : this.arhatId
       })
         .then(res => {
-
           this.infoData = res.data
           this.$sessionStorage.set('userinfo', res.data.userInfo)
-          this.issubscribe = res.data.subscribe
+          this.issubscribe = res.data.subscribe;
+          //如果分享成功直接替换本尊
+          if (res.data.isShare==1 && isExist == 1) {
+            this.isreplace("1")
+          }
           console.log(res.data)
         })
         .catch(() => {})
     },
-    // Action 通过 store.dispatch 方法触发
-    doDispatch() {
-      this.$store.dispatch('setUserName', '12313')
-    }
+
   }
 }
 </script>
@@ -378,12 +353,7 @@ export default {
       font-size: 28px;
       font-weight: bold;
       color: #b88858;
-      p {
-        font-size: 24px;
 
-        color: rgba(0, 0, 0, 0.35);
-        line-height: 33px;
-      }
       .luohandet {
         color: #666666;
         padding: 15px 15px;
@@ -405,6 +375,15 @@ export default {
               color: #b88858;
             }
           }
+        }
+      }
+      .tips{
+        font-size: 24px;
+        color: rgba(0, 0, 0, 0.35);
+        line-height: 33px;
+        span{
+          font-size: 30px;
+          color: #b88858;
         }
       }
     }
