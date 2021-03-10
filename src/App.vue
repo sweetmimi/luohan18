@@ -21,7 +21,8 @@
       return {
         lastClickTime: 0,
         count: 0,
-        limit: env == 'production' ? 5 : 0
+        limit: env == 'production' ? 5 : 0,
+        shareImg:require('@/assets/images/share.jpg')
       }
     },
 
@@ -170,9 +171,9 @@
               } else {
                 shareInfo = {
                   title: '拜罗汉,得保佑', // 分享标题
-                  desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
+                  desc: `数罗汉，看一年运势；拜罗汉，得一年好运！`, // 分享描述
                   link: urlStr, //分享url
-                  imgUrl: UserInfo.headUrl, // 分享图标
+                  imgUrl: "http://luohan.wuhanhsj.com/fileserver/static/share_pictrue.jpg", // 分享图标
                   success: function () {
                     // 用户点击了分享后执行的回调函数
                     _this.getShareSuccess()
@@ -187,9 +188,9 @@
                 //朋友圈
                 shareZone = {
                   title: '新年数罗汉，看一年的运势和重点！', // 分享标题
-                  desc: `新年数罗汉,${UserInfo.nickName}邀请你一起来拜拜罗汉!`, // 分享描述
+                  desc: `数罗汉，看一年运势；拜罗汉，得一年好运！`, // 分享描述
                   link: urlStr, //分享url
-                  imgUrl: UserInfo.headUrl, // 分享图标
+                  imgUrl: "http://luohan.wuhanhsj.com/fileserver/static/share_pictrue.jpg", // 分享图标
                   success: function () {
                     // 用户点击了分享后执行的回调函数
                     _this.getShareSuccess()
